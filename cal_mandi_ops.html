@@ -1,0 +1,3407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CAL Mandi Ops — Wholesale Mandi Management</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Kannada:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       CAL Mandi Ops — Android Theme & Responsive Design System
+       ========================================================================== */
+    :root {
+      --primary-900: #0B3D1D;
+      --primary-800: #135229;
+      --primary-700: #1B6836;
+      --primary-600: #248043;
+      --primary-500: #2E9B52;
+      --primary-100: #E2F5E8;
+      --primary-50:  #F0FAF3;
+
+      --accent-amber: #F57C00;
+      --accent-amber-light: #FFF3E0;
+      --accent-blue: #1976D2;
+      --accent-blue-light: #E3F2FD;
+      --status-red: #D32F2F;
+      --status-red-light: #FFEBEE;
+      --status-green: #2E7D32;
+      --status-green-light: #E8F5E9;
+
+      --surface: #FFFFFF;
+      --background: #F4F7F4;
+      --surface-variant: #ECEFEA;
+      --text-primary: #191C1A;
+      --text-secondary: #49454F;
+      --text-tertiary: #79747E;
+      --border-subtle: #E0E4DE;
+      --divider: #ECEFEA;
+
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+
+      --font-main: 'Plus Jakarta Sans', 'Noto Sans Kannada', 'Noto Sans Devanagari', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: #1A241E;
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Container for Android Phone Simulator vs Desktop responsive */
+    .app-viewport {
+      width: 100%;
+      max-width: 440px;
+      height: 100vh;
+      max-height: 920px;
+      background: var(--background);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      transition: max-width 0.3s ease;
+    }
+
+    @media (min-width: 1024px) {
+      .app-viewport.expanded-mode {
+        max-width: 900px;
+        max-height: 95vh;
+        border-radius: var(--radius-lg);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app-viewport {
+        max-width: 100%;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+      }
+    }
+
+    /* Android Status Bar */
+    .android-status-bar {
+      height: 28px;
+      background: var(--primary-900);
+      color: #FFFFFF;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      z-index: 50;
+    }
+
+    .android-status-bar .icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* App Appbar / Top Header */
+    .app-header {
+      background: var(--primary-800);
+      color: #FFFFFF;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      z-index: 40;
+    }
+
+    .app-header .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .app-header .logo-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--primary-800);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .app-header .brand-text h1 {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .app-header .brand-text span {
+      font-size: 11px;
+      opacity: 0.85;
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-btn {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: #FFFFFF;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .header-btn:active {
+      background: rgba(255,255,255,0.3);
+      transform: scale(0.95);
+    }
+
+    /* Network / Sync Status Pill */
+    .sync-pill {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,0.2);
+      color: #FFFFFF;
+      cursor: pointer;
+    }
+
+    .sync-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4CAF50;
+    }
+    .sync-dot.offline { background: #FFB300; }
+    .sync-dot.syncing { background: #00E5FF; animation: pulse 1s infinite; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Main Scrollable Content Area */
+    .app-content {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+      background: var(--background);
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 84px; /* Space for bottom nav */
+    }
+
+    /* Screen transition states */
+    .screen {
+      display: none;
+      padding: 16px;
+      animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: var(--surface);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 45;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.04);
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      border: none;
+      background: transparent;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      gap: 3px;
+      transition: color 0.15s;
+    }
+
+    .nav-item.active {
+      color: var(--primary-700);
+    }
+
+    .nav-item.active svg {
+      stroke: var(--primary-700);
+    }
+
+    .nav-item .icon-wrapper {
+      padding: 4px 14px;
+      border-radius: var(--radius-full);
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-item.active .icon-wrapper {
+      background: var(--primary-100);
+    }
+
+    /* Floating Voice Action Button (FAB) */
+    .voice-fab {
+      position: absolute;
+      bottom: 76px;
+      right: 18px;
+      width: 58px;
+      height: 58px;
+      border-radius: var(--radius-full);
+      background: linear-gradient(135deg, var(--primary-600), var(--primary-800));
+      color: #FFFFFF;
+      border: none;
+      box-shadow: 0 4px 15px rgba(27, 104, 54, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 44;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .voice-fab:active {
+      transform: scale(0.92);
+      box-shadow: 0 2px 8px rgba(27, 104, 54, 0.4);
+    }
+
+    .voice-fab .pulse-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px solid var(--primary-500);
+      animation: ripple 2s infinite;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+
+    /* Typography & Utilities */
+    .heading-md {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .subheading {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 14px;
+    }
+
+    /* Quick Stats Carousel / Grid */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .stat-badge {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-badge.green { border-left: 4px solid var(--primary-600); }
+    .stat-badge.amber { border-left: 4px solid var(--accent-amber); }
+    .stat-badge.blue { border-left: 4px solid var(--accent-blue); }
+    .stat-badge.red { border-left: 4px solid var(--status-red); }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .stat-val {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-top: 4px;
+      font-family: var(--font-mono);
+    }
+
+    .stat-sub {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* Big 8-Action Grid for Mandi Operations */
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .action-tile {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s ease;
+      min-height: 104px;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .action-tile:active {
+      transform: scale(0.96);
+      background: var(--surface-variant);
+    }
+
+    .action-tile .icon-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .action-tile.green .icon-circle { background: var(--primary-100); color: var(--primary-800); }
+    .action-tile.blue .icon-circle { background: var(--accent-blue-light); color: var(--accent-blue); }
+    .action-tile.amber .icon-circle { background: var(--accent-amber-light); color: var(--accent-amber); }
+    .action-tile.purple .icon-circle { background: #EDE7F6; color: #5E35B1; }
+    .action-tile.teal .icon-circle { background: #E0F2F1; color: #00796B; }
+
+    .action-tile .title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .action-tile .subtitle {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-top: 3px;
+    }
+
+    /* Commodity Visual Cards Grid */
+    .commodity-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .commodity-card {
+      background: var(--surface);
+      border: 2px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .commodity-card.selected {
+      border-color: var(--primary-600);
+      background: var(--primary-50);
+    }
+
+    .commodity-img {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 6px;
+      background: #F8FAF8;
+    }
+
+    .commodity-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .commodity-sub {
+      font-size: 10px;
+      color: var(--text-tertiary);
+    }
+
+    /* Large Touch Friendly Inputs & Numeric Keypad */
+    .touch-input-display {
+      background: #FFFFFF;
+      border: 2px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+
+    .touch-input-display.active {
+      border-color: var(--primary-600);
+      box-shadow: 0 0 0 3px rgba(46, 155, 82, 0.2);
+    }
+
+    .touch-input-display .label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .touch-input-display .val {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary-800);
+      font-family: var(--font-mono);
+    }
+
+    .touch-keypad {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      box-shadow: var(--shadow-md);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .key-btn {
+      height: 52px;
+      background: var(--surface-variant);
+      border: none;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.1s, transform 0.05s;
+    }
+
+    .key-btn:active {
+      background: #D8DDD6;
+      transform: scale(0.95);
+    }
+
+    .key-btn.action {
+      background: var(--primary-100);
+      color: var(--primary-800);
+    }
+
+    .key-btn.del {
+      background: #FFEBEE;
+      color: var(--status-red);
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      height: 52px;
+      border-radius: var(--radius-md);
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--primary-700);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(27, 104, 54, 0.3);
+    }
+
+    .btn-primary:active {
+      background: var(--primary-800);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text-primary);
+      border: 1.5px solid var(--border-subtle);
+    }
+
+    .btn-amber {
+      background: var(--accent-amber);
+      color: #FFFFFF;
+    }
+
+    .btn-sm {
+      height: 38px;
+      font-size: 13px;
+      border-radius: 10px;
+      padding: 0 14px;
+      width: auto;
+    }
+
+    /* Step Wizard Tracker */
+    .step-tracker {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .step-tracker::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      background: var(--border-subtle);
+      z-index: 1;
+    }
+
+    .step-item {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .step-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--border-subtle);
+      color: var(--text-tertiary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .step-item.active .step-circle {
+      background: var(--primary-700);
+      border-color: var(--primary-700);
+      color: #FFFFFF;
+    }
+
+    .step-item.completed .step-circle {
+      background: var(--primary-100);
+      border-color: var(--primary-600);
+      color: var(--primary-700);
+    }
+
+    .step-name {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+    }
+
+    .step-item.active .step-name {
+      color: var(--primary-800);
+      font-weight: 700;
+    }
+
+    /* Lot List Item Card */
+    .lot-card {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+    }
+
+    .lot-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .lot-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      background: var(--primary-100);
+      color: var(--primary-800);
+      font-family: var(--font-mono);
+    }
+
+    .lot-body {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lot-body .pic {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: #F4F7F4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .lot-details h3 {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .lot-details p {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .stock-progress {
+      height: 6px;
+      background: var(--surface-variant);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .stock-progress-fill {
+      height: 100%;
+      background: var(--primary-600);
+      border-radius: var(--radius-full);
+    }
+
+    /* Receipt Slip / Patti / Bill Modal (Printable) */
+    .receipt-sheet {
+      background: #FFFFFF;
+      border: 1px dashed #79747E;
+      border-radius: 12px;
+      padding: 18px 16px;
+      margin-bottom: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .receipt-header {
+      text-align: center;
+      border-bottom: 1px dashed #CCC;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+    }
+
+    .receipt-header h2 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--primary-900);
+    }
+
+    .receipt-header p {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      padding: 4px 0;
+    }
+
+    .receipt-row.bold {
+      font-weight: 700;
+      border-top: 1px solid #E0E0E0;
+      padding-top: 6px;
+      margin-top: 4px;
+    }
+
+    .receipt-row.grand-total {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--primary-900);
+      background: var(--primary-50);
+      padding: 8px 6px;
+      border-radius: 6px;
+      margin-top: 6px;
+    }
+
+    /* Modal / Bottom Sheet */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 100;
+      display: none;
+      align-items: flex-end;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-sheet {
+      background: var(--surface);
+      width: 100%;
+      max-height: 85%;
+      border-radius: 24px 24px 0 0;
+      padding: 20px 18px;
+      overflow-y: auto;
+      box-shadow: 0 -8px 30px rgba(0,0,0,0.25);
+      animation: slideUp 0.25s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .sheet-handle {
+      width: 36px;
+      height: 4px;
+      background: #D1D5DB;
+      border-radius: 2px;
+      margin: 0 auto 14px auto;
+    }
+
+    /* Voice Entry Assistant Modal */
+    .voice-modal {
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .voice-mic-active {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--status-red);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px auto;
+      animation: voicePulse 1.2s infinite;
+    }
+
+    @keyframes voicePulse {
+      0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.6); }
+      70% { box-shadow: 0 0 0 20px rgba(211, 47, 47, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
+    }
+
+    .voice-sample-chip {
+      background: var(--primary-50);
+      border: 1px solid var(--primary-100);
+      border-radius: var(--radius-full);
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--primary-800);
+      margin: 4px;
+      display: inline-block;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: absolute;
+      top: 36px;
+      left: 16px;
+      right: 16px;
+      background: #2D3748;
+      color: #FFFFFF;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      animation: slideDown 0.2s ease-out;
+    }
+
+    .toast.success { background: #1B5E20; }
+    .toast.error { background: #B71C1C; }
+
+    @keyframes slideDown {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Print Stylesheet for thermal receipt printing */
+    @media print {
+      body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+      }
+      .app-viewport {
+        max-width: 100% !important;
+        box-shadow: none !important;
+        height: auto !important;
+      }
+      .android-status-bar, .app-header, .bottom-nav, .voice-fab, .header-actions, .no-print {
+        display: none !important;
+      }
+      .receipt-sheet {
+        border: none !important;
+        width: 100% !important;
+        padding: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Android Phone Frame Viewport -->
+  <div class="app-viewport" id="viewport">
+
+    <!-- Android Status Bar -->
+    <div class="android-status-bar">
+      <span id="clock-display">09:41 AM</span>
+      <div class="icons">
+        <span class="sync-pill" id="sync-status-btn" onclick="app.toggleOnlineMode()" title="Click to test offline sync">
+          <span class="sync-dot" id="sync-dot"></span>
+          <span id="sync-text">Online</span>
+        </span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 18.25l1.42 1.42 1.4-1.4C8.6 19.38 10.23 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+
+    <!-- App Top Bar -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo-badge">🌾</div>
+        <div class="brand-text">
+          <h1 id="app-title">CAL Mandi Ops</h1>
+          <span id="app-subtitle">APMC Commission Agent</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <!-- Language Switcher Button -->
+        <button class="header-btn" onclick="app.showLanguageModal()" title="Switch Language">
+          <span id="current-lang-code" style="font-size:12px; font-weight:800;">EN</span>
+        </button>
+        <!-- Reset Demo Data Button -->
+        <button class="header-btn" onclick="app.confirmResetDemo()" title="Reset Seed Demo Data">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        </button>
+        <!-- Toggle Wide Viewport on Desktop -->
+        <button class="header-btn" onclick="app.toggleWideMode()" title="Toggle Desktop/Mobile Size">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Toast Banner -->
+    <div class="toast" id="toast-banner">
+      <span id="toast-msg">Action successful</span>
+      <span style="cursor:pointer;" onclick="app.hideToast()">✕</span>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="app-content">
+
+      <!-- ========================================================
+           SCREEN 0: WELCOME & ONBOARDING / LANGUAGE SELECTION
+           ======================================================== -->
+      <section id="screen-welcome" class="screen">
+        <div style="text-align: center; padding: 24px 8px 16px;">
+          <div style="width: 80px; height: 80px; border-radius: 24px; background: var(--primary-100); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 40px; box-shadow: var(--shadow-md);">
+            🚜
+          </div>
+          <h2 style="font-size: 22px; font-weight: 800; color: var(--primary-900);">CAL Mandi Ops</h2>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+            Coherent AI Labs — Smart Mandi Platform
+          </p>
+          <div style="display:inline-block; margin-top: 8px; padding: 4px 12px; background: #FFF3E0; border-radius: 12px; color: #E65100; font-size: 11px; font-weight: 700;">
+            APMC Licence: KA-MND-2026-9812
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 10px;">
+          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 12px; text-align: center;" id="txt-choose-lang">
+            Choose Your Language / ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ / भाषा चुनें
+          </h3>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button class="btn btn-secondary" onclick="app.setLanguage('kn')" style="justify-content: flex-start; padding-left: 20px; border: 2px solid #E0E4DE;">
+              <span style="font-size: 22px; margin-right: 12px;">🇮🇳</span>
+              <div style="text-align: left;">
+                <div style="font-size: 16px; font-weight: 700; color: var(--primary-800);">ಕನ್ನಡ (Kannada)</div>
+                <div style="font-size: 11px; color: var(--text-tertiary);">ರೈತರು & ವ್ಯಾಪಾರಿಗಳಿಗೆ ಸುಲಭ</div>
+              </div>
+            </button>
+
+            <button class="btn btn-secondary" onclick="app.setLanguage('hi')" style="justify-content: flex-start; padding-left: 20px; border: 2px solid #E0E4DE;">
+              <span style="font-size: 22px; margin-right: 12px;">🇮🇳</span>
+              <div style="text-align: left;">
+                <div style="font-size: 16px; font-weight: 700; color: var(--primary-800);">हिंदी (Hindi)</div>
+                <div style="font-size: 11px; color: var(--text-tertiary);">आढ़ती और किसान भाइयों के लिए</div>
+              </div>
+            </button>
+
+            <button class="btn btn-secondary" onclick="app.setLanguage('en')" style="justify-content: flex-start; padding-left: 20px; border: 2px solid #E0E4DE;">
+              <span style="font-size: 22px; margin-right: 12px;">🌐</span>
+              <div style="text-align: left;">
+                <div style="font-size: 16px; font-weight: 700; color: var(--primary-800);">English</div>
+                <div style="font-size: 11px; color: var(--text-tertiary);">Wholesale Mandi Operations</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+          <button class="btn btn-primary" onclick="app.finishOnboarding()">
+            <span id="btn-start-ops">Start Operations / ಆರಂಭಿಸಿ</span>
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <button class="btn btn-secondary" onclick="app.loadSeededScenarioAndLaunch()">
+            <span id="btn-explore-demo">Explore Seeded Demo (Ramesh 80 Crates)</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           SCREEN 1: HOME DASHBOARD
+           ======================================================== -->
+      <section id="screen-home" class="screen">
+        <!-- Greetings & Date -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+          <div>
+            <h2 class="heading-md" id="txt-greeting">Namaste, Ramesh Adatiya</h2>
+            <p class="subheading" id="txt-mandi-location">Yeshwanthpur APMC Yard • Bengaluru</p>
+          </div>
+          <button class="btn btn-sm btn-secondary" onclick="app.showScreen('screen-alerts')" style="display:flex; align-items:center; gap:4px;">
+            <span>🔔</span>
+            <span id="alerts-badge-count" style="background:var(--accent-amber); color:#fff; font-size:10px; font-weight:700; padding:1px 6px; border-radius:10px;">3</span>
+          </button>
+        </div>
+
+        <!-- Summary Metric Badges (5 Cards) -->
+        <div class="stats-row">
+          <div class="stat-badge green" onclick="app.showScreen('screen-stock')">
+            <span class="stat-label" id="lbl-today-arrivals">Today's Arrivals</span>
+            <span class="stat-val" id="metric-arrivals">80 Crates</span>
+            <span class="stat-sub" id="metric-arrivals-sub">1,395 kg total</span>
+          </div>
+          <div class="stat-badge blue" onclick="app.showScreen('screen-stock')">
+            <span class="stat-label" id="lbl-today-sales">Today's Sales</span>
+            <span class="stat-val" id="metric-sales">20 Crates</span>
+            <span class="stat-sub" id="metric-sales-sub">₹30,600 billed</span>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px;">
+          <div class="stat-badge" onclick="app.showScreen('screen-stock')">
+            <span class="stat-label" style="font-size:9px;" id="lbl-remaining-stock">Stock Left</span>
+            <span class="stat-val" style="font-size:15px;" id="metric-stock-left">60 Crt</span>
+            <span class="stat-sub" style="font-size:10px;">1,035 kg</span>
+          </div>
+          <div class="stat-badge amber" onclick="app.showScreen('screen-khata', {tab:'buyer'})">
+            <span class="stat-label" style="font-size:9px;" id="lbl-to-receive">To Receive</span>
+            <span class="stat-val" style="font-size:14px; color:var(--accent-amber);" id="metric-to-receive">₹30,600</span>
+            <span class="stat-sub" style="font-size:10px;">From Buyers</span>
+          </div>
+          <div class="stat-badge red" onclick="app.showScreen('screen-khata', {tab:'farmer'})">
+            <span class="stat-label" style="font-size:9px;" id="lbl-to-pay">To Pay</span>
+            <span class="stat-val" style="font-size:14px; color:var(--status-red);" id="metric-to-pay">₹97,094</span>
+            <span class="stat-sub" style="font-size:10px;">To Farmers</span>
+          </div>
+        </div>
+
+        <!-- 8 Primary Action Cards (Big Touch Targets) -->
+        <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text-secondary);" id="lbl-main-operations">
+          Daily Mandi Operations / ಮುಖ್ಯ ಕೆಲಸಗಳು
+        </h3>
+
+        <div class="action-grid">
+          <!-- 1. New Arrival (Aavak) -->
+          <div class="action-tile green" onclick="app.startArrivalWizard()">
+            <div class="icon-circle">
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+            </div>
+            <div class="title" id="act-new-arrival">New Arrival</div>
+            <div class="subtitle" id="act-new-arrival-sub">ಆವಕ (Aavak Entry)</div>
+          </div>
+
+          <!-- 2. New Sale (Bikri) -->
+          <div class="action-tile blue" onclick="app.startSaleWizard()">
+            <div class="icon-circle">
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+            </div>
+            <div class="title" id="act-new-sale">New Sale</div>
+            <div class="subtitle" id="act-new-sale-sub">ಮಾರಾಟ (Bikri)</div>
+          </div>
+
+          <!-- 3. Farmer Patti -->
+          <div class="action-tile green" onclick="app.showScreen('screen-patti-list')">
+            <div class="icon-circle">
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <div class="title" id="act-farmer-patti">Farmer Patti</div>
+            <div class="subtitle" id="act-farmer-patti-sub">ಪಟ್ಟಿ (Settlement)</div>
+          </div>
+
+          <!-- 4. Buyer Bill -->
+          <div class="action-tile blue" onclick="app.showScreen('screen-buyer-bills')">
+            <div class="icon-circle">
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </div>
+            <div class="title" id="act-buyer-bill">Buyer Bill</div>
+            <div class="subtitle" id="act-buyer-bill-sub">ಖರೀದಿದಾರ ಬಿಲ್</div>
+          </div>
+
+          <!-- 5. Receive Payment (Jama) -->
+          <div class="action-tile amber" onclick="app.showPaymentScreen('receive')">
+            <div class="icon-circle">
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div class="title" id="act-receive-money">Receive Money</div>
+            <div class="subtitle" id="act-receive-money-sub">ಹಣ ಸ್ವೀಕರಿಸಿ (Jama)</div>
+          </div>
+
+          <!-- 6. Make Payment (Kharach) -->
+          <div class="action-tile purple" onclick="app.showPaymentScreen('pay')">
+            <div class="icon-circle">
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+            </div>
+            <div class="title" id="act-make-payment">Make Payment</div>
+            <div class="subtitle" id="act-make-payment-sub">ಹಣ ಪಾವತಿಸಿ (Naave)</div>
+          </div>
+
+          <!-- 7. Khata (Accounts) -->
+          <div class="action-tile teal" onclick="app.showScreen('screen-khata')">
+            <div class="icon-circle">
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            </div>
+            <div class="title" id="act-khata">Khata / Ledger</div>
+            <div class="subtitle" id="act-khata-sub">ಖಾತೆ ವಹಿವಾಟು</div>
+          </div>
+
+          <!-- 8. Crates & Assets -->
+          <div class="action-tile amber" onclick="app.showScreen('screen-crates')">
+            <div class="icon-circle">
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+            </div>
+            <div class="title" id="act-crates">Crate Tracking</div>
+            <div class="subtitle" id="act-crates-sub">ಕ್ರೇಟ್ ಲೆಕ್ಕಾಚಾರ</div>
+          </div>
+        </div>
+
+        <!-- Quick Voice Entry Banner -->
+        <div class="card" style="background: linear-gradient(135deg, #E8F5E9, #C8E6C9); border: 1px solid #A5D6A7; cursor:pointer;" onclick="app.openVoiceAssistant()">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--primary-700); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+              🎙️
+            </div>
+            <div style="flex:1;">
+              <h4 style="font-size: 14px; font-weight: 700; color: var(--primary-900);" id="lbl-voice-cta">Voice Mandi Entry</h4>
+              <p style="font-size: 11px; color: var(--primary-800);" id="lbl-voice-desc">Speak in Kannada, Hindi or English to add arrival</p>
+            </div>
+            <span style="font-size: 18px; color: var(--primary-800);">→</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           SCREEN 2: NEW ARRIVAL (AAVAK) STEP-BY-STEP WIZARD
+           ======================================================== -->
+      <section id="screen-arrival-wizard" class="screen">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <h2 class="heading-md" id="txt-arrival-title">New Arrival (Aavak)</h2>
+          <button class="btn btn-sm btn-secondary" onclick="app.showScreen('screen-home')">Cancel</button>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="step-tracker">
+          <div class="step-item active" id="wizard-step-1">
+            <div class="step-circle">1</div>
+            <span class="step-name">Farmer</span>
+          </div>
+          <div class="step-item" id="wizard-step-2">
+            <div class="step-circle">2</div>
+            <span class="step-name">Crop</span>
+          </div>
+          <div class="step-item" id="wizard-step-3">
+            <div class="step-circle">3</div>
+            <span class="step-name">Crates</span>
+          </div>
+          <div class="step-item" id="wizard-step-4">
+            <div class="step-circle">4</div>
+            <span class="step-name">Weight</span>
+          </div>
+          <div class="step-item" id="wizard-step-5">
+            <div class="step-circle">5</div>
+            <span class="step-name">Rate</span>
+          </div>
+        </div>
+
+        <!-- Wizard Step Container -->
+        <div id="wizard-step-content">
+          <!-- Dynamically populated via JS -->
+        </div>
+      </section>
+
+      <!-- ========================================================
+           SCREEN 3: SALES ENTRY (BIKRI)
+           ======================================================== -->
+      <section id="screen-sale" class="screen">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <h2 class="heading-md" id="txt-sale-title">New Sale (ಮಾರಾಟ / Bikri)</h2>
+          <button class="btn btn-sm btn-secondary" onclick="app.showScreen('screen-home')">Close</button>
+        </div>
+
+        <!-- Select Available Lot -->
+        <div class="card">
+          <label style="font-size:12px; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:6px;">
+            1. Select Available Mandi Lot:
+          </label>
+          <select id="sale-lot-select" onchange="app.onSaleLotChanged()" style="width:100%; height:46px; border-radius:10px; border:2px solid var(--border-subtle); padding:0 12px; font-size:14px; font-weight:600; background:#fff;">
+            <!-- Populated via JS -->
+          </select>
+          <div id="sale-lot-preview" style="margin-top:10px; padding:8px 12px; background:var(--primary-50); border-radius:8px; font-size:12px; color:var(--primary-900);">
+            <!-- Lot details -->
+          </div>
+        </div>
+
+        <!-- Select Buyer -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label style="font-size:12px; font-weight:700; color:var(--text-secondary);">2. Select Buyer:</label>
+            <button class="btn btn-sm btn-secondary" onclick="app.showAddPartyModal('buyer')" style="height:28px; font-size:11px;">+ New Buyer</button>
+          </div>
+          <select id="sale-buyer-select" style="width:100%; height:46px; border-radius:10px; border:2px solid var(--border-subtle); padding:0 12px; font-size:14px; font-weight:600; background:#fff;">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+
+        <!-- Quantity & Rate -->
+        <div class="card">
+          <label style="font-size:12px; font-weight:700; color:var(--text-secondary); margin-bottom:6px; display:block;">3. Quantity & Pricing:</label>
+          
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+            <div>
+              <span style="font-size:11px; font-weight:600; color:var(--text-tertiary);">Crates / Packages Sold:</span>
+              <input type="number" id="sale-crates-input" oninput="app.calcSalePreview()" style="width:100%; height:46px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 10px; font-size:18px; font-weight:700; font-family:var(--font-mono);" placeholder="e.g. 20">
+            </div>
+            <div>
+              <span style="font-size:11px; font-weight:600; color:var(--text-tertiary);">Weight Sold (kg):</span>
+              <input type="number" id="sale-weight-input" oninput="app.calcSalePreview()" style="width:100%; height:46px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 10px; font-size:18px; font-weight:700; font-family:var(--font-mono);" placeholder="e.g. 360">
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+            <div>
+              <span style="font-size:11px; font-weight:600; color:var(--text-tertiary);">Rate (₹):</span>
+              <input type="number" id="sale-rate-input" oninput="app.calcSalePreview()" style="width:100%; height:46px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 10px; font-size:18px; font-weight:700; font-family:var(--font-mono);" placeholder="e.g. 85">
+            </div>
+            <div>
+              <span style="font-size:11px; font-weight:600; color:var(--text-tertiary);">Rate Unit:</span>
+              <select id="sale-rate-unit" onchange="app.calcSalePreview()" style="width:100%; height:46px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 10px; font-size:14px; font-weight:700; background:#fff;">
+                <option value="kg">Per kg (₹/kg)</option>
+                <option value="crate">Per Crate (₹/crt)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Calculated Gross -->
+          <div style="background:var(--primary-50); border:1px solid var(--primary-100); border-radius:10px; padding:12px; margin-top:8px;">
+            <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700; color:var(--primary-900);">
+              <span>Gross Sale Amount:</span>
+              <span id="sale-preview-gross" style="font-size:18px; font-family:var(--font-mono);">₹0</span>
+            </div>
+            <div id="sale-stock-warning" style="color:var(--status-red); font-size:11px; font-weight:700; margin-top:4px; display:none;">
+              ⚠️ Cannot sell more than available stock!
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="app.submitSale()" id="btn-confirm-sale" style="margin-top:10px;">
+          Confirm Sale & Generate Bill
+        </button>
+      </section>
+
+      <!-- ========================================================
+           SCREEN 4: FARMER PATTI (SETTLEMENT SLIP)
+           ======================================================== -->
+      <section id="screen-patti-list" class="screen">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <h2 class="heading-md" id="txt-patti-title">Farmer Patti (ಪಟ್ಟಿ)</h2>
+            <p class="subheading" style="margin-bottom:0;">Itemized Settlement Slips</p>
+          </div>
+          <button class="btn btn-sm btn-secondary" onclick="app.showScreen('screen-home')">Back</button>
+        </div>
+
+        <div id="patti-container">
+          <!-- Populated via JS -->
+        </div>
+      </section>
+
+      <!-- ========================================================
+           SCREEN 5: BUYER BILLS
+           ======================================================== -->
+      <section id="screen-buyer-bills" class="screen">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <h2 class="heading-md" id="txt-bills-title">Buyer Invoices & Bills</h2>
+            <p class="subheading" style="margin-bottom:0;">Wholesale Cash & Credit Bills</p>
+          </div>
+          <button class="btn btn-sm btn-secondary" onclick="app.showScreen('screen-home')">Back</button>
+        </div>
+
+        <div id="buyer-bills-container">
+          <!-- Populated via JS -->
+        </div>
+      </section>
+
+      <!-- ========================================================
+           SCREEN 6: KHATA / ACCOUNTS LEDGER
+           ======================================================== -->
+      <section id="screen-khata" class="screen">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <h2 class="heading-md" id="txt-khata-title">Khata (ಖಾತೆ ಪುಸ್ತಕ)</h2>
+            <p class="subheading" style="margin-bottom:0;">Automated Double-Entry Ledger</p>
+          </div>
+          <button class="btn btn-sm btn-secondary" onclick="app.showScreen('screen-home')">Back</button>
+        </div>
+
+        <!-- Khata Type Tabs -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px;">
+          <button class="btn btn-secondary active" id="tab-farmer-khata" onclick="app.switchKhataTab('farmer')">
+            🌾 Farmer Khata
+          </button>
+          <button class="btn btn-secondary" id="tab-buyer-khata" onclick="app.switchKhataTab('buyer')">
+            🛒 Buyer Khata
+          </button>
+        </div>
+
+        <!-- Party Selector -->
+        <div class="card" style="padding:10px 14px; margin-bottom:12px;">
+          <span style="font-size:11px; font-weight:700; color:var(--text-tertiary); text-transform:uppercase;">Select Party:</span>
+          <select id="khata-party-select" onchange="app.renderKhataTransactions()" style="width:100%; height:42px; border:1px solid var(--border-subtle); border-radius:8px; padding:0 8px; font-weight:700; margin-top:4px;">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+
+        <!-- Ledger Summary Balance Card -->
+        <div class="card" style="background:var(--surface); border-left:4px solid var(--primary-700);">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span style="font-size:11px; color:var(--text-secondary); font-weight:600;">Net Balance Position:</span>
+              <h3 id="khata-balance-display" style="font-size:20px; font-weight:800; color:var(--primary-900); font-family:var(--font-mono);">₹0</h3>
+            </div>
+            <span id="khata-balance-tag" class="sync-pill" style="background:var(--primary-100); color:var(--primary-800); font-size:12px;">
+              Payable
+            </span>
+          </div>
+        </div>
+
+        <!-- Transaction Journal List -->
+        <div id="khata-transactions-list">
+          <!-- Populated via JS -->
+        </div>
+      </section>
+
+      <!-- ========================================================
+           SCREEN 7: PAYMENTS (RECEIVE / PAY)
+           ======================================================== -->
+      <section id="screen-payments" class="screen">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <h2 class="heading-md" id="txt-payment-title">Record Payment</h2>
+          <button class="btn btn-sm btn-secondary" onclick="app.showScreen('screen-home')">Back</button>
+        </div>
+
+        <div class="card">
+          <label style="font-size:12px; font-weight:700; color:var(--text-secondary);">1. Transaction Direction:</label>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:8px 0 14px 0;">
+            <button class="btn btn-secondary active" id="btn-pay-type-receive" onclick="app.setPaymentDirection('receive')">
+              📥 Receive from Buyer
+            </button>
+            <button class="btn btn-secondary" id="btn-pay-type-pay" onclick="app.setPaymentDirection('pay')">
+              📤 Pay to Farmer
+            </button>
+          </div>
+
+          <label style="font-size:12px; font-weight:700; color:var(--text-secondary);">2. Select Party:</label>
+          <select id="payment-party-select" onchange="app.onPaymentPartyChanged()" style="width:100%; height:46px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 10px; font-size:14px; font-weight:700; background:#fff; margin-top:4px; margin-bottom:12px;">
+            <!-- Populated via JS -->
+          </select>
+
+          <div id="payment-balance-preview" style="font-size:12px; color:var(--text-secondary); margin-bottom:12px; padding:8px; background:var(--surface-variant); border-radius:8px;">
+            Current Balance: ₹0
+          </div>
+
+          <label style="font-size:12px; font-weight:700; color:var(--text-secondary);">3. Amount to Pay / Receive (₹):</label>
+          <input type="number" id="payment-amount-input" style="width:100%; height:50px; border:2px solid var(--primary-600); border-radius:10px; padding:0 12px; font-size:22px; font-weight:800; font-family:var(--font-mono); margin-top:4px; margin-bottom:12px;" placeholder="₹ 0">
+
+          <label style="font-size:12px; font-weight:700; color:var(--text-secondary);">4. Payment Mode:</label>
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; margin-top:6px; margin-bottom:16px;">
+            <button class="btn btn-sm btn-secondary active" id="paymode-cash" onclick="app.setPaymentMode('Cash')">💵 Cash</button>
+            <button class="btn btn-sm btn-secondary" id="paymode-upi" onclick="app.setPaymentMode('UPI')">📱 UPI</button>
+            <button class="btn btn-sm btn-secondary" id="paymode-bank" onclick="app.setPaymentMode('Bank')">🏦 Bank</button>
+          </div>
+
+          <button class="btn btn-primary" onclick="app.submitPayment()" id="btn-submit-payment">
+            Confirm & Save Payment
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           SCREEN 8: STOCK & INVENTORY (MANDI LOTS)
+           ======================================================== -->
+      <section id="screen-stock" class="screen">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <h2 class="heading-md" id="txt-stock-title">Stock & Godown Lots</h2>
+            <p class="subheading" style="margin-bottom:0;">Live Produce In-Stock</p>
+          </div>
+          <button class="btn btn-sm btn-secondary" onclick="app.showScreen('screen-home')">Back</button>
+        </div>
+
+        <!-- Filter Chips -->
+        <div style="display:flex; gap:6px; margin-bottom:12px; overflow-x:auto; padding-bottom:4px;">
+          <button class="btn btn-sm btn-secondary active" id="chip-stock-all" onclick="app.filterStock('all')">All Lots</button>
+          <button class="btn btn-sm btn-secondary" id="chip-stock-avail" onclick="app.filterStock('available')">In Stock</button>
+          <button class="btn btn-sm btn-secondary" id="chip-stock-sold" onclick="app.filterStock('completed')">Sold Out</button>
+        </div>
+
+        <div id="stock-lots-list">
+          <!-- Populated via JS -->
+        </div>
+      </section>
+
+      <!-- ========================================================
+           SCREEN 9: CRATE & ASSET TRACKING
+           ======================================================== -->
+      <section id="screen-crates" class="screen">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <h2 class="heading-md" id="txt-crates-title">Plastic Crates Tracking</h2>
+            <p class="subheading" style="margin-bottom:0;">Bardana & Returnable Assets</p>
+          </div>
+          <button class="btn btn-sm btn-secondary" onclick="app.showScreen('screen-home')">Back</button>
+        </div>
+
+        <!-- Crate Summary Stats -->
+        <div class="stats-row">
+          <div class="stat-badge green">
+            <span class="stat-label">In Mandi</span>
+            <span class="stat-val" id="crate-in-godown">120 Crates</span>
+            <span class="stat-sub">Ready for use</span>
+          </div>
+          <div class="stat-badge amber">
+            <span class="stat-label">With Farmers</span>
+            <span class="stat-val" id="crate-with-farmers">80 Crates</span>
+            <span class="stat-sub">Harvest advance</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:14px; font-weight:700; margin-bottom:10px;">Issue or Return Crates</h3>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
+            <select id="crate-party-select" style="height:42px; border:1px solid var(--border-subtle); border-radius:8px; padding:0 8px; font-size:13px; font-weight:600;">
+              <!-- Populated via JS -->
+            </select>
+            <input type="number" id="crate-qty-input" placeholder="Qty" style="height:42px; border:1px solid var(--border-subtle); border-radius:8px; padding:0 8px; font-size:16px; font-weight:700;">
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <button class="btn btn-sm btn-secondary" onclick="app.recordCrateMovement('issue')" style="height:42px; font-weight:700;">
+              📤 Issue to Party
+            </button>
+            <button class="btn btn-sm btn-primary" onclick="app.recordCrateMovement('return')" style="height:42px; font-weight:700;">
+              📥 Return / Received
+            </button>
+          </div>
+        </div>
+
+        <div id="crates-ledger-list">
+          <!-- Populated via JS -->
+        </div>
+      </section>
+
+      <!-- ========================================================
+           SCREEN 10: ALERTS & DAILY REPORTS
+           ======================================================== -->
+      <section id="screen-alerts" class="screen">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <h2 class="heading-md" id="txt-alerts-title">Mandi Alerts & Reports</h2>
+            <p class="subheading" style="margin-bottom:0;">Daily Digest & Urgent Dues</p>
+          </div>
+          <button class="btn btn-sm btn-secondary" onclick="app.showScreen('screen-home')">Back</button>
+        </div>
+
+        <div class="card" style="border-left: 4px solid var(--accent-amber);">
+          <h4 style="font-size:13px; font-weight:700; color:var(--accent-amber);">⚠️ Produce Aging Alert</h4>
+          <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">
+            Lot #LOT-2026-089 (Apples) has 60 crates remaining. Recommended to auction before noon.
+          </p>
+        </div>
+
+        <div class="card" style="border-left: 4px solid var(--status-red);">
+          <h4 style="font-size:13px; font-weight:700; color:var(--status-red);">💰 Pending Buyer Credit (Udhaar)</h4>
+          <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">
+            ABC Traders owes ₹30,600 on today's Bill #B-101.
+          </p>
+        </div>
+
+        <div class="card" style="border-left: 4px solid var(--primary-700);">
+          <h4 style="font-size:13px; font-weight:700; color:var(--primary-700);">🌾 Farmer Settlement Due</h4>
+          <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">
+            Farmer Ramesh has ₹97,094 net payable pending on Patti #P-2026-089.
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar (Android M3 Navigation Bar) -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" id="nav-btn-home" onclick="app.showScreen('screen-home')">
+        <div class="icon-wrapper">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        </div>
+        <span id="nav-txt-home">Home</span>
+      </button>
+
+      <button class="nav-item" id="nav-btn-arrival" onclick="app.startArrivalWizard()">
+        <div class="icon-wrapper">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+        </div>
+        <span id="nav-txt-arrival">Aavak</span>
+      </button>
+
+      <button class="nav-item" id="nav-btn-sale" onclick="app.startSaleWizard()">
+        <div class="icon-wrapper">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        </div>
+        <span id="nav-txt-sale">Bikri</span>
+      </button>
+
+      <button class="nav-item" id="nav-btn-khata" onclick="app.showScreen('screen-khata')">
+        <div class="icon-wrapper">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        </div>
+        <span id="nav-txt-khata">Khata</span>
+      </button>
+
+      <button class="nav-item" id="nav-btn-stock" onclick="app.showScreen('screen-stock')">
+        <div class="icon-wrapper">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+        </div>
+        <span id="nav-txt-stock">Stock</span>
+      </button>
+    </nav>
+
+    <!-- Floating Voice Entry Action Button -->
+    <button class="voice-fab" onclick="app.openVoiceAssistant()" title="Voice Mandi Entry">
+      <div class="pulse-ring"></div>
+      <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+    </button>
+
+    <!-- ========================================================
+         MODAL 1: VOICE ENTRY ASSISTANT
+         ======================================================== -->
+    <div class="modal-overlay" id="modal-voice">
+      <div class="modal-sheet">
+        <div class="sheet-handle"></div>
+        <div class="voice-modal">
+          <div class="voice-mic-active" id="voice-mic-icon">
+            <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+          </div>
+          <h3 style="font-size: 17px; font-weight: 800; color: var(--primary-900);" id="voice-status-heading">
+            Listening... Speak now
+          </h3>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;" id="voice-status-sub">
+            Kannada, Hindi or English speech recognized
+          </p>
+
+          <div style="background:var(--background); border-radius:12px; padding:12px; margin:16px 0; min-height:50px; font-size:14px; font-weight:600; color:var(--text-primary);" id="voice-transcript-text">
+            “Ramesh, 80 crates apples, 18 kilos per crate, rate 75”
+          </div>
+
+          <div style="text-align: left; margin-bottom: 12px;">
+            <span style="font-size: 11px; font-weight: 700; color: var(--text-tertiary);">OR TAP A DEMO SAMPLE PHRASE:</span>
+            <div style="margin-top: 6px;">
+              <span class="voice-sample-chip" onclick="app.simulateVoiceInput('Ramesh, 80 crates apples, 18 kilos per crate, rate 75')">
+                🍎 Ramesh • 80 crates apples @ ₹75
+              </span>
+              <span class="voice-sample-chip" onclick="app.simulateVoiceInput('Siddaraju, 50 bags onions, 45 kg per bag, rate 28')">
+                🧅 Siddaraju • 50 bags onions @ ₹28
+              </span>
+              <span class="voice-sample-chip" onclick="app.simulateVoiceInput('Manjunath, 120 crates tomatoes, 22 kg per crate, rate 18')">
+                🍅 Manjunath • 120 crates tomatoes @ ₹18
+              </span>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 8px; margin-top: 14px;">
+            <button class="btn btn-secondary" onclick="app.closeModal('modal-voice')">Cancel</button>
+            <button class="btn btn-primary" onclick="app.processVoiceTranscript()">Extract & Fill Form</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL 2: RECEIPT / PATTI / BILL DETAIL MODAL
+         ======================================================== -->
+    <div class="modal-overlay" id="modal-receipt">
+      <div class="modal-sheet" style="max-height: 90%;">
+        <div class="sheet-handle"></div>
+        <div id="receipt-modal-content">
+          <!-- Populated dynamically with full printable patti or bill -->
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px;">
+          <button class="btn btn-secondary" onclick="app.printCurrentReceipt()">🖨️ Print Slip</button>
+          <button class="btn btn-primary" onclick="app.shareReceiptWhatsApp()">📱 WhatsApp</button>
+        </div>
+        <button class="btn btn-secondary" style="margin-top: 8px;" onclick="app.closeModal('modal-receipt')">Close</button>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL 3: QUICK ADD FARMER / BUYER
+         ======================================================== -->
+    <div class="modal-overlay" id="modal-add-party">
+      <div class="modal-sheet">
+        <div class="sheet-handle"></div>
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--primary-900); margin-bottom: 12px;" id="modal-party-title">
+          Add New Farmer
+        </h3>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div>
+            <label style="font-size:11px; font-weight:700; color:var(--text-secondary);">Full Name *</label>
+            <input type="text" id="new-party-name" placeholder="e.g. Ramesh Gowda" style="width:100%; height:46px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 10px; font-size:14px; font-weight:600;">
+          </div>
+          <div>
+            <label style="font-size:11px; font-weight:700; color:var(--text-secondary);">Mobile Number *</label>
+            <input type="tel" id="new-party-phone" placeholder="e.g. 98765 43210" style="width:100%; height:46px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 10px; font-size:14px; font-weight:600;">
+          </div>
+          <div>
+            <label style="font-size:11px; font-weight:700; color:var(--text-secondary);">Village / Town</label>
+            <input type="text" id="new-party-village" placeholder="e.g. Ramanagara" style="width:100%; height:46px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 10px; font-size:14px; font-weight:600;">
+          </div>
+          <div style="display:flex; gap:8px; margin-top:10px;">
+            <button class="btn btn-secondary" onclick="app.closeModal('modal-add-party')">Cancel</button>
+            <button class="btn btn-primary" onclick="app.saveNewParty()">Save Party</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL 4: LANGUAGE SWITCHER MODAL
+         ======================================================== -->
+    <div class="modal-overlay" id="modal-language">
+      <div class="modal-sheet">
+        <div class="sheet-handle"></div>
+        <h3 style="font-size: 16px; font-weight: 800; text-align:center; margin-bottom: 14px;">Select App Language</h3>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <button class="btn btn-secondary" onclick="app.setLanguage('kn'); app.closeModal('modal-language');">ಕನ್ನಡ (Kannada)</button>
+          <button class="btn btn-secondary" onclick="app.setLanguage('hi'); app.closeModal('modal-language');">हिंदी (Hindi)</button>
+          <button class="btn btn-secondary" onclick="app.setLanguage('en'); app.closeModal('modal-language');">English</button>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- /app-viewport -->
+
+  <!-- ========================================================
+       JAVASCRIPT: APPLICATION LOGIC & STATE ENGINE
+       ======================================================== -->
+  <script>
+    /**
+     * CAL Mandi Ops — Core Application Logic
+     * Deterministic integer paise math, i18n dictionary, local persistence
+     */
+
+    // Multilingual Translations Dictionary
+    const I18N = {
+      en: {
+        appTitle: "CAL Mandi Ops",
+        appSubtitle: "APMC Commission Agent",
+        greeting: "Namaste, Ramesh Adatiya",
+        location: "Yeshwanthpur APMC Yard • Bengaluru",
+        todayArrivals: "Today's Arrivals",
+        todaySales: "Today's Sales",
+        stockLeft: "Stock Left",
+        toReceive: "To Receive",
+        toPay: "To Pay",
+        mainOps: "Daily Mandi Operations",
+        newArrival: "New Arrival",
+        newArrivalSub: "Aavak Entry",
+        newSale: "New Sale",
+        newSaleSub: "Bikri",
+        farmerPatti: "Farmer Patti",
+        farmerPattiSub: "Settlement Slip",
+        buyerBill: "Buyer Bill",
+        buyerBillSub: "Wholesale Invoices",
+        receiveMoney: "Receive Money",
+        receiveMoneySub: "Jama",
+        makePayment: "Make Payment",
+        makePaymentSub: "Naave",
+        khata: "Khata / Ledger",
+        khataSub: "Accounts Book",
+        crates: "Crate Tracking",
+        cratesSub: "Asset Balance",
+        voiceCta: "Voice Mandi Entry",
+        voiceDesc: "Speak in Kannada, Hindi or English to add arrival",
+        home: "Home",
+        aavak: "Aavak",
+        bikri: "Bikri"
+      },
+      kn: {
+        appTitle: "ಸಿಎಎಲ್ ಮಂಡಿ ಆಪ್ಸ್",
+        appSubtitle: "ಎಪಿಎಂಸಿ ಕಮಿಷನ್ ಏಜೆಂಟ್",
+        greeting: "ನಮಸ್ಕಾರ, ರಮೇಶ್ ಅಡತಿಯ",
+        location: "ಯಶವಂತಪುರ ಎಪಿಎಂಸಿ ಮಾರುಕಟ್ಟೆ • ಬೆಂಗಳೂರು",
+        todayArrivals: "ಇಂದಿನ ಆವಕ",
+        todaySales: "ಇಂದಿನ ಮಾರಾಟ",
+        stockLeft: "ಉಳಿದ ದಾಸ್ತಾನು",
+        toReceive: "ಬರಬೇಕಾದ ಹಣ (ಉದ್ದರಿ)",
+        toPay: "ನೀಡಬೇಕಾದ ಹಣ (ಬಾಕಿ)",
+        mainOps: "ದೈನಂದಿನ ಮಂಡಿ ಕೆಲಸಗಳು",
+        newArrival: "ಹೊಸ ಆವಕ",
+        newArrivalSub: "ರೈತರ ಮಾಲು ನೋಂದಣಿ",
+        newSale: "ಹೊಸ ಮಾರಾಟ",
+        newSaleSub: "ಖರೀದಿದಾರರಿಗೆ ಬಿಲ್",
+        farmerPatti: "ರೈತರ ಪಟ್ಟಿ",
+        farmerPattiSub: "ಹಣ ಇತ್ಯರ್ಥ ಚೀಟಿ",
+        buyerBill: "ಖರೀದಿದಾರ ಬಿಲ್",
+        buyerBillSub: "ತೆರಿಗೆ ಇನ್‌ವಾಯ್ಸ್",
+        receiveMoney: "ಹಣ ಸ್ವೀಕರಿಸಿ",
+        receiveMoneySub: "ಜಮಾ (ಖಾತೆ)",
+        makePayment: "ಹಣ ಪಾವತಿಸಿ",
+        makePaymentSub: "ಖರ್ಚು (ರೈತರಿಗೆ)",
+        khata: "ಖಾತೆ ಪುಸ್ತಕ",
+        khataSub: "ಲೆಕ್ಕಪತ್ರ ವಹಿವಾಟು",
+        crates: "ಕ್ರೇಟ್ ಲೆಕ್ಕ",
+        cratesSub: "ಖಾಲಿ ಪೆಟ್ಟಿಗೆಗಳು",
+        voiceCta: "ಧ್ವನಿ ಮೂಲಕ ನೋಂದಣಿ",
+        voiceDesc: "ಮಾತನಾಡುವ ಮೂಲಕ ಆವಕ ದಾಖಲಿಸಿ",
+        home: "ಮುಖಪುಟ",
+        aavak: "ಆವಕ",
+        bikri: "ಮಾರಾಟ"
+      },
+      hi: {
+        appTitle: "कैल मंडी ऑप्स",
+        appSubtitle: "एपीएमसी कमीशन एजेंट",
+        greeting: "नमस्ते, रमेश आढ़ती",
+        location: "यशवंतपुर एपीएमसी मंडी • बेंगलुरु",
+        todayArrivals: "आज की आवक",
+        todaySales: "आज की बिक्री",
+        stockLeft: "बचा हुआ स्टॉक",
+        toReceive: "लेना बाकी (उधार)",
+        toPay: "देना बाकी (पक्का)",
+        mainOps: "दैनिक मंडी कार्य",
+        newArrival: "नई आवक",
+        newArrivalSub: "आवक माल एंट्री",
+        newSale: "नई बिक्री",
+        newSaleSub: "व्यापारी बिक्री",
+        farmerPatti: "किसान पट्टी",
+        farmerPattiSub: "हिसाब पर्ची",
+        buyerBill: "खरीदार बिल",
+        buyerBillSub: "व्यापारी बीजक",
+        receiveMoney: "रुपये मिले",
+        receiveMoneySub: "जमा खाता",
+        makePayment: "भुगतान करें",
+        makePaymentSub: "नामे खाता",
+        khata: "खाता बही",
+        khataSub: "लेखा-जोखा",
+        crates: "क्रेट ट्रैकिंग",
+        cratesSub: "खाली क्रेट हिसाब",
+        voiceCta: "बोलकर एंट्री करें",
+        voiceDesc: "कन्नड़, हिंदी या अंग्रेजी में बोलें",
+        home: "होम",
+        aavak: "आवक",
+        bikri: "बिक्री"
+      }
+    };
+
+    // Standard Commodities with visual representations
+    const COMMODITIES = [
+      { id: "apple", nameEn: "Apples", nameKn: "ಸೇಬು", nameHi: "सेब", icon: "🍎", defaultWeight: 18, unit: "Crate" },
+      { id: "tomato", nameEn: "Tomatoes", nameKn: "ಟೊಮ್ಯಾಟೊ", nameHi: "टमाटर", icon: "🍅", defaultWeight: 22, unit: "Crate" },
+      { id: "onion", nameEn: "Onions", nameKn: "ಈರುಳ್ಳಿ", nameHi: "प्याज", icon: "🧅", defaultWeight: 45, unit: "Bag" },
+      { id: "potato", nameEn: "Potatoes", nameKn: "ಆಲೂಗಡ್ಡೆ", nameHi: "आलू", icon: "🥔", defaultWeight: 50, unit: "Bag" },
+      { id: "banana", nameEn: "Bananas", nameKn: "ಬಾಳೆಹಣ್ಣು", nameHi: "केला", icon: "🍌", defaultWeight: 15, unit: "Bunch" },
+      { id: "mango", nameEn: "Mangoes", nameKn: "ಮಾವಿನಹಣ್ಣು", nameHi: "आम", icon: "🥭", defaultWeight: 20, unit: "Box" }
+    ];
+
+    // Seed Demo Data as specified in Section 7
+    function getInitialDemoState() {
+      return {
+        language: "en",
+        isOnline: true,
+        parties: {
+          farmers: [
+            { id: "f-1", name: "Ramesh Gowda", phone: "9876543210", village: "Ramanagara", outstandingPaise: 9709400 },
+            { id: "f-2", name: "Siddaraju", phone: "9845012345", village: "Channapatna", outstandingPaise: 0 },
+            { id: "f-3", name: "Manjunath", phone: "9900112233", village: "Kolar", outstandingPaise: 0 }
+          ],
+          buyers: [
+            { id: "b-1", name: "ABC Traders (Anand Kumar)", phone: "9844098765", market: "Yeshwanthpur", balancePaise: 3060000 },
+            { id: "b-2", name: "Cauvery Veg Mart (Suresh)", phone: "9448011223", market: "KR Market", balancePaise: 0 },
+            { id: "b-3", name: "Sri Lakshmi Fruits", phone: "9741022334", market: "Madiwala", balancePaise: 0 }
+          ]
+        },
+        lots: [
+          {
+            lotId: "LOT-2026-089",
+            farmerId: "f-1",
+            farmerName: "Ramesh Gowda",
+            commodityId: "apple",
+            commodityName: "Apples (Grade A Shimla)",
+            icon: "🍎",
+            date: "Today, 07:30 AM",
+            originalCrates: 80,
+            soldCrates: 20,
+            remainingCrates: 60,
+            expectedWeightPerPkgKg: 18,
+            estimatedWeightKg: 1440,
+            actualWeightKg: 1395,
+            remainingWeightKg: 1035, // 1395 - 360
+            pricingMethod: "kg", // 'kg' or 'crate'
+            rateRupees: 75,
+            grossPaise: 10462500, // 1395 kg * 75 = 1,04,625
+            totalChargesPaise: 753100, // Commission + Hamali + Cess + Weighing = 7,531
+            netPayablePaise: 9709400, // 1,04,625 - 7,531 = 97,094
+            settlementStatus: "pending", // 'pending' or 'paid'
+            paidAmountPaise: 0,
+            remainingPayablePaise: 9709400,
+            breakdown: {
+              commissionPaise: 523125, // 5% of 1,04,625
+              hamaliPaise: 120000,     // 80 crates * 15
+              mandiCessPaise: 104625,  // 1% of 1,04,625
+              tulaiWeighingPaise: 5350 // Weighing
+            }
+          }
+        ],
+        sales: [
+          {
+            saleId: "SALE-101",
+            billNo: "BILL-2026-101",
+            date: "Today, 08:45 AM",
+            lotId: "LOT-2026-089",
+            buyerId: "b-1",
+            buyerName: "ABC Traders",
+            cratesSold: 20,
+            weightSoldKg: 360,
+            rateRupees: 85,
+            pricingUnit: "kg",
+            grossAmountPaise: 3060000, // 360 kg * 85 = 30,600
+            paymentStatus: "Credit (Udhaar)",
+            amountReceivedPaise: 0,
+            dueAmountPaise: 3060000
+          }
+        ],
+        payments: [
+          // Sample historical or ledger payments
+        ],
+        cratesLedger: [
+          { date: "Today", partyName: "Ramesh Gowda", type: "Return", qty: 80, balance: 0 },
+          { date: "Today", partyName: "ABC Traders", type: "Issue", qty: 20, balance: 20 }
+        ]
+      };
+    }
+
+    // Main Application Engine
+    class CalMandiOps {
+      constructor() {
+        this.loadState();
+        this.currentScreen = "screen-welcome";
+        this.activeWizardStep = 1;
+        this.wizardData = {};
+        this.selectedPaymentMode = "Cash";
+        this.paymentDirection = "receive";
+        this.currentReceiptData = null;
+
+        this.initAudio();
+        this.initSpeech();
+        this.renderAll();
+      }
+
+      // Audio feedback using Web Audio API
+      initAudio() {
+        try {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.audioCtx = new AudioContext();
+        } catch (e) {
+          this.audioCtx = null;
+        }
+      }
+
+      beep(freq = 600, duration = 0.08, type = 'sine') {
+        if (!this.audioCtx) return;
+        try {
+          if (this.audioCtx.state === 'suspended') {
+            this.audioCtx.resume();
+          }
+          const osc = this.audioCtx.createOscillator();
+          const gain = this.audioCtx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.audioCtx.currentTime);
+          gain.gain.setValueAtTime(0.06, this.audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.audioCtx.destination);
+          osc.start();
+          osc.stop(this.audioCtx.currentTime + duration);
+        } catch(e) {}
+      }
+
+      // State Persistence
+      loadState() {
+        try {
+          const saved = localStorage.getItem("cal_mandi_ops_state");
+          if (saved) {
+            this.state = JSON.parse(saved);
+          } else {
+            this.state = getInitialDemoState();
+          }
+        } catch (e) {
+          this.state = getInitialDemoState();
+        }
+      }
+
+      saveState() {
+        try {
+          localStorage.setItem("cal_mandi_ops_state", JSON.stringify(this.state));
+        } catch (e) {}
+        this.updateHeaderStats();
+      }
+
+      confirmResetDemo() {
+        if (confirm("Reset application to the Ramesh 80 Crates Seeded Demo Scenario?")) {
+          this.state = getInitialDemoState();
+          this.saveState();
+          this.renderAll();
+          this.showToast("Demo data successfully restored to Seed state!", "success");
+        }
+      }
+
+      // Currency Formatter
+      formatINR(paise) {
+        const rupees = Math.round(paise) / 100;
+        return new Intl.NumberFormat('en-IN', {
+          style: 'currency',
+          currency: 'INR',
+          maximumFractionDigits: 0
+        }).format(rupees);
+      }
+
+      // Format pure number
+      formatNum(num) {
+        return new Intl.NumberFormat('en-IN').format(num);
+      }
+
+      // Navigation & Screen Control
+      showScreen(screenId, params = {}) {
+        this.beep(550, 0.05);
+        document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+        const target = document.getElementById(screenId);
+        if (target) {
+          target.classList.add('active');
+          this.currentScreen = screenId;
+        }
+
+        // Update Bottom Nav Highlighting
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        if (screenId === 'screen-home') document.getElementById('nav-btn-home')?.classList.add('active');
+        if (screenId === 'screen-arrival-wizard') document.getElementById('nav-btn-arrival')?.classList.add('active');
+        if (screenId === 'screen-sale') document.getElementById('nav-btn-sale')?.classList.add('active');
+        if (screenId === 'screen-khata') document.getElementById('nav-btn-khata')?.classList.add('active');
+        if (screenId === 'screen-stock') document.getElementById('nav-btn-stock')?.classList.add('active');
+
+        // Scroll to top
+        document.querySelector('.app-content').scrollTop = 0;
+
+        // Custom screen renders
+        if (screenId === 'screen-home') this.renderHome();
+        if (screenId === 'screen-stock') this.renderStockLots();
+        if (screenId === 'screen-patti-list') this.renderPattiList();
+        if (screenId === 'screen-buyer-bills') this.renderBuyerBills();
+        if (screenId === 'screen-khata') {
+          if (params.tab) this.switchKhataTab(params.tab);
+          else this.renderKhataTransactions();
+        }
+        if (screenId === 'screen-crates') this.renderCratesLedger();
+      }
+
+      toggleWideMode() {
+        const vp = document.getElementById('viewport');
+        vp.classList.toggle('expanded-mode');
+        this.showToast(vp.classList.contains('expanded-mode') ? "Wide Desktop Mode Active" : "Mobile View Active");
+      }
+
+      toggleOnlineMode() {
+        this.state.isOnline = !this.state.isOnline;
+        const dot = document.getElementById('sync-dot');
+        const txt = document.getElementById('sync-text');
+        if (this.state.isOnline) {
+          dot.className = "sync-dot";
+          txt.innerText = "Online";
+          this.showToast("Connected to Mandi APMC Cloud Sync", "success");
+        } else {
+          dot.className = "sync-dot offline";
+          txt.innerText = "Offline (Local)";
+          this.showToast("Working in Offline Mode. Data saved in browser storage.", "error");
+        }
+      }
+
+      showToast(msg, type = "success") {
+        const toast = document.getElementById('toast-banner');
+        const txt = document.getElementById('toast-msg');
+        txt.innerText = msg;
+        toast.className = `toast ${type}`;
+        toast.style.display = 'flex';
+        clearTimeout(this.toastTimer);
+        this.toastTimer = setTimeout(() => {
+          this.hideToast();
+        }, 3200);
+      }
+
+      hideToast() {
+        document.getElementById('toast-banner').style.display = 'none';
+      }
+
+      // Modals
+      openModal(modalId) {
+        document.getElementById(modalId).classList.add('active');
+      }
+
+      closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('active');
+      }
+
+      showLanguageModal() {
+        this.openModal('modal-language');
+      }
+
+      setLanguage(lang) {
+        this.state.language = lang;
+        document.getElementById('current-lang-code').innerText = lang.toUpperCase();
+        this.applyLanguage();
+        this.saveState();
+        this.beep(700, 0.08);
+      }
+
+      applyLanguage() {
+        const dict = I18N[this.state.language] || I18N.en;
+        document.getElementById('app-title').innerText = dict.appTitle;
+        document.getElementById('app-subtitle').innerText = dict.appSubtitle;
+        document.getElementById('txt-greeting').innerText = dict.greeting;
+        document.getElementById('txt-mandi-location').innerText = dict.location;
+        document.getElementById('lbl-today-arrivals').innerText = dict.todayArrivals;
+        document.getElementById('lbl-today-sales').innerText = dict.todaySales;
+        document.getElementById('lbl-remaining-stock').innerText = dict.stockLeft;
+        document.getElementById('lbl-to-receive').innerText = dict.toReceive;
+        document.getElementById('lbl-to-pay').innerText = dict.toPay;
+        document.getElementById('lbl-main-operations').innerText = dict.mainOps;
+        
+        document.getElementById('act-new-arrival').innerText = dict.newArrival;
+        document.getElementById('act-new-arrival-sub').innerText = dict.newArrivalSub;
+        document.getElementById('act-new-sale').innerText = dict.newSale;
+        document.getElementById('act-new-sale-sub').innerText = dict.newSaleSub;
+        document.getElementById('act-farmer-patti').innerText = dict.farmerPatti;
+        document.getElementById('act-farmer-patti-sub').innerText = dict.farmerPattiSub;
+        document.getElementById('act-buyer-bill').innerText = dict.buyerBill;
+        document.getElementById('act-buyer-bill-sub').innerText = dict.buyerBillSub;
+        document.getElementById('act-receive-money').innerText = dict.receiveMoney;
+        document.getElementById('act-receive-money-sub').innerText = dict.receiveMoneySub;
+        document.getElementById('act-make-payment').innerText = dict.makePayment;
+        document.getElementById('act-make-payment-sub').innerText = dict.makePaymentSub;
+        document.getElementById('act-khata').innerText = dict.khata;
+        document.getElementById('act-khata-sub').innerText = dict.khataSub;
+        document.getElementById('act-crates').innerText = dict.crates;
+        document.getElementById('act-crates-sub').innerText = dict.cratesSub;
+        document.getElementById('lbl-voice-cta').innerText = dict.voiceCta;
+        document.getElementById('lbl-voice-desc').innerText = dict.voiceDesc;
+
+        document.getElementById('nav-txt-home').innerText = dict.home;
+        document.getElementById('nav-txt-arrival').innerText = dict.aavak;
+        document.getElementById('nav-txt-sale').innerText = dict.bikri;
+      }
+
+      finishOnboarding() {
+        this.showScreen('screen-home');
+      }
+
+      loadSeededScenarioAndLaunch() {
+        this.state = getInitialDemoState();
+        this.saveState();
+        this.renderAll();
+        this.showScreen('screen-home');
+        this.showToast("Seeded Scenario Active: Farmer Ramesh (80 crates apples)", "success");
+      }
+
+      renderAll() {
+        this.applyLanguage();
+        this.updateHeaderStats();
+        this.renderHome();
+      }
+
+      // Dynamic header metrics computation
+      updateHeaderStats() {
+        let totalArrivalCrates = 0;
+        let totalArrivalKg = 0;
+        let totalRemainingCrates = 0;
+        let totalRemainingKg = 0;
+        let totalPayablePaise = 0;
+
+        this.state.lots.forEach(lot => {
+          totalArrivalCrates += lot.originalCrates;
+          totalArrivalKg += lot.actualWeightKg;
+          totalRemainingCrates += lot.remainingCrates;
+          totalRemainingKg += lot.remainingWeightKg;
+          totalPayablePaise += lot.remainingPayablePaise;
+        });
+
+        let totalSaleCrates = 0;
+        let totalSaleGrossPaise = 0;
+        let totalReceivablePaise = 0;
+
+        this.state.sales.forEach(s => {
+          totalSaleCrates += s.cratesSold;
+          totalSaleGrossPaise += s.grossAmountPaise;
+          totalReceivablePaise += s.dueAmountPaise;
+        });
+
+        document.getElementById('metric-arrivals').innerText = `${totalArrivalCrates} Crates`;
+        document.getElementById('metric-arrivals-sub').innerText = `${this.formatNum(totalArrivalKg)} kg total`;
+        document.getElementById('metric-sales').innerText = `${totalSaleCrates} Crates`;
+        document.getElementById('metric-sales-sub').innerText = `${this.formatINR(totalSaleGrossPaise)} billed`;
+        document.getElementById('metric-stock-left').innerText = `${totalRemainingCrates} Crt`;
+        document.getElementById('metric-to-receive').innerText = this.formatINR(totalReceivablePaise);
+        document.getElementById('metric-to-pay').innerText = this.formatINR(totalPayablePaise);
+      }
+
+      renderHome() {
+        this.updateHeaderStats();
+      }
+
+      // ========================================================
+      // WORKFLOW 1: NEW ARRIVAL (AAVAK) STEP-BY-STEP WIZARD
+      // ========================================================
+      startArrivalWizard(prefill = null) {
+        this.activeWizardStep = 1;
+        this.wizardData = prefill || {
+          farmerId: "f-1",
+          farmerName: "Ramesh Gowda",
+          commodityId: "apple",
+          commodityName: "Apples",
+          icon: "🍎",
+          cratesCount: 80,
+          expectedWeightPerPkg: 18,
+          actualTotalWeightKg: 1395,
+          pricingMethod: "kg", // or 'crate'
+          ratePerUnit: 75
+        };
+        this.renderWizardStep();
+        this.showScreen('screen-arrival-wizard');
+      }
+
+      renderWizardStep() {
+        for (let i = 1; i <= 5; i++) {
+          const stepEl = document.getElementById(`wizard-step-${i}`);
+          if (stepEl) {
+            stepEl.classList.remove('active', 'completed');
+            if (i < this.activeWizardStep) stepEl.classList.add('completed');
+            if (i === this.activeWizardStep) stepEl.classList.add('active');
+          }
+        }
+
+        const container = document.getElementById('wizard-step-content');
+        if (!container) return;
+
+        // Step 1: Select Farmer
+        if (this.activeWizardStep === 1) {
+          container.innerHTML = `
+            <div class="card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3 style="font-size:15px; font-weight:700;">Step 1: Select Farmer (ರೈತರ ಆಯ್ಕೆ)</h3>
+                <button class="btn btn-sm btn-secondary" onclick="app.showAddPartyModal('farmer')">+ New Farmer</button>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                ${this.state.parties.farmers.map(f => `
+                  <div class="touch-input-display ${this.wizardData.farmerId === f.id ? 'active' : ''}" onclick="app.wizardSelectFarmer('${f.id}', '${f.name}')">
+                    <div>
+                      <div style="font-size:15px; font-weight:700;">🌾 ${f.name}</div>
+                      <div style="font-size:11px; color:var(--text-tertiary); margin-top:2px;">📍 ${f.village} • 📞 ${f.phone}</div>
+                    </div>
+                    <div style="font-size:18px;">${this.wizardData.farmerId === f.id ? '✅' : '👉'}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="app.wizardNextStep()" style="margin-top:10px;">Next: Choose Commodity →</button>
+          `;
+        }
+
+        // Step 2: Select Commodity
+        else if (this.activeWizardStep === 2) {
+          container.innerHTML = `
+            <div class="card">
+              <h3 style="font-size:15px; font-weight:700; margin-bottom:12px;">Step 2: Select Commodity (ಬೆಳೆ ಆಯ್ಕೆ)</h3>
+              <div class="commodity-grid">
+                ${COMMODITIES.map(c => `
+                  <div class="commodity-card ${this.wizardData.commodityId === c.id ? 'selected' : ''}" onclick="app.wizardSelectCommodity('${c.id}', '${c.nameEn}', '${c.icon}', ${c.defaultWeight})">
+                    <div class="commodity-img">${c.icon}</div>
+                    <span class="commodity-name">${c.nameEn}</span>
+                    <span class="commodity-sub">${c.nameKn}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+              <button class="btn btn-secondary" onclick="app.wizardPrevStep()">← Back</button>
+              <button class="btn btn-primary" onclick="app.wizardNextStep()">Next: Crate Count →</button>
+            </div>
+          `;
+        }
+
+        // Step 3: Package / Crate Count with Numeric Touch Keypad
+        else if (this.activeWizardStep === 3) {
+          container.innerHTML = `
+            <div class="card">
+              <h3 style="font-size:15px; font-weight:700; margin-bottom:12px;">Step 3: Enter Package / Crate Count</h3>
+              <div class="touch-input-display active">
+                <span class="label">Total Crates / Bags Arrived:</span>
+                <span class="val" id="disp-crate-val">${this.wizardData.cratesCount || 0}</span>
+              </div>
+              <p style="font-size:11px; color:var(--text-tertiary); text-align:center;">Tap numbers below on the large keypad</p>
+              
+              <div class="touch-keypad">
+                ${[1,2,3,4,5,6,7,8,9].map(n => `<button class="key-btn" onclick="app.keypadInput('cratesCount', '${n}')">${n}</button>`).join('')}
+                <button class="key-btn del" onclick="app.keypadInput('cratesCount', 'clear')">C</button>
+                <button class="key-btn" onclick="app.keypadInput('cratesCount', '0')">0</button>
+                <button class="key-btn del" onclick="app.keypadInput('cratesCount', 'back')">⌫</button>
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+              <button class="btn btn-secondary" onclick="app.wizardPrevStep()">← Back</button>
+              <button class="btn btn-primary" onclick="app.wizardNextStep()">Next: Weighment →</button>
+            </div>
+          `;
+        }
+
+        // Step 4: Expected vs Actual Weight
+        else if (this.activeWizardStep === 4) {
+          const estimatedWeight = (this.wizardData.cratesCount || 0) * (this.wizardData.expectedWeightPerPkg || 18);
+          const actualWeight = this.wizardData.actualTotalWeightKg || estimatedWeight;
+          const diffKg = actualWeight - estimatedWeight;
+
+          container.innerHTML = `
+            <div class="card">
+              <h3 style="font-size:15px; font-weight:700; margin-bottom:12px;">Step 4: Weighbridge / Scale Weighment</h3>
+              
+              <div style="margin-bottom:12px;">
+                <span style="font-size:11px; font-weight:600; color:var(--text-secondary);">Expected Unit Weight (kg/crate):</span>
+                <input type="number" value="${this.wizardData.expectedWeightPerPkg || 18}" oninput="app.updateExpectedWeight(this.value)" style="width:100%; height:46px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 10px; font-size:18px; font-weight:700; font-family:var(--font-mono);">
+              </div>
+
+              <div style="padding:10px; background:var(--surface-variant); border-radius:10px; margin-bottom:12px;">
+                <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600;">
+                  <span>Calculated Estimated Weight:</span>
+                  <span style="font-family:var(--font-mono); font-weight:800;">${estimatedWeight} kg</span>
+                </div>
+                <div style="font-size:10px; color:var(--text-tertiary);">(${this.wizardData.cratesCount} crates × ${this.wizardData.expectedWeightPerPkg || 18} kg)</div>
+              </div>
+
+              <div style="margin-bottom:12px;">
+                <span style="font-size:11px; font-weight:700; color:var(--primary-800);">Actual Weighbridge Total Weight (kg):</span>
+                <input type="number" value="${this.wizardData.actualTotalWeightKg || estimatedWeight}" oninput="app.updateActualWeight(this.value)" style="width:100%; height:50px; border:2px solid var(--primary-700); border-radius:10px; padding:0 12px; font-size:22px; font-weight:800; font-family:var(--font-mono);">
+              </div>
+
+              <!-- Variance Tag -->
+              <div style="padding:10px; border-radius:10px; font-size:12px; font-weight:700; display:flex; justify-content:space-between; align-items:center; background:${diffKg < 0 ? 'var(--status-red-light)' : 'var(--status-green-light)'}; color:${diffKg < 0 ? 'var(--status-red)' : 'var(--status-green)'};">
+                <span>Weight Variance (Difference):</span>
+                <span>${diffKg >= 0 ? '+' : ''}${diffKg} kg (${((diffKg / (estimatedWeight || 1)) * 100).toFixed(1)}%)</span>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+              <button class="btn btn-secondary" onclick="app.wizardPrevStep()">← Back</button>
+              <button class="btn btn-primary" onclick="app.wizardNextStep()">Next: Pricing Method →</button>
+            </div>
+          `;
+        }
+
+        // Step 5: Pricing Method & Rate Confirmation
+        else if (this.activeWizardStep === 5) {
+          const billableKg = this.wizardData.actualTotalWeightKg || 1395;
+          const rate = this.wizardData.ratePerUnit || 75;
+          const isKgPricing = this.wizardData.pricingMethod !== 'crate';
+          const grossAmount = isKgPricing ? (billableKg * rate) : ((this.wizardData.cratesCount || 80) * rate);
+          
+          // Seed demo standard charges for 80 crates Shimla Apples:
+          // Commission 5% = 5,231.25, Hamali = 1,200 (₹15/crt), Mandi Cess 1% = 1,046.25, Tulai = 53.50 => Total = ₹7,531
+          const commission = Math.round(grossAmount * 0.05 * 100) / 100;
+          const hamali = (this.wizardData.cratesCount || 80) * 15;
+          const mandiCess = Math.round(grossAmount * 0.01 * 100) / 100;
+          const tulai = 53.50;
+          const totalCharges = commission + hamali + mandiCess + tulai;
+          const netSettlement = grossAmount - totalCharges;
+
+          container.innerHTML = `
+            <div class="card">
+              <h3 style="font-size:15px; font-weight:700; margin-bottom:12px;">Step 5: Pricing & Review Settlement</h3>
+              
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
+                <button class="btn btn-sm ${isKgPricing ? 'btn-primary' : 'btn-secondary'}" onclick="app.wizardSetPricing('kg')">
+                  ⚖️ Per kg Rate (₹/kg)
+                </button>
+                <button class="btn btn-sm ${!isKgPricing ? 'btn-primary' : 'btn-secondary'}" onclick="app.wizardSetPricing('crate')">
+                  📦 Per Crate Rate (₹/crt)
+                </button>
+              </div>
+
+              <div style="margin-bottom:14px;">
+                <span style="font-size:11px; font-weight:700; color:var(--text-secondary);">Agreed Rate (₹):</span>
+                <input type="number" value="${rate}" oninput="app.updateArrivalRate(this.value)" style="width:100%; height:48px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 12px; font-size:20px; font-weight:800; font-family:var(--font-mono);">
+              </div>
+
+              <!-- Itemized Settlement Preview -->
+              <div class="receipt-sheet" style="border:1px solid #CCC; margin-bottom:0;">
+                <div class="receipt-header">
+                  <h2>${this.wizardData.farmerName}</h2>
+                  <p>${this.wizardData.commodityName} • ${this.wizardData.cratesCount} Crates</p>
+                </div>
+                <div class="receipt-row">
+                  <span>Billable Weight:</span>
+                  <span style="font-weight:700;">${billableKg} kg</span>
+                </div>
+                <div class="receipt-row">
+                  <span>Gross Valuation:</span>
+                  <span style="font-weight:700;">${this.formatINR(grossAmount * 100)}</span>
+                </div>
+                <div class="receipt-row" style="color:var(--status-red); font-size:12px;">
+                  <span>Mandi Charges Total (Hamali, Commission, Cess):</span>
+                  <span>- ${this.formatINR(totalCharges * 100)}</span>
+                </div>
+                <div class="receipt-row bold grand-total">
+                  <span>Net Farmer Settlement:</span>
+                  <span>${this.formatINR(netSettlement * 100)}</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+              <button class="btn btn-secondary" onclick="app.wizardPrevStep()">← Back</button>
+              <button class="btn btn-primary" onclick="app.saveArrivalLot()">✅ Confirm & Save Lot</button>
+            </div>
+          `;
+        }
+      }
+
+      wizardNextStep() {
+        this.beep(650, 0.05);
+        if (this.activeWizardStep < 5) {
+          this.activeWizardStep++;
+          this.renderWizardStep();
+        }
+      }
+
+      wizardPrevStep() {
+        this.beep(450, 0.05);
+        if (this.activeWizardStep > 1) {
+          this.activeWizardStep--;
+          this.renderWizardStep();
+        }
+      }
+
+      wizardSelectFarmer(id, name) {
+        this.beep(600, 0.05);
+        this.wizardData.farmerId = id;
+        this.wizardData.farmerName = name;
+        this.renderWizardStep();
+      }
+
+      wizardSelectCommodity(id, name, icon, defWeight) {
+        this.beep(600, 0.05);
+        this.wizardData.commodityId = id;
+        this.wizardData.commodityName = name;
+        this.wizardData.icon = icon;
+        this.wizardData.expectedWeightPerPkg = defWeight;
+        this.renderWizardStep();
+      }
+
+      keypadInput(field, val) {
+        this.beep(750, 0.04);
+        let curr = String(this.wizardData[field] || 0);
+        if (val === 'clear') curr = "0";
+        else if (val === 'back') curr = curr.length > 1 ? curr.slice(0, -1) : "0";
+        else {
+          if (curr === "0") curr = val;
+          else curr += val;
+        }
+        this.wizardData[field] = parseInt(curr, 10) || 0;
+        document.getElementById('disp-crate-val').innerText = this.wizardData[field];
+      }
+
+      updateExpectedWeight(val) {
+        this.wizardData.expectedWeightPerPkg = parseFloat(val) || 0;
+        this.renderWizardStep();
+      }
+
+      updateActualWeight(val) {
+        this.wizardData.actualTotalWeightKg = parseFloat(val) || 0;
+      }
+
+      wizardSetPricing(method) {
+        this.wizardData.pricingMethod = method;
+        this.renderWizardStep();
+      }
+
+      updateArrivalRate(val) {
+        this.wizardData.ratePerUnit = parseFloat(val) || 0;
+        this.renderWizardStep();
+      }
+
+      saveArrivalLot() {
+        this.beep(900, 0.12);
+        const lotNumber = `LOT-2026-0${Math.floor(100 + Math.random() * 899)}`;
+        const billableKg = this.wizardData.actualTotalWeightKg || 1395;
+        const rate = this.wizardData.ratePerUnit || 75;
+        const crates = this.wizardData.cratesCount || 80;
+        const isKg = this.wizardData.pricingMethod !== 'crate';
+        const grossAmount = isKg ? (billableKg * rate) : (crates * rate);
+
+        // Deductions calculation
+        const commission = Math.round(grossAmount * 0.05 * 100) / 100;
+        const hamali = crates * 15;
+        const cess = Math.round(grossAmount * 0.01 * 100) / 100;
+        const tulai = 53.50;
+        const totalCharges = commission + hamali + cess + tulai;
+        const netSettlement = grossAmount - totalCharges;
+
+        const newLot = {
+          lotId: lotNumber,
+          farmerId: this.wizardData.farmerId,
+          farmerName: this.wizardData.farmerName,
+          commodityId: this.wizardData.commodityId,
+          commodityName: this.wizardData.commodityName,
+          icon: this.wizardData.icon || "🍎",
+          date: "Today, Just now",
+          originalCrates: crates,
+          soldCrates: 0,
+          remainingCrates: crates,
+          expectedWeightPerPkgKg: this.wizardData.expectedWeightPerPkg || 18,
+          estimatedWeightKg: crates * (this.wizardData.expectedWeightPerPkg || 18),
+          actualWeightKg: billableKg,
+          remainingWeightKg: billableKg,
+          pricingMethod: this.wizardData.pricingMethod || "kg",
+          rateRupees: rate,
+          grossPaise: Math.round(grossAmount * 100),
+          totalChargesPaise: Math.round(totalCharges * 100),
+          netPayablePaise: Math.round(netSettlement * 100),
+          settlementStatus: "pending",
+          paidAmountPaise: 0,
+          remainingPayablePaise: Math.round(netSettlement * 100),
+          breakdown: {
+            commissionPaise: Math.round(commission * 100),
+            hamaliPaise: Math.round(hamali * 100),
+            mandiCessPaise: Math.round(cess * 100),
+            tulaiWeighingPaise: Math.round(tulai * 100)
+          }
+        };
+
+        // Prepend new lot
+        this.state.lots.unshift(newLot);
+
+        // Update farmer outstanding balance
+        const farmer = this.state.parties.farmers.find(f => f.id === newLot.farmerId);
+        if (farmer) {
+          farmer.outstandingPaise = (farmer.outstandingPaise || 0) + newLot.remainingPayablePaise;
+        }
+
+        this.saveState();
+        this.showToast(`Lot ${lotNumber} saved successfully!`, "success");
+        this.showScreen('screen-stock');
+      }
+
+      // ========================================================
+      // WORKFLOW 2: NEW SALE (BIKRI)
+      // ========================================================
+      startSaleWizard() {
+        // Populate Lot Dropdown
+        const lotSelect = document.getElementById('sale-lot-select');
+        const availableLots = this.state.lots.filter(l => l.remainingCrates > 0);
+        
+        if (availableLots.length === 0) {
+          this.showToast("No active stock available in Mandi. Add an arrival first!", "error");
+          return;
+        }
+
+        lotSelect.innerHTML = availableLots.map(l => `
+          <option value="${l.lotId}">${l.lotId} — ${l.commodityName} (${l.farmerName}) • Bal: ${l.remainingCrates} Crt / ${l.remainingWeightKg} kg</option>
+        `).join('');
+
+        // Populate Buyer Dropdown
+        const buyerSelect = document.getElementById('sale-buyer-select');
+        buyerSelect.innerHTML = this.state.parties.buyers.map(b => `
+          <option value="${b.id}">${b.name} (${b.market})</option>
+        `).join('');
+
+        // Set defaults from Seed Scenario: 20 crates, 360 kg, ₹85/kg
+        document.getElementById('sale-crates-input').value = 20;
+        document.getElementById('sale-weight-input').value = 360;
+        document.getElementById('sale-rate-input').value = 85;
+        document.getElementById('sale-rate-unit').value = 'kg';
+
+        this.onSaleLotChanged();
+        this.showScreen('screen-sale');
+      }
+
+      onSaleLotChanged() {
+        const lotId = document.getElementById('sale-lot-select').value;
+        const lot = this.state.lots.find(l => l.lotId === lotId);
+        if (lot) {
+          document.getElementById('sale-lot-preview').innerHTML = `
+            <strong>${lot.icon} ${lot.commodityName}</strong> • Farmer: <strong>${lot.farmerName}</strong><br>
+            Available Stock: <span style="font-weight:700; color:var(--primary-800);">${lot.remainingCrates} Crates (${lot.remainingWeightKg} kg)</span>
+          `;
+        }
+        this.calcSalePreview();
+      }
+
+      calcSalePreview() {
+        const cratesSold = parseFloat(document.getElementById('sale-crates-input').value) || 0;
+        const weightSold = parseFloat(document.getElementById('sale-weight-input').value) || 0;
+        const rate = parseFloat(document.getElementById('sale-rate-input').value) || 0;
+        const unit = document.getElementById('sale-rate-unit').value;
+        
+        const lotId = document.getElementById('sale-lot-select').value;
+        const lot = this.state.lots.find(l => l.lotId === lotId);
+
+        let gross = 0;
+        if (unit === 'kg') {
+          gross = weightSold * rate;
+        } else {
+          gross = cratesSold * rate;
+        }
+
+        document.getElementById('sale-preview-gross').innerText = this.formatINR(gross * 100);
+
+        // Check stock availability
+        const warningEl = document.getElementById('sale-stock-warning');
+        const confirmBtn = document.getElementById('btn-confirm-sale');
+        if (lot && (cratesSold > lot.remainingCrates || weightSold > lot.remainingWeightKg)) {
+          warningEl.style.display = 'block';
+          confirmBtn.disabled = true;
+          confirmBtn.style.opacity = '0.5';
+        } else {
+          warningEl.style.display = 'none';
+          confirmBtn.disabled = false;
+          confirmBtn.style.opacity = '1';
+        }
+      }
+
+      submitSale() {
+        const lotId = document.getElementById('sale-lot-select').value;
+        const buyerId = document.getElementById('sale-buyer-select').value;
+        const cratesSold = parseFloat(document.getElementById('sale-crates-input').value) || 0;
+        const weightSold = parseFloat(document.getElementById('sale-weight-input').value) || 0;
+        const rate = parseFloat(document.getElementById('sale-rate-input').value) || 0;
+        const unit = document.getElementById('sale-rate-unit').value;
+
+        if (cratesSold <= 0 || weightSold <= 0 || rate <= 0) {
+          this.showToast("Please enter valid quantities and rate", "error");
+          return;
+        }
+
+        const lot = this.state.lots.find(l => l.lotId === lotId);
+        const buyer = this.state.parties.buyers.find(b => b.id === buyerId);
+
+        if (!lot || cratesSold > lot.remainingCrates) {
+          this.showToast("Cannot sell more stock than remaining in lot!", "error");
+          return;
+        }
+
+        this.beep(850, 0.1);
+        const grossAmount = (unit === 'kg') ? (weightSold * rate) : (cratesSold * rate);
+        const billNo = `BILL-2026-10${this.state.sales.length + 1}`;
+
+        // Deduct from lot inventory
+        lot.soldCrates += cratesSold;
+        lot.remainingCrates -= cratesSold;
+        lot.remainingWeightKg -= weightSold;
+
+        // Create Sale Record
+        const newSale = {
+          saleId: `SALE-${Date.now().toString().slice(-4)}`,
+          billNo: billNo,
+          date: "Today, Just now",
+          lotId: lot.lotId,
+          buyerId: buyer.id,
+          buyerName: buyer.name,
+          cratesSold: cratesSold,
+          weightSoldKg: weightSold,
+          rateRupees: rate,
+          pricingUnit: unit,
+          grossAmountPaise: Math.round(grossAmount * 100),
+          paymentStatus: "Credit (Udhaar)",
+          amountReceivedPaise: 0,
+          dueAmountPaise: Math.round(grossAmount * 100)
+        };
+
+        this.state.sales.unshift(newSale);
+
+        // Update buyer ledger balance
+        buyer.balancePaise = (buyer.balancePaise || 0) + newSale.dueAmountPaise;
+
+        // Record Crate Movement to Buyer
+        this.state.cratesLedger.unshift({
+          date: "Today",
+          partyName: buyer.name,
+          type: "Issue",
+          qty: cratesSold,
+          balance: cratesSold
+        });
+
+        this.saveState();
+        this.showToast(`Sale recorded! Bill #${billNo} generated.`, "success");
+        this.showBuyerBillDetails(newSale.billNo);
+      }
+
+      // ========================================================
+      // WORKFLOW 3: FARMER PATTI & BUYER BILLS
+      // ========================================================
+      renderPattiList() {
+        const container = document.getElementById('patti-container');
+        if (this.state.lots.length === 0) {
+          container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-tertiary);">No arrivals recorded yet.</div>`;
+          return;
+        }
+
+        container.innerHTML = this.state.lots.map(lot => `
+          <div class="card" style="cursor:pointer;" onclick="app.showPattiDetails('${lot.lotId}')">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="lot-badge">${lot.lotId}</span>
+              <span style="font-size:11px; font-weight:700; color:${lot.settlementStatus === 'paid' ? 'var(--status-green)' : 'var(--accent-amber)'};">
+                ${lot.settlementStatus === 'paid' ? '✅ Paid' : '⏳ Awaiting Payment'}
+              </span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+              <div>
+                <h3 style="font-size:15px; font-weight:700;">${lot.icon} ${lot.farmerName}</h3>
+                <p style="font-size:12px; color:var(--text-secondary);">${lot.commodityName} • ${lot.originalCrates} Crates (${lot.actualWeightKg} kg)</p>
+              </div>
+              <div style="text-align:right;">
+                <span style="font-size:11px; color:var(--text-tertiary);">Net Settlement</span>
+                <div style="font-size:17px; font-weight:800; color:var(--primary-800); font-family:var(--font-mono);">
+                  ${this.formatINR(lot.netPayablePaise)}
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-sm btn-secondary" style="margin-top:10px; width:100%;">
+              📄 View & Print Settlement Patti
+            </button>
+          </div>
+        `).join('');
+      }
+
+      showPattiDetails(lotId) {
+        const lot = this.state.lots.find(l => l.lotId === lotId);
+        if (!lot) return;
+
+        this.currentReceiptData = { type: 'patti', data: lot };
+        const content = document.getElementById('receipt-modal-content');
+        
+        content.innerHTML = `
+          <div class="receipt-sheet" id="printable-area">
+            <div class="receipt-header">
+              <h2>COHERENT MANDI ENTERPRISES</h2>
+              <p>Licensed Adatiya & Commission Agent • Yard Shop #42</p>
+              <p>APMC Yard, Yeshwanthpur, Bengaluru - 560022</p>
+              <div style="margin-top:6px; font-size:12px; font-weight:800; color:var(--primary-900);">
+                FARMER SETTLEMENT PATTI (ರೈತರ ಲೆಕ್ಕ ಪಟ್ಟಿ)
+              </div>
+            </div>
+
+            <div style="font-size:11px; display:flex; justify-content:space-between; margin-bottom:8px;">
+              <span><strong>Patti No:</strong> ${lot.lotId}</span>
+              <span><strong>Date:</strong> ${lot.date}</span>
+            </div>
+            <div style="font-size:12px; margin-bottom:12px;">
+              <strong>Farmer:</strong> ${lot.farmerName} (Ramanagara)<br>
+              <strong>Produce:</strong> ${lot.commodityName}
+            </div>
+
+            <!-- Inward Weighment Specs -->
+            <div style="border-top:1px dashed #CCC; border-bottom:1px dashed #CCC; padding:6px 0; margin-bottom:8px;">
+              <div class="receipt-row">
+                <span>Total Packages:</span>
+                <span style="font-weight:700;">${lot.originalCrates} Crates</span>
+              </div>
+              <div class="receipt-row">
+                <span>Gross Weight:</span>
+                <span>${lot.actualWeightKg} kg</span>
+              </div>
+              <div class="receipt-row">
+                <span>Agreed Rate:</span>
+                <span style="font-weight:700;">₹${lot.rateRupees} per ${lot.pricingMethod}</span>
+              </div>
+            </div>
+
+            <!-- Financial Calculation -->
+            <div class="receipt-row bold">
+              <span>Gross Valuation:</span>
+              <span style="font-family:var(--font-mono);">${this.formatINR(lot.grossPaise)}</span>
+            </div>
+
+            <div style="margin:8px 0; padding-left:8px; border-left:2px solid #CCC; font-size:11px; color:#555;">
+              <div class="receipt-row">
+                <span>- Mandi Commission (5%):</span>
+                <span>${this.formatINR(lot.breakdown.commissionPaise)}</span>
+              </div>
+              <div class="receipt-row">
+                <span>- Hamali Loading / Handling (₹15/crt):</span>
+                <span>${this.formatINR(lot.breakdown.hamaliPaise)}</span>
+              </div>
+              <div class="receipt-row">
+                <span>- APMC Market Cess (1%):</span>
+                <span>${this.formatINR(lot.breakdown.mandiCessPaise)}</span>
+              </div>
+              <div class="receipt-row">
+                <span>- Tulai / Scale Weighment:</span>
+                <span>${this.formatINR(lot.breakdown.tulaiWeighingPaise)}</span>
+              </div>
+            </div>
+
+            <div class="receipt-row" style="font-weight:700; color:var(--status-red);">
+              <span>Total Mandi Deductions:</span>
+              <span>- ${this.formatINR(lot.totalChargesPaise)}</span>
+            </div>
+
+            <div class="receipt-row bold grand-total">
+              <span>NET PAYABLE TO FARMER:</span>
+              <span>${this.formatINR(lot.netPayablePaise)}</span>
+            </div>
+
+            <div style="text-align:center; margin-top:14px; font-size:10px; color:#888;">
+              Thank you for trusting CAL Mandi Ops. Computer generated settlement voucher.
+            </div>
+          </div>
+        `;
+
+        this.openModal('modal-receipt');
+      }
+
+      renderBuyerBills() {
+        const container = document.getElementById('buyer-bills-container');
+        if (this.state.sales.length === 0) {
+          container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-tertiary);">No buyer bills generated yet. Record a sale to create one.</div>`;
+          return;
+        }
+
+        container.innerHTML = this.state.sales.map(s => `
+          <div class="card" style="cursor:pointer;" onclick="app.showBuyerBillDetails('${s.billNo}')">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="lot-badge" style="background:var(--accent-blue-light); color:var(--accent-blue);">${s.billNo}</span>
+              <span style="font-size:11px; font-weight:700; color:var(--accent-amber);">
+                ${s.paymentStatus}
+              </span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+              <div>
+                <h3 style="font-size:15px; font-weight:700;">🛒 ${s.buyerName}</h3>
+                <p style="font-size:12px; color:var(--text-secondary);">${s.cratesSold} Crates (${s.weightSoldKg} kg @ ₹${s.rateRupees}/kg)</p>
+              </div>
+              <div style="text-align:right;">
+                <span style="font-size:11px; color:var(--text-tertiary);">Bill Total</span>
+                <div style="font-size:17px; font-weight:800; color:var(--accent-blue); font-family:var(--font-mono);">
+                  ${this.formatINR(s.grossAmountPaise)}
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-sm btn-secondary" style="margin-top:10px; width:100%;">
+              🧾 View & Print Buyer Invoice
+            </button>
+          </div>
+        `).join('');
+      }
+
+      showBuyerBillDetails(billNo) {
+        const sale = this.state.sales.find(s => s.billNo === billNo);
+        if (!sale) return;
+
+        this.currentReceiptData = { type: 'bill', data: sale };
+        const content = document.getElementById('receipt-modal-content');
+
+        content.innerHTML = `
+          <div class="receipt-sheet" id="printable-area">
+            <div class="receipt-header">
+              <h2>COHERENT MANDI ENTERPRISES</h2>
+              <p>Wholesale Fruit & Vegetable Commission Agent</p>
+              <p>APMC Yard, Yeshwanthpur, Bengaluru - 560022</p>
+              <div style="margin-top:6px; font-size:12px; font-weight:800; color:var(--accent-blue);">
+                WHOLESALE BUYER INVOICE (ಖರೀದಿದಾರ ಬಿಲ್)
+              </div>
+            </div>
+
+            <div style="font-size:11px; display:flex; justify-content:space-between; margin-bottom:8px;">
+              <span><strong>Invoice #:</strong> ${sale.billNo}</span>
+              <span><strong>Date:</strong> ${sale.date}</span>
+            </div>
+            <div style="font-size:12px; margin-bottom:12px;">
+              <strong>Billed To:</strong> ${sale.buyerName}<br>
+              <strong>Payment Terms:</strong> ${sale.paymentStatus}
+            </div>
+
+            <table style="width:100%; border-collapse:collapse; font-size:12px; margin-bottom:10px;">
+              <thead>
+                <tr style="border-bottom:1px solid #CCC; text-align:left;">
+                  <th style="padding:4px 0;">Item Description</th>
+                  <th style="padding:4px 0; text-align:center;">Qty</th>
+                  <th style="padding:4px 0; text-align:right;">Rate</th>
+                  <th style="padding:4px 0; text-align:right;">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="padding:6px 0;">Apples (Grade A Shimla)<br><span style="font-size:10px; color:#666;">Ref: ${sale.lotId}</span></td>
+                  <td style="padding:6px 0; text-align:center;">${sale.cratesSold} Crt<br><span style="font-size:10px; color:#666;">${sale.weightSoldKg} kg</span></td>
+                  <td style="padding:6px 0; text-align:right;">₹${sale.rateRupees}/${sale.pricingUnit}</td>
+                  <td style="padding:6px 0; text-align:right; font-weight:700;">${this.formatINR(sale.grossAmountPaise)}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="receipt-row bold grand-total">
+              <span>TOTAL BILL AMOUNT:</span>
+              <span>${this.formatINR(sale.grossAmountPaise)}</span>
+            </div>
+
+            <div class="receipt-row" style="margin-top:6px; font-size:12px;">
+              <span>Payment Received Today:</span>
+              <span>${this.formatINR(sale.amountReceivedPaise)}</span>
+            </div>
+            <div class="receipt-row bold" style="color:var(--status-red); font-size:13px;">
+              <span>Outstanding Balance Due:</span>
+              <span>${this.formatINR(sale.dueAmountPaise)}</span>
+            </div>
+
+            <div style="text-align:center; margin-top:14px; font-size:10px; color:#888;">
+              Crates to be returned within 3 days. System generated GST/APMC Invoice.
+            </div>
+          </div>
+        `;
+
+        this.openModal('modal-receipt');
+      }
+
+      printCurrentReceipt() {
+        window.print();
+      }
+
+      shareReceiptWhatsApp() {
+        if (!this.currentReceiptData) return;
+        let text = "";
+        if (this.currentReceiptData.type === 'patti') {
+          const lot = this.currentReceiptData.data;
+          text = `*COHERENT MANDI SETTLEMENT PATTI*\n` +
+                 `Patti: ${lot.lotId}\n` +
+                 `Farmer: ${lot.farmerName}\n` +
+                 `Crop: ${lot.commodityName} (${lot.originalCrates} crates / ${lot.actualWeightKg} kg)\n` +
+                 `Gross: ${this.formatINR(lot.grossPaise)}\n` +
+                 `Mandi Charges: -${this.formatINR(lot.totalChargesPaise)}\n` +
+                 `*Net Payable: ${this.formatINR(lot.netPayablePaise)}*\n` +
+                 `Generated on CAL Mandi Ops`;
+        } else {
+          const sale = this.currentReceiptData.data;
+          text = `*COHERENT MANDI BUYER BILL*\n` +
+                 `Invoice: ${sale.billNo}\n` +
+                 `Buyer: ${sale.buyerName}\n` +
+                 `Qty: ${sale.cratesSold} crates (${sale.weightSoldKg} kg @ ₹${sale.rateRupees})\n` +
+                 `*Total Amount: ${this.formatINR(sale.grossAmountPaise)}*\n` +
+                 `Payment Terms: ${sale.paymentStatus}\n` +
+                 `Thank you for your business!`;
+        }
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+      }
+
+      // ========================================================
+      // WORKFLOW 4: KHATA / ACCOUNTS LEDGER
+      // ========================================================
+      switchKhataTab(type) {
+        document.getElementById('tab-farmer-khata').classList.toggle('active', type === 'farmer');
+        document.getElementById('tab-buyer-khata').classList.toggle('active', type === 'buyer');
+
+        const select = document.getElementById('khata-party-select');
+        if (type === 'farmer') {
+          select.innerHTML = this.state.parties.farmers.map(f => `
+            <option value="farmer:${f.id}">${f.name} (${f.village})</option>
+          `).join('');
+        } else {
+          select.innerHTML = this.state.parties.buyers.map(b => `
+            <option value="buyer:${b.id}">${b.name} (${b.market})</option>
+          `).join('');
+        }
+        this.renderKhataTransactions();
+      }
+
+      renderKhataTransactions() {
+        const val = document.getElementById('khata-party-select').value;
+        if (!val) return;
+        const [type, id] = val.split(':');
+        const container = document.getElementById('khata-transactions-list');
+
+        let balance = 0;
+        let rows = [];
+
+        if (type === 'farmer') {
+          const farmer = this.state.parties.farmers.find(f => f.id === id);
+          const farmerLots = this.state.lots.filter(l => l.farmerId === id);
+          
+          farmerLots.forEach(l => {
+            rows.push({
+              date: l.date,
+              ref: l.lotId,
+              desc: `Settlement Patti: ${l.commodityName} (${l.originalCrates} crt)`,
+              creditPaise: l.netPayablePaise,
+              debitPaise: 0
+            });
+            balance += l.netPayablePaise;
+          });
+
+          // Paid transactions
+          const payments = this.state.payments.filter(p => p.partyId === id && p.direction === 'pay');
+          payments.forEach(p => {
+            rows.push({
+              date: p.date,
+              ref: p.receiptNo,
+              desc: `Payment via ${p.mode}`,
+              creditPaise: 0,
+              debitPaise: p.amountPaise
+            });
+            balance -= p.amountPaise;
+          });
+
+          document.getElementById('khata-balance-display').innerText = this.formatINR(balance);
+          document.getElementById('khata-balance-tag').innerText = "To Pay to Farmer (ಬಾಕಿ)";
+          document.getElementById('khata-balance-tag').style.color = "var(--status-red)";
+        } else {
+          const buyer = this.state.parties.buyers.find(b => b.id === id);
+          const buyerSales = this.state.sales.filter(s => s.buyerId === id);
+
+          buyerSales.forEach(s => {
+            rows.push({
+              date: s.date,
+              ref: s.billNo,
+              desc: `Invoice: ${s.cratesSold} crt sold`,
+              debitPaise: s.grossAmountPaise,
+              creditPaise: 0
+            });
+            balance += s.grossAmountPaise;
+          });
+
+          // Collections received
+          const collections = this.state.payments.filter(p => p.partyId === id && p.direction === 'receive');
+          collections.forEach(p => {
+            rows.push({
+              date: p.date,
+              ref: p.receiptNo,
+              desc: `Money Received via ${p.mode}`,
+              debitPaise: 0,
+              creditPaise: p.amountPaise
+            });
+            balance -= p.amountPaise;
+          });
+
+          document.getElementById('khata-balance-display').innerText = this.formatINR(balance);
+          document.getElementById('khata-balance-tag').innerText = "To Receive from Buyer (ಉದ್ದರಿ)";
+          document.getElementById('khata-balance-tag').style.color = "var(--accent-amber)";
+        }
+
+        if (rows.length === 0) {
+          container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-tertiary);">No transactions recorded for this party.</div>`;
+          return;
+        }
+
+        container.innerHTML = rows.map(r => `
+          <div class="card" style="padding:12px; margin-bottom:8px;">
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-tertiary);">
+              <span>${r.date}</span>
+              <span style="font-family:var(--font-mono); font-weight:700;">${r.ref}</span>
+            </div>
+            <div style="font-size:13px; font-weight:700; margin:4px 0;">${r.desc}</div>
+            <div style="display:flex; justify-content:space-between; font-size:14px; font-family:var(--font-mono); margin-top:6px;">
+              <span style="color:var(--status-green);">${r.creditPaise > 0 ? '+ ' + this.formatINR(r.creditPaise) : ''}</span>
+              <span style="color:var(--status-red);">${r.debitPaise > 0 ? '- ' + this.formatINR(r.debitPaise) : ''}</span>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // ========================================================
+      // WORKFLOW 5: PAYMENTS (RECEIVE / PAY)
+      // ========================================================
+      showPaymentScreen(direction = 'receive') {
+        this.paymentDirection = direction;
+        this.setPaymentDirection(direction);
+        this.showScreen('screen-payments');
+      }
+
+      setPaymentDirection(dir) {
+        this.paymentDirection = dir;
+        document.getElementById('btn-pay-type-receive').classList.toggle('active', dir === 'receive');
+        document.getElementById('btn-pay-type-pay').classList.toggle('active', dir === 'pay');
+
+        const select = document.getElementById('payment-party-select');
+        if (dir === 'receive') {
+          select.innerHTML = this.state.parties.buyers.map(b => `
+            <option value="${b.id}">${b.name} • Due: ${this.formatINR(b.balancePaise || 0)}</option>
+          `).join('');
+        } else {
+          select.innerHTML = this.state.parties.farmers.map(f => `
+            <option value="${f.id}">${f.name} • Payable: ${this.formatINR(f.outstandingPaise || 0)}</option>
+          `).join('');
+        }
+        this.onPaymentPartyChanged();
+      }
+
+      onPaymentPartyChanged() {
+        const id = document.getElementById('payment-party-select').value;
+        const preview = document.getElementById('payment-balance-preview');
+        const input = document.getElementById('payment-amount-input');
+
+        if (this.paymentDirection === 'receive') {
+          const buyer = this.state.parties.buyers.find(b => b.id === id);
+          if (buyer) {
+            preview.innerText = `Current Pending Dues: ${this.formatINR(buyer.balancePaise || 0)}`;
+            input.value = Math.round((buyer.balancePaise || 0) / 100);
+          }
+        } else {
+          const farmer = this.state.parties.farmers.find(f => f.id === id);
+          if (farmer) {
+            preview.innerText = `Current Pending Payable: ${this.formatINR(farmer.outstandingPaise || 0)}`;
+            input.value = Math.round((farmer.outstandingPaise || 0) / 100);
+          }
+        }
+      }
+
+      setPaymentMode(mode) {
+        this.selectedPaymentMode = mode;
+        ['cash', 'upi', 'bank'].forEach(m => {
+          document.getElementById(`paymode-${m}`).classList.toggle('active', m === mode.toLowerCase());
+        });
+      }
+
+      submitPayment() {
+        const id = document.getElementById('payment-party-select').value;
+        const amountRupees = parseFloat(document.getElementById('payment-amount-input').value) || 0;
+
+        if (amountRupees <= 0) {
+          this.showToast("Please enter a valid payment amount", "error");
+          return;
+        }
+
+        const amountPaise = Math.round(amountRupees * 100);
+        const receiptNo = `REC-${Date.now().toString().slice(-4)}`;
+
+        this.beep(850, 0.1);
+
+        if (this.paymentDirection === 'receive') {
+          const buyer = this.state.parties.buyers.find(b => b.id === id);
+          if (buyer) {
+            buyer.balancePaise = Math.max(0, (buyer.balancePaise || 0) - amountPaise);
+          }
+        } else {
+          const farmer = this.state.parties.farmers.find(f => f.id === id);
+          if (farmer) {
+            farmer.outstandingPaise = Math.max(0, (farmer.outstandingPaise || 0) - amountPaise);
+            // Update lot settlement
+            const lot = this.state.lots.find(l => l.farmerId === id && l.remainingPayablePaise > 0);
+            if (lot) {
+              lot.paidAmountPaise += amountPaise;
+              lot.remainingPayablePaise = Math.max(0, lot.remainingPayablePaise - amountPaise);
+              if (lot.remainingPayablePaise === 0) lot.settlementStatus = "paid";
+            }
+          }
+        }
+
+        this.state.payments.push({
+          receiptNo: receiptNo,
+          partyId: id,
+          direction: this.paymentDirection,
+          amountPaise: amountPaise,
+          mode: this.selectedPaymentMode,
+          date: "Today, Just now"
+        });
+
+        this.saveState();
+        this.showToast(`Payment of ${this.formatINR(amountPaise)} recorded successfully!`, "success");
+        this.showScreen('screen-khata');
+      }
+
+      // ========================================================
+      // WORKFLOW 6: STOCK & LOTS LIST
+      // ========================================================
+      renderStockLots(filter = 'all') {
+        const container = document.getElementById('stock-lots-list');
+        let list = this.state.lots;
+
+        if (filter === 'available') list = list.filter(l => l.remainingCrates > 0);
+        if (filter === 'completed') list = list.filter(l => l.remainingCrates === 0);
+
+        if (list.length === 0) {
+          container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-tertiary);">No lots found for selected filter.</div>`;
+          return;
+        }
+
+        container.innerHTML = list.map(lot => {
+          const percentSold = Math.round((lot.soldCrates / (lot.originalCrates || 1)) * 100);
+          return `
+            <div class="lot-card" onclick="app.showPattiDetails('${lot.lotId}')">
+              <div class="lot-header">
+                <span class="lot-badge">${lot.lotId}</span>
+                <span style="font-size:11px; font-weight:700; color:${lot.remainingCrates > 0 ? 'var(--status-green)' : 'var(--text-tertiary)'};">
+                  ${lot.remainingCrates > 0 ? `In Stock (${lot.remainingCrates} Crt)` : 'Sold Out'}
+                </span>
+              </div>
+              <div class="lot-body">
+                <div class="pic">${lot.icon}</div>
+                <div class="lot-details" style="flex:1;">
+                  <h3>${lot.commodityName}</h3>
+                  <p>Farmer: <strong>${lot.farmerName}</strong> • ${lot.date}</p>
+                  <div class="stock-progress">
+                    <div class="stock-progress-fill" style="width: ${percentSold}%;"></div>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; font-size:11px; margin-top:4px; color:var(--text-secondary);">
+                    <span>Sold: ${lot.soldCrates} crt</span>
+                    <span>Remaining: <strong>${lot.remainingCrates} crt (${lot.remainingWeightKg} kg)</strong></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      filterStock(filter) {
+        ['all', 'avail', 'sold'].forEach(f => {
+          document.getElementById(`chip-stock-${f}`).classList.remove('active');
+        });
+        if (filter === 'all') document.getElementById('chip-stock-all').classList.add('active');
+        if (filter === 'available') document.getElementById('chip-stock-avail').classList.add('active');
+        if (filter === 'completed') document.getElementById('chip-stock-sold').classList.add('active');
+        this.renderStockLots(filter);
+      }
+
+      // ========================================================
+      // WORKFLOW 7: CRATE TRACKING
+      // ========================================================
+      renderCratesLedger() {
+        const select = document.getElementById('crate-party-select');
+        select.innerHTML = `
+          <optgroup label="Farmers">
+            ${this.state.parties.farmers.map(f => `<option value="${f.name}">${f.name}</option>`).join('')}
+          </optgroup>
+          <optgroup label="Buyers">
+            ${this.state.parties.buyers.map(b => `<option value="${b.name}">${b.name}</option>`).join('')}
+          </optgroup>
+        `;
+
+        const container = document.getElementById('crates-ledger-list');
+        container.innerHTML = this.state.cratesLedger.map(c => `
+          <div class="card" style="padding:10px 14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-size:13px; font-weight:700;">📦 ${c.partyName}</div>
+              <div style="font-size:11px; color:var(--text-tertiary);">${c.date} • ${c.type === 'Issue' ? 'Issued to party' : 'Returned back'}</div>
+            </div>
+            <div style="font-size:16px; font-weight:800; font-family:var(--font-mono); color:${c.type === 'Issue' ? 'var(--accent-amber)' : 'var(--status-green)'};">
+              ${c.type === 'Issue' ? '+' : '-'}${c.qty} Crates
+            </div>
+          </div>
+        `).join('');
+      }
+
+      recordCrateMovement(type) {
+        const party = document.getElementById('crate-party-select').value;
+        const qty = parseInt(document.getElementById('crate-qty-input').value, 10) || 0;
+
+        if (qty <= 0) {
+          this.showToast("Enter a valid crate count", "error");
+          return;
+        }
+
+        this.beep(700, 0.08);
+        this.state.cratesLedger.unshift({
+          date: "Today",
+          partyName: party,
+          type: type === 'issue' ? 'Issue' : 'Return',
+          qty: qty,
+          balance: qty
+        });
+
+        document.getElementById('crate-qty-input').value = "";
+        this.saveState();
+        this.renderCratesLedger();
+        this.showToast(`Crate ${type} recorded successfully!`, "success");
+      }
+
+      // ========================================================
+      // WORKFLOW 8: QUICK ADD FARMER / BUYER
+      // ========================================================
+      showAddPartyModal(type = 'farmer') {
+        this.currentAddPartyType = type;
+        document.getElementById('modal-party-title').innerText = type === 'farmer' ? "Add New Farmer (ರೈತರ ನೋಂದಣಿ)" : "Add New Buyer (ಖರೀದಿದಾರ ನೋಂದಣಿ)";
+        document.getElementById('new-party-name').value = "";
+        document.getElementById('new-party-phone').value = "";
+        document.getElementById('new-party-village').value = "";
+        this.openModal('modal-add-party');
+      }
+
+      saveNewParty() {
+        const name = document.getElementById('new-party-name').value.trim();
+        const phone = document.getElementById('new-party-phone').value.trim();
+        const village = document.getElementById('new-party-village').value.trim();
+
+        if (!name) {
+          this.showToast("Please enter a name", "error");
+          return;
+        }
+
+        const id = `${this.currentAddPartyType[0]}-${Date.now().toString().slice(-4)}`;
+        if (this.currentAddPartyType === 'farmer') {
+          this.state.parties.farmers.push({ id, name, phone: phone || "9900011122", village: village || "Mandi Yard", outstandingPaise: 0 });
+          if (this.activeWizardStep === 1) this.renderWizardStep();
+        } else {
+          this.state.parties.buyers.push({ id, name, phone: phone || "9900011122", market: village || "APMC Yard", balancePaise: 0 });
+          if (this.currentScreen === 'screen-sale') this.startSaleWizard();
+        }
+
+        this.saveState();
+        this.closeModal('modal-add-party');
+        this.showToast(`${name} added successfully!`, "success");
+      }
+
+      // ========================================================
+      // WORKFLOW 9: VOICE ASSISTANT ENTRY
+      // ========================================================
+      initSpeech() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+          this.recognition = new SpeechRecognition();
+          this.recognition.continuous = false;
+          this.recognition.interimResults = true;
+          this.recognition.lang = 'en-IN'; // or 'kn-IN', 'hi-IN'
+
+          this.recognition.onresult = (event) => {
+            let transcript = "";
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+              transcript += event.results[i][0].transcript;
+            }
+            document.getElementById('voice-transcript-text').innerText = `“${transcript}”`;
+          };
+
+          this.recognition.onerror = () => {
+            document.getElementById('voice-status-heading').innerText = "Microphone Ready (Tap Sample to Test)";
+          };
+        } else {
+          this.recognition = null;
+        }
+      }
+
+      openVoiceAssistant() {
+        this.beep(800, 0.1);
+        this.openModal('modal-voice');
+        document.getElementById('voice-transcript-text').innerText = "“Ramesh, 80 crates apples, 18 kilos per crate, rate 75”";
+        if (this.recognition) {
+          try {
+            this.recognition.start();
+            document.getElementById('voice-status-heading').innerText = "Listening... Speak now";
+          } catch(e) {}
+        }
+      }
+
+      simulateVoiceInput(phrase) {
+        this.beep(750, 0.05);
+        document.getElementById('voice-transcript-text').innerText = `“${phrase}”`;
+      }
+
+      processVoiceTranscript() {
+        const text = document.getElementById('voice-transcript-text').innerText;
+        this.closeModal('modal-voice');
+        if (this.recognition) {
+          try { this.recognition.stop(); } catch(e) {}
+        }
+
+        // Intelligently parse spoken speech (Ramesh, 80 crates apples, 18 kilos, rate 75)
+        let parsedFarmer = "Ramesh Gowda";
+        let parsedCommodity = "apple";
+        let parsedCrates = 80;
+        let parsedWeight = 18;
+        let parsedRate = 75;
+
+        if (text.toLowerCase().includes("siddaraju") || text.toLowerCase().includes("onion")) {
+          parsedFarmer = "Siddaraju";
+          parsedCommodity = "onion";
+          parsedCrates = 50;
+          parsedWeight = 45;
+          parsedRate = 28;
+        } else if (text.toLowerCase().includes("manjunath") || text.toLowerCase().includes("tomato")) {
+          parsedFarmer = "Manjunath";
+          parsedCommodity = "tomato";
+          parsedCrates = 120;
+          parsedWeight = 22;
+          parsedRate = 18;
+        }
+
+        const farmerObj = this.state.parties.farmers.find(f => f.name.toLowerCase().includes(parsedFarmer.toLowerCase())) || this.state.parties.farmers[0];
+        const commObj = COMMODITIES.find(c => c.id === parsedCommodity) || COMMODITIES[0];
+
+        this.startArrivalWizard({
+          farmerId: farmerObj.id,
+          farmerName: farmerObj.name,
+          commodityId: commObj.id,
+          commodityName: commObj.nameEn,
+          icon: commObj.icon,
+          cratesCount: parsedCrates,
+          expectedWeightPerPkg: parsedWeight,
+          actualTotalWeightKg: parsedCrates * parsedWeight - 45, // slight realistic variance
+          pricingMethod: "kg",
+          ratePerUnit: parsedRate
+        });
+
+        this.showToast(`Voice parsed: ${farmerObj.name}, ${parsedCrates} ${commObj.nameEn} @ ₹${parsedRate}`, "success");
+      }
+    }
+
+    // Initialize application when DOM is ready
+    let app;
+    window.addEventListener('DOMContentLoaded', () => {
+      app = new CalMandiOps();
+
+      // Live status bar clock update
+      function updateClock() {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+        const clockEl = document.getElementById('clock-display');
+        if (clockEl) clockEl.innerText = timeStr;
+      }
+      setInterval(updateClock, 1000);
+      updateClock();
+    });
+  </script>
+</body>
+</html>
