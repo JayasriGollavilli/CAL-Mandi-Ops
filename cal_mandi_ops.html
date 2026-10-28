@@ -942,25 +942,267 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
-    /* Print Stylesheet for thermal receipt printing */
+    .stat-badge.purple { border-left: 4px solid var(--accent-purple, #7C3AED); }
+    .activity-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .activity-row:hover {
+      background: var(--surface-variant);
+    }
+    .khata-row-item {
+      padding: 10px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    /* Print Stylesheet for thermal receipt printing / Save as PDF */
     @media print {
       body {
         background: #FFFFFF !important;
         color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
       .app-viewport {
         max-width: 100% !important;
         box-shadow: none !important;
         height: auto !important;
+        padding: 0 !important;
+        margin: 0 !important;
       }
-      .android-status-bar, .app-header, .bottom-nav, .voice-fab, .header-actions, .no-print {
+      .android-status-bar, .app-header, .bottom-nav, .voice-fab, .header-actions, .no-print,
+      .screen, .modal-overlay:not(#modal-receipt), .sheet-handle, .modal-sheet > div:not(#receipt-modal-content),
+      .modal-sheet > button {
         display: none !important;
       }
-      .receipt-sheet {
-        border: none !important;
-        width: 100% !important;
+      .modal-overlay#modal-receipt {
+        display: block !important;
+        position: static !important;
+        background: transparent !important;
         padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        height: auto !important;
       }
+      .modal-sheet {
+        max-height: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        background: transparent !important;
+      }
+      #receipt-modal-content {
+        display: block !important;
+        width: 100% !important;
+      }
+      .receipt-sheet {
+        border: 1px solid #222 !important;
+        width: 100% !important;
+        max-width: 600px !important;
+        padding: 16px !important;
+        margin: 0 auto !important;
+        box-sizing: border-box !important;
+      }
+    }
+
+    /* ==========================================================================
+       AUTH SCREENS & FORM STYLING (STEP 1: Items 1, 4)
+       ========================================================================== */
+    .auth-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 22px 18px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-md);
+      margin-top: 10px;
+    }
+
+    .auth-brand {
+      text-align: center;
+      padding: 16px 8px 10px;
+    }
+
+    .auth-brand .auth-logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
+      background: var(--primary-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      font-size: 38px;
+      box-shadow: var(--shadow-md);
+      border: 2px solid var(--primary-500);
+    }
+
+    .auth-lang-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .auth-lang-btn {
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border-subtle);
+      background: var(--surface);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .auth-lang-btn.active {
+      background: var(--primary-800);
+      color: #FFFFFF;
+      border-color: var(--primary-800);
+    }
+
+    .auth-input-group {
+      margin-bottom: 14px;
+      text-align: left;
+    }
+
+    .auth-input-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .auth-field-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .auth-input {
+      width: 100%;
+      height: 48px;
+      padding: 12px 14px;
+      font-size: 15px;
+      font-family: inherit;
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: #FFFFFF;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+    }
+
+    .auth-input.has-toggle {
+      padding-right: 46px;
+    }
+
+    .auth-input:focus {
+      border-color: var(--primary-600);
+      box-shadow: 0 0 0 3px var(--primary-100);
+    }
+
+    .auth-input.input-error {
+      border-color: var(--status-red);
+      background-color: #FFFBFB;
+    }
+
+    .btn-toggle-pw {
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-tertiary);
+      border-radius: var(--radius-sm);
+    }
+
+    .btn-toggle-pw:active {
+      background: rgba(0,0,0,0.05);
+    }
+
+    .auth-inline-error {
+      color: var(--status-red);
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .auth-alert-banner {
+      background: var(--status-red-light);
+      border: 1px solid var(--status-red);
+      color: var(--status-red);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      display: none;
+      line-height: 1.4;
+    }
+
+    .spinner-sm {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: #FFFFFF;
+      animation: authSpin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    @keyframes authSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    .auth-switch-link {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .auth-switch-link a {
+      color: var(--primary-700);
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .link-forgot-pw {
+      background: none;
+      border: none;
+      color: var(--primary-700);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 4px 0;
     }
   </style>
 </head>
@@ -996,8 +1238,12 @@
         <button class="header-btn" onclick="app.showLanguageModal()" title="Switch Language">
           <span id="current-lang-code" style="font-size:12px; font-weight:800;">EN</span>
         </button>
+        <!-- Logout Button (visible when logged in) (STEP 3: Item 9) -->
+        <button class="header-btn" id="btn-header-logout" onclick="app.confirmLogout()" title="Logout" style="display:none;">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        </button>
         <!-- Reset Demo Data Button -->
-        <button class="header-btn" onclick="app.confirmResetDemo()" title="Reset Seed Demo Data">
+        <button class="header-btn" id="btn-header-reset-demo" onclick="app.confirmResetDemo()" title="Reset Seed Demo Data">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
         </button>
         <!-- Toggle Wide Viewport on Desktop -->
@@ -1015,6 +1261,169 @@
 
     <!-- Main Content Area -->
     <main class="app-content">
+
+      <!-- ========================================================
+           SCREEN: AUTH - LOGIN (STEP 1: Item 1)
+           ======================================================== -->
+      <section id="screen-login" class="screen active">
+        <div class="auth-brand">
+          <div class="auth-logo">🌾</div>
+          <h2 style="font-size: 22px; font-weight: 800; color: var(--primary-900);">CAL Mandi Ops</h2>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 3px;" id="auth-brand-sub">
+            Smart Wholesale Mandi Platform
+          </p>
+          <div class="auth-lang-row">
+            <button class="auth-lang-btn" id="btn-login-lang-kn" onclick="app.setLanguage('kn')">ಕನ್ನಡ</button>
+            <button class="auth-lang-btn" id="btn-login-lang-hi" onclick="app.setLanguage('hi')">हिंदी</button>
+            <button class="auth-lang-btn active" id="btn-login-lang-en" onclick="app.setLanguage('en')">English</button>
+          </div>
+        </div>
+
+        <div class="auth-card">
+          <h3 style="font-size: 17px; font-weight: 800; color: var(--primary-900); margin-bottom: 4px;" id="lbl-login-heading">
+            Login to Your Mandi Account
+          </h3>
+          <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px;" id="lbl-login-subheading">
+            Enter your 10-digit mobile number and password
+          </p>
+
+          <!-- Firebase / General Error Banner -->
+          <div class="auth-alert-banner" id="login-alert-banner"></div>
+
+          <!-- Mobile Number -->
+          <div class="auth-input-group">
+            <label for="login-mobile" id="lbl-login-mobile">Mobile Number (ಮೊಬೈಲ್ ಸಂಖ್ಯೆ / मोबाइल)</label>
+            <div class="auth-field-wrapper">
+              <input type="tel" id="login-mobile" class="auth-input" placeholder="10-digit mobile number" maxlength="10" autocomplete="tel" oninput="app.clearAuthError('login-mobile')">
+            </div>
+            <div class="auth-inline-error" id="login-mobile-err"></div>
+          </div>
+
+          <!-- Password -->
+          <div class="auth-input-group">
+            <label for="login-password" id="lbl-login-password">Password (ಪಾಸ್‌ವರ್ಡ್ / पासवर्ड)</label>
+            <div class="auth-field-wrapper">
+              <input type="password" id="login-password" class="auth-input has-toggle" placeholder="Enter your password" autocomplete="current-password" oninput="app.clearAuthError('login-password')">
+              <button type="button" class="btn-toggle-pw" onclick="app.togglePasswordVisibility('login-password', this)" title="Show/Hide Password">👁️</button>
+            </div>
+            <div class="auth-inline-error" id="login-password-err"></div>
+          </div>
+
+          <!-- Forgot Password Link -->
+          <div style="text-align: right; margin-top: -6px; margin-bottom: 16px;">
+            <button type="button" class="link-forgot-pw" onclick="app.showForgotPasswordInfo()" id="lbl-login-forgot-pw">
+              Forgot password? / ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿರುವಿರಾ?
+            </button>
+          </div>
+
+          <!-- Login Submit Button (STEP 1: Item 4 Loading state) -->
+          <button class="btn btn-primary" id="btn-login-submit" onclick="app.handleLoginSubmit()" style="width: 100%; height: 48px;">
+            <span id="btn-login-text">Login</span>
+          </button>
+
+          <!-- Switch to Sign Up -->
+          <div class="auth-switch-link">
+            <span id="lbl-no-account-text">Don't have an account?</span>
+            <a onclick="app.showScreen('screen-signup')" id="lbl-signup-link">Sign up here</a>
+          </div>
+        </div>
+
+        <!-- Explore Seeded Demo Button (STEP 3: Item 8) -->
+        <div style="margin-top: 14px; padding: 0 4px;">
+          <button class="btn btn-secondary" onclick="app.enterDemoMode()" style="width: 100%; border: 1.5px dashed var(--primary-700); background: var(--primary-50); font-weight: 700; color: var(--primary-800);">
+            <span id="btn-login-demo-text">Explore Seeded Demo (Ramesh 80 Crates)</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           SCREEN: AUTH - SIGN UP (STEP 1: Item 1)
+           ======================================================== -->
+      <section id="screen-signup" class="screen">
+        <div class="auth-brand">
+          <div class="auth-logo">🚜</div>
+          <h2 style="font-size: 22px; font-weight: 800; color: var(--primary-900);">CAL Mandi Ops</h2>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 3px;" id="auth-signup-brand-sub">
+            Commission Agent Registration
+          </p>
+          <div class="auth-lang-row">
+            <button class="auth-lang-btn" id="btn-signup-lang-kn" onclick="app.setLanguage('kn')">ಕನ್ನಡ</button>
+            <button class="auth-lang-btn" id="btn-signup-lang-hi" onclick="app.setLanguage('hi')">हिंदी</button>
+            <button class="auth-lang-btn active" id="btn-signup-lang-en" onclick="app.setLanguage('en')">English</button>
+          </div>
+        </div>
+
+        <div class="auth-card">
+          <h3 style="font-size: 17px; font-weight: 800; color: var(--primary-900); margin-bottom: 4px;" id="lbl-signup-heading">
+            Create Mandi Account
+          </h3>
+          <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px;" id="lbl-signup-subheading">
+            Register your APMC shop and mobile credentials
+          </p>
+
+          <!-- Firebase / General Error Banner -->
+          <div class="auth-alert-banner" id="signup-alert-banner"></div>
+
+          <!-- Full Name -->
+          <div class="auth-input-group">
+            <label for="signup-fullname" id="lbl-signup-name">Full Name (ಆಡತಿಯ ಹೆಸರು / पूरा नाम)</label>
+            <div class="auth-field-wrapper">
+              <input type="text" id="signup-fullname" class="auth-input" placeholder="e.g. Ramesh Patel" oninput="app.clearAuthError('signup-fullname')">
+            </div>
+            <div class="auth-inline-error" id="signup-fullname-err"></div>
+          </div>
+
+          <!-- Shop / Firm Name -->
+          <div class="auth-input-group">
+            <label for="signup-shopname" id="lbl-signup-shop">Shop / Firm Name (ಅಂಗಡಿ ಹೆಸರು / दुकान का नाम)</label>
+            <div class="auth-field-wrapper">
+              <input type="text" id="signup-shopname" class="auth-input" placeholder="e.g. Patel Mandi Traders" oninput="app.clearAuthError('signup-shopname')">
+            </div>
+            <div class="auth-inline-error" id="signup-shopname-err"></div>
+          </div>
+
+          <!-- Mobile Number -->
+          <div class="auth-input-group">
+            <label for="signup-mobile" id="lbl-signup-mobile">Mobile Number (ಮೊಬೈಲ್ ಸಂಖ್ಯೆ / 10-अंक)</label>
+            <div class="auth-field-wrapper">
+              <input type="tel" id="signup-mobile" class="auth-input" placeholder="10-digit mobile number" maxlength="10" autocomplete="tel" oninput="app.clearAuthError('signup-mobile')">
+            </div>
+            <div class="auth-inline-error" id="signup-mobile-err"></div>
+          </div>
+
+          <!-- Password -->
+          <div class="auth-input-group">
+            <label for="signup-password" id="lbl-signup-password">Password (ಪಾಸ್‌ವರ್ಡ್ / पासवर्ड - Min 6 chars)</label>
+            <div class="auth-field-wrapper">
+              <input type="password" id="signup-password" class="auth-input has-toggle" placeholder="At least 6 characters" autocomplete="new-password" oninput="app.clearAuthError('signup-password')">
+              <button type="button" class="btn-toggle-pw" onclick="app.togglePasswordVisibility('signup-password', this)" title="Show/Hide Password">👁️</button>
+            </div>
+            <div class="auth-inline-error" id="signup-password-err"></div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="auth-input-group">
+            <label for="signup-confirm-password" id="lbl-signup-confirm">Confirm Password (ಖಚಿತಪಡಿಸಿ / दोबारा दर्ज करें)</label>
+            <div class="auth-field-wrapper">
+              <input type="password" id="signup-confirm-password" class="auth-input has-toggle" placeholder="Re-enter password" autocomplete="new-password" oninput="app.clearAuthError('signup-confirm-password')">
+              <button type="button" class="btn-toggle-pw" onclick="app.togglePasswordVisibility('signup-confirm-password', this)" title="Show/Hide Password">👁️</button>
+            </div>
+            <div class="auth-inline-error" id="signup-confirm-err"></div>
+          </div>
+
+          <!-- Sign Up Submit Button (STEP 1: Item 4 Loading state) -->
+          <button class="btn btn-primary" id="btn-signup-submit" onclick="app.handleSignupSubmit()" style="width: 100%; height: 48px; margin-top: 6px;">
+            <span id="btn-signup-text">Create Account</span>
+          </button>
+
+          <!-- Switch to Login -->
+          <div class="auth-switch-link">
+            <span id="lbl-has-account-text">Already have an account?</span>
+            <a onclick="app.showScreen('screen-login')" id="lbl-login-link">Login here</a>
+          </div>
+        </div>
+      </section>
+
 
       <!-- ========================================================
            SCREEN 0: WELCOME & ONBOARDING / LANGUAGE SELECTION
@@ -1105,20 +1514,25 @@
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px;">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px;">
           <div class="stat-badge" onclick="app.showScreen('screen-stock')">
-            <span class="stat-label" style="font-size:9px;" id="lbl-remaining-stock">Stock Left</span>
+            <span class="stat-label" style="font-size:10px;" id="lbl-remaining-stock">Stock Left</span>
             <span class="stat-val" style="font-size:15px;" id="metric-stock-left">60 Crt</span>
-            <span class="stat-sub" style="font-size:10px;">1,035 kg</span>
+            <span class="stat-sub" style="font-size:10px;" id="metric-stock-left-sub">1,035 kg</span>
+          </div>
+          <div class="stat-badge purple" onclick="app.showScreen('screen-patti-list')">
+            <span class="stat-label" style="font-size:10px;" id="lbl-pending-pattis">Pending Pattis</span>
+            <span class="stat-val" style="font-size:15px; color:var(--primary-800);" id="metric-pending-pattis-count">1 Pending</span>
+            <span class="stat-sub" style="font-size:10px; font-weight:700;" id="metric-pending-pattis-total">₹28,446</span>
           </div>
           <div class="stat-badge amber" onclick="app.showScreen('screen-khata', {tab:'buyer'})">
-            <span class="stat-label" style="font-size:9px;" id="lbl-to-receive">To Receive</span>
-            <span class="stat-val" style="font-size:14px; color:var(--accent-amber);" id="metric-to-receive">₹30,600</span>
+            <span class="stat-label" style="font-size:10px;" id="lbl-to-receive">To Receive</span>
+            <span class="stat-val" style="font-size:15px; color:var(--accent-amber);" id="metric-to-receive">₹30,600</span>
             <span class="stat-sub" style="font-size:10px;">From Buyers</span>
           </div>
           <div class="stat-badge red" onclick="app.showScreen('screen-khata', {tab:'farmer'})">
-            <span class="stat-label" style="font-size:9px;" id="lbl-to-pay">To Pay</span>
-            <span class="stat-val" style="font-size:14px; color:var(--status-red);" id="metric-to-pay">₹97,094</span>
+            <span class="stat-label" style="font-size:10px;" id="lbl-to-pay">To Pay</span>
+            <span class="stat-val" style="font-size:15px; color:var(--status-red);" id="metric-to-pay">₹28,446</span>
             <span class="stat-sub" style="font-size:10px;">To Farmers</span>
           </div>
         </div>
@@ -1145,6 +1559,15 @@
             </div>
             <div class="title" id="act-new-sale">New Sale</div>
             <div class="subtitle" id="act-new-sale-sub">ಮಾರಾಟ (Bikri)</div>
+          </div>
+
+          <!-- Weighing Scale Tile (STEP 3: Item 10) -->
+          <div class="action-tile green" onclick="app.openWeighingModal()">
+            <div class="icon-circle">
+              <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 6l3 12h12l3-12H3zM12 3v3m-6 0h12"/></svg>
+            </div>
+            <div class="title" id="act-weighing">Weighing Scale</div>
+            <div class="subtitle" id="act-weighing-sub">ತೂಕ (Tulai / Weight)</div>
           </div>
 
           <!-- 3. Farmer Patti -->
@@ -1213,6 +1636,19 @@
               <p style="font-size: 11px; color: var(--primary-800);" id="lbl-voice-desc">Speak in Kannada, Hindi or English to add arrival</p>
             </div>
             <span style="font-size: 18px; color: var(--primary-800);">→</span>
+          </div>
+        </div>
+
+        <!-- Recent Activity Section (STEP 3: Item 8) -->
+        <div style="margin-top: 18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <h3 style="font-size: 14px; font-weight: 700; color: var(--text-secondary);" id="lbl-recent-activity">
+              Recent Activity / ಇತ್ತೀಚಿನ ವಹಿವಾಟು
+            </h3>
+            <span style="font-size:11px; color:var(--text-tertiary);">Last 6 actions</span>
+          </div>
+          <div id="recent-activity-container" style="display:flex; flex-direction:column; gap:8px;">
+            <!-- Populated via JS -->
           </div>
         </div>
       </section>
@@ -1296,7 +1732,7 @@
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
             <div>
               <span style="font-size:11px; font-weight:600; color:var(--text-tertiary);">Crates / Packages Sold:</span>
-              <input type="number" id="sale-crates-input" oninput="app.calcSalePreview()" style="width:100%; height:46px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 10px; font-size:18px; font-weight:700; font-family:var(--font-mono);" placeholder="e.g. 20">
+              <input type="number" id="sale-crates-input" oninput="app.onSaleCratesInput()" style="width:100%; height:46px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 10px; font-size:18px; font-weight:700; font-family:var(--font-mono);" placeholder="e.g. 20">
             </div>
             <div>
               <span style="font-size:11px; font-weight:600; color:var(--text-tertiary);">Weight Sold (kg):</span>
@@ -1304,7 +1740,7 @@
             </div>
           </div>
 
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:6px;">
             <div>
               <span style="font-size:11px; font-weight:600; color:var(--text-tertiary);">Rate (₹):</span>
               <input type="number" id="sale-rate-input" oninput="app.calcSalePreview()" style="width:100%; height:46px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 10px; font-size:18px; font-weight:700; font-family:var(--font-mono);" placeholder="e.g. 85">
@@ -1317,16 +1753,59 @@
               </select>
             </div>
           </div>
+        </div>
 
-          <!-- Calculated Gross -->
-          <div style="background:var(--primary-50); border:1px solid var(--primary-100); border-radius:10px; padding:12px; margin-top:8px;">
-            <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700; color:var(--primary-900);">
-              <span>Gross Sale Amount:</span>
-              <span id="sale-preview-gross" style="font-size:18px; font-family:var(--font-mono);">₹0</span>
+        <!-- Buyer Payment Collection (STEP 2: Item 6) -->
+        <div class="card">
+          <label style="font-size:12px; font-weight:700; color:var(--text-secondary); margin-bottom:6px; display:block;">4. Payment Terms & Collection:</label>
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; margin-bottom:10px;">
+            <button class="btn btn-sm btn-secondary active" id="sale-paymode-credit" type="button" onclick="app.setSalePaymentMode('Credit')">Udhaar / Credit</button>
+            <button class="btn btn-sm btn-secondary" id="sale-paymode-cash" type="button" onclick="app.setSalePaymentMode('Cash')">💵 Cash</button>
+            <button class="btn btn-sm btn-secondary" id="sale-paymode-upi" type="button" onclick="app.setSalePaymentMode('UPI')">📱 UPI</button>
+          </div>
+          <div>
+            <span style="font-size:11px; font-weight:600; color:var(--text-tertiary);">Amount Received Now (₹):</span>
+            <input type="number" id="sale-amount-received-input" oninput="app.calcSalePreview()" style="width:100%; height:46px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 10px; font-size:18px; font-weight:700; font-family:var(--font-mono);" placeholder="₹ 0" value="0">
+          </div>
+          <div style="font-size:12px; margin-top:6px; color:var(--text-secondary); display:flex; justify-content:space-between;">
+            <span>Unpaid / Due to Credit:</span>
+            <span id="sale-preview-due" style="font-weight:700; color:var(--accent-amber);">₹0</span>
+          </div>
+        </div>
+
+        <!-- Calculation Preview (STEP 2: Item 5) -->
+        <div class="card" style="background:var(--surface); border:1px solid var(--border-subtle); border-radius:10px; padding:12px; margin-top:8px;">
+          <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700; color:var(--text-primary); margin-bottom:6px;">
+            <span>Sale Value (Gross):</span>
+            <span id="sale-preview-gross" style="font-size:16px; font-family:var(--font-mono); font-weight:800; color:var(--accent-blue);">₹0</span>
+          </div>
+
+          <div style="padding-left:8px; border-left:2px solid var(--border-subtle); font-size:11px; color:var(--text-secondary); display:flex; flex-direction:column; gap:3px; margin-bottom:8px;">
+            <div style="display:flex; justify-content:space-between;">
+              <span>- Mandi Commission (5%):</span>
+              <span id="sale-preview-comm" style="font-family:var(--font-mono);">- ₹0</span>
             </div>
-            <div id="sale-stock-warning" style="color:var(--status-red); font-size:11px; font-weight:700; margin-top:4px; display:none;">
-              ⚠️ Cannot sell more than available stock!
+            <div style="display:flex; justify-content:space-between;">
+              <span>- Hamali Loading (₹15/crt):</span>
+              <span id="sale-preview-hamali" style="font-family:var(--font-mono);">- ₹0</span>
             </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span>- APMC Cess (1%):</span>
+              <span id="sale-preview-cess" style="font-family:var(--font-mono);">- ₹0</span>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span>- Tulai Weighing (₹5/100kg):</span>
+              <span id="sale-preview-weighing" style="font-family:var(--font-mono);">- ₹0</span>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:800; color:var(--primary-800); border-top:1px dashed var(--border-subtle); padding-top:6px;">
+            <span>Payable to farmer for this sale:</span>
+            <span id="sale-preview-farmer-payable" style="font-size:16px; font-family:var(--font-mono);">₹0</span>
+          </div>
+
+          <div id="sale-stock-warning" style="color:var(--status-red); font-size:11px; font-weight:700; margin-top:8px; display:none; background:var(--status-red-light); padding:6px 10px; border-radius:6px;">
+            ⚠️ Cannot sell more than available stock!
           </div>
         </div>
 
@@ -1388,6 +1867,13 @@
           </button>
           <button class="btn btn-secondary" id="tab-buyer-khata" onclick="app.switchKhataTab('buyer')">
             🛒 Buyer Khata
+          </button>
+        </div>
+
+        <!-- Farmer Advance Button (Visible on Farmer Khata tab) (STEP 5: Item 14) -->
+        <div id="farmer-advance-action-bar" style="margin-bottom:10px; display:block;">
+          <button class="btn btn-sm btn-secondary" onclick="app.openGiveAdvanceModal()" style="width:100%; border:1px solid var(--primary-700); color:var(--primary-800); font-weight:700; background:var(--primary-50);">
+            🤝 + Give Advance to Farmer (ಮುಂಗಡ ಹಣ ನೀಡಿ)
           </button>
         </div>
 
@@ -1670,10 +2156,80 @@
           <!-- Populated dynamically with full printable patti or bill -->
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px;">
-          <button class="btn btn-secondary" onclick="app.printCurrentReceipt()">🖨️ Print Slip</button>
+          <button class="btn btn-secondary" onclick="app.printCurrentReceipt()">🖨️ Save as PDF / Print</button>
           <button class="btn btn-primary" onclick="app.shareReceiptWhatsApp()">📱 WhatsApp</button>
         </div>
         <button class="btn btn-secondary" style="margin-top: 8px;" onclick="app.closeModal('modal-receipt')">Close</button>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL: WEIGHING SCALE / TULAI KEYPAD (STEP 3: Item 10)
+         ======================================================== -->
+    <div class="modal-overlay" id="modal-weighing">
+      <div class="modal-sheet" style="max-height: 90%;">
+        <div class="sheet-handle"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h3 style="font-size: 16px; font-weight: 700; color: var(--primary-900);">⚖️ Weighing Scale / ತೂಕ</h3>
+          <button class="header-btn" onclick="app.closeModal('modal-weighing')">✕</button>
+        </div>
+        <label style="font-size:11px; font-weight:700; color:var(--text-secondary);">Select Lot to Weigh / Correct:</label>
+        <select id="weighing-lot-select" onchange="app.onWeighingLotChanged()" style="width:100%; height:44px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 10px; font-weight:700; margin-top:4px; margin-bottom:10px; background:#fff;">
+          <!-- Populated dynamically -->
+        </select>
+        <div id="weighing-lot-info" style="font-size:12px; padding:8px 10px; background:var(--surface-variant); border-radius:8px; margin-bottom:10px; color:var(--text-secondary);">
+          <!-- Info -->
+        </div>
+        <div class="touch-input-display active" style="margin-bottom:10px;">
+          <span class="label">Actual Weight (kg):</span>
+          <span class="val" id="disp-weighing-val" style="font-size:26px;">0</span>
+        </div>
+        <p style="font-size:11px; color:var(--text-tertiary); text-align:center; margin-bottom:8px;">Enter actual weighbridge reading on keypad</p>
+        <div class="touch-keypad">
+          <button class="key-btn" onclick="app.weighingKeypad('1')">1</button>
+          <button class="key-btn" onclick="app.weighingKeypad('2')">2</button>
+          <button class="key-btn" onclick="app.weighingKeypad('3')">3</button>
+          <button class="key-btn" onclick="app.weighingKeypad('4')">4</button>
+          <button class="key-btn" onclick="app.weighingKeypad('5')">5</button>
+          <button class="key-btn" onclick="app.weighingKeypad('6')">6</button>
+          <button class="key-btn" onclick="app.weighingKeypad('7')">7</button>
+          <button class="key-btn" onclick="app.weighingKeypad('8')">8</button>
+          <button class="key-btn" onclick="app.weighingKeypad('9')">9</button>
+          <button class="key-btn del" onclick="app.weighingKeypad('clear')">C</button>
+          <button class="key-btn" onclick="app.weighingKeypad('0')">0</button>
+          <button class="key-btn del" onclick="app.weighingKeypad('back')">⌫</button>
+        </div>
+        <button class="btn btn-primary" onclick="app.saveCorrectedWeight()" style="margin-top:12px; width:100%;">
+          ✅ Save Actual Weight
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL: GIVE ADVANCE TO FARMER (STEP 5: Item 14)
+         ======================================================== -->
+    <div class="modal-overlay" id="modal-advance">
+      <div class="modal-sheet">
+        <div class="sheet-handle"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h3 style="font-size: 16px; font-weight: 700; color: var(--primary-900);">🤝 Give Advance to Farmer</h3>
+          <button class="header-btn" onclick="app.closeModal('modal-advance')">✕</button>
+        </div>
+        <label style="font-size:11px; font-weight:700; color:var(--text-secondary);">Select Farmer:</label>
+        <select id="advance-farmer-select" style="width:100%; height:44px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 10px; font-weight:700; margin-top:4px; margin-bottom:10px; background:#fff;">
+          <!-- Populated dynamically -->
+        </select>
+        <label style="font-size:11px; font-weight:700; color:var(--text-secondary);">Advance Amount (₹):</label>
+        <input type="number" id="advance-amount-input" placeholder="₹ e.g. 5000" style="width:100%; height:48px; border:2px solid var(--primary-600); border-radius:10px; padding:0 12px; font-size:20px; font-weight:800; font-family:var(--font-mono); margin-top:4px; margin-bottom:10px;">
+        <label style="font-size:11px; font-weight:700; color:var(--text-secondary);">Payment Mode:</label>
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; margin-top:4px; margin-bottom:14px;">
+          <button class="btn btn-sm btn-secondary active" id="advmode-cash" onclick="app.setAdvancePaymentMode('Cash')">💵 Cash</button>
+          <button class="btn btn-sm btn-secondary" id="advmode-upi" onclick="app.setAdvancePaymentMode('UPI')">📱 UPI</button>
+          <button class="btn btn-sm btn-secondary" id="advmode-bank" onclick="app.setAdvancePaymentMode('Bank')">🏦 Bank</button>
+        </div>
+        <button class="btn btn-primary" onclick="app.submitAdvance()" style="width:100%;">
+          Confirm & Record Advance
+        </button>
       </div>
     </div>
 
@@ -1722,12 +2278,64 @@
       </div>
     </div>
 
+
+    <!-- ========================================================
+         MODAL 7: FORGOT PASSWORD ASSISTANCE (STEP 3: Item 10)
+         ======================================================== -->
+    <div class="modal-overlay" id="modal-forgot-password">
+      <div class="modal-sheet">
+        <div class="sheet-handle"></div>
+        <div style="text-align: center; padding: 12px 6px;">
+          <div style="width: 58px; height: 58px; border-radius: 18px; background: var(--accent-amber-light); color: var(--accent-amber); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 28px;">
+            🛡️
+          </div>
+          <h3 style="font-size: 18px; font-weight: 800; color: var(--primary-900); margin-bottom: 8px;" id="modal-forgot-title">
+            Password Assistance & Security
+          </h3>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px; text-align: left;" id="modal-forgot-desc">
+            To ensure Mandi payment security, unauthorized online resets are disabled. Please contact your APMC IT Desk or Mandi Admin office with your registered mobile number:
+          </p>
+          <div style="background: var(--surface-variant); border-radius: var(--radius-sm); padding: 12px; text-align: left; font-size: 13px; margin-bottom: 18px; border: 1px solid var(--border-subtle);">
+            <strong>📞 Mandi IT Support:</strong> +91 98765 43210<br>
+            <strong>🏢 Office:</strong> Yard Admin Block Room #4, APMC Yeshwanthpur<br>
+            <strong>⏰ Timings:</strong> 05:00 AM – 07:00 PM Daily
+          </div>
+          <button class="btn btn-primary" onclick="app.closeModal('modal-forgot-password')" style="width: 100%;">
+            Close (ಮುಚ್ಚಿ / बंद करें)
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div> <!-- /app-viewport -->
 
   <!-- ========================================================
        JAVASCRIPT: APPLICATION LOGIC & STATE ENGINE
        ======================================================== -->
-  <script>
+  <script type="module">
+  // =============================================================================
+  // FIREBASE CONFIGURATION (Paste your real project credentials below)
+  // =============================================================================
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  // Official Firebase v10+ Web SDK ES Modules from Google CDN
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    signOut, 
+    onAuthStateChanged,
+    updateProfile 
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
     /**
      * CAL Mandi Ops — Core Application Logic
      * Deterministic integer paise math, i18n dictionary, local persistence
@@ -1766,7 +2374,40 @@
         voiceDesc: "Speak in Kannada, Hindi or English to add arrival",
         home: "Home",
         aavak: "Aavak",
-        bikri: "Bikri"
+        bikri: "Bikri",
+        // Auth strings (STEP 1 & STEP 3)
+        loginHeading: "Login to Your Mandi Account",
+        loginSubheading: "Enter your 10-digit mobile number and password",
+        signupHeading: "Create Mandi Account",
+        signupSubheading: "Register your APMC shop and mobile credentials",
+        mobileLabel: "Mobile Number (10 digits)",
+        mobilePlaceholder: "10-digit mobile number",
+        passwordLabel: "Password",
+        passwordPlaceholder: "Enter password",
+        passwordMinLengthPlaceholder: "At least 6 characters",
+        confirmPasswordLabel: "Confirm Password",
+        confirmPasswordPlaceholder: "Re-enter password",
+        fullNameLabel: "Full Name",
+        fullNamePlaceholder: "e.g. Ramesh Patel",
+        shopNameLabel: "Shop / Firm Name",
+        shopNamePlaceholder: "e.g. Patel Mandi Traders",
+        loginBtn: "Login",
+        loggingIn: "Logging in...",
+        signupBtn: "Create Account",
+        signingUp: "Creating Account...",
+        forgotPasswordLink: "Forgot password? / ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿರುವಿರಾ?",
+        noAccountText: "Don't have an account?",
+        signupLinkText: "Sign up here",
+        hasAccountText: "Already have an account?",
+        loginLinkText: "Login here",
+        exploreDemoLoginBtn: "Explore Seeded Demo (Ramesh 80 Crates)",
+        logout: "Logout",
+        logoutConfirm: "Are you sure you want to log out of your account?",
+        errMobileInvalid: "Please enter a valid 10-digit mobile number.",
+        errPasswordTooShort: "Password must be at least 6 characters.",
+        errPasswordMismatch: "Passwords do not match.",
+        errNameRequired: "Please enter your full name.",
+        errShopRequired: "Please enter your shop or firm name."
       },
       kn: {
         appTitle: "ಸಿಎಎಲ್ ಮಂಡಿ ಆಪ್ಸ್",
@@ -1799,7 +2440,40 @@
         voiceDesc: "ಮಾತನಾಡುವ ಮೂಲಕ ಆವಕ ದಾಖಲಿಸಿ",
         home: "ಮುಖಪುಟ",
         aavak: "ಆವಕ",
-        bikri: "ಮಾರಾಟ"
+        bikri: "ಮಾರಾಟ",
+        // Auth strings (STEP 1 & STEP 3)
+        loginHeading: "ನಿಮ್ಮ ಮಂಡಿ ಖಾತೆಗೆ ಲಾಗಿನ್ ಮಾಡಿ",
+        loginSubheading: "ನಿಮ್ಮ 10-ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಮತ್ತು ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ",
+        signupHeading: "ಹೊಸ ಮಂಡಿ ಖಾತೆ ರಚಿಸಿ",
+        signupSubheading: "ನಿಮ್ಮ ಎಪಿಎಂಸಿ ಅಂಗಡಿ ಮತ್ತು ಮೊಬೈಲ್ ವಿವರಗಳನ್ನು ನೋಂದಾಯಿಸಿ",
+        mobileLabel: "ಮೊಬೈಲ್ ಸಂಖ್ಯೆ (10 ಅಂಕಿಗಳು)",
+        mobilePlaceholder: "10-ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
+        passwordLabel: "ಪಾಸ್‌ವರ್ಡ್",
+        passwordPlaceholder: "ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ",
+        passwordMinLengthPlaceholder: "ಕನಿಷ್ಠ 6 ಅಕ್ಷರಗಳು",
+        confirmPasswordLabel: "ಪಾಸ್‌ವರ್ಡ್ ದೃಢೀಕರಿಸಿ",
+        confirmPasswordPlaceholder: "ಪಾಸ್‌ವರ್ಡ್ ಮತ್ತೆ ನಮೂದಿಸಿ",
+        fullNameLabel: "ಪೂರ್ಣ ಹೆಸರು",
+        fullNamePlaceholder: "ಉದಾ: ರಮೇಶ್ ಪಟೇಲ್",
+        shopNameLabel: "ಅಂಗಡಿ / ಸಂಸ್ಥೆಯ ಹೆಸರು",
+        shopNamePlaceholder: "ಉದಾ: ಪಟೇಲ್ ಮಂಡಿ ಟ್ರೇಡರ್ಸ್",
+        loginBtn: "ಲಾಗಿನ್",
+        loggingIn: "ಲಾಗಿನ್ ಆಗುತ್ತಿದೆ...",
+        signupBtn: "ಖಾತೆ ರಚಿಸಿ",
+        signingUp: "ಖಾತೆ ರಚಿಸಲಾಗುತ್ತಿದೆ...",
+        forgotPasswordLink: "ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿರುವಿರಾ?",
+        noAccountText: "ಖಾತೆ ಹೊಂದಿಲ್ಲವೇ?",
+        signupLinkText: "ಇಲ್ಲಿ ನೋಂದಾಯಿಸಿ",
+        hasAccountText: "ಈಗಾಗಲೇ ಖಾತೆ ಹೊಂದಿದ್ದೀರಾ?",
+        loginLinkText: "ಇಲ್ಲಿ ಲಾಗಿನ್ ಮಾಡಿ",
+        exploreDemoLoginBtn: "ಡೆಮೊ ವೀಕ್ಷಿಸಿ (ರಮೇಶ್ 80 ಕ್ರೇಟ್‌ಗಳು)",
+        logout: "ಲಾಗ್ ಔಟ್",
+        logoutConfirm: "ನಿಮ್ಮ ಖಾತೆಯಿಂದ ಲಾಗ್ ಔಟ್ ಮಾಡಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?",
+        errMobileInvalid: "ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ 10-ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ.",
+        errPasswordTooShort: "ಪಾಸ್‌ವರ್ಡ್ ಕನಿಷ್ಠ 6 ಅಕ್ಷರಗಳನ್ನು ಹೊಂದಿರಬೇಕು.",
+        errPasswordMismatch: "ಪಾಸ್‌ವರ್ಡ್‌ಗಳು ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ.",
+        errNameRequired: "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ನಮೂದಿಸಿ.",
+        errShopRequired: "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಅಂಗಡಿ ಅಥವಾ ಸಂಸ್ಥೆಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ."
       },
       hi: {
         appTitle: "कैल मंडी ऑप्स",
@@ -1832,7 +2506,40 @@
         voiceDesc: "कन्नड़, हिंदी या अंग्रेजी में बोलें",
         home: "होम",
         aavak: "आवक",
-        bikri: "बिक्री"
+        bikri: "बिक्री",
+        // Auth strings (STEP 1 & STEP 3)
+        loginHeading: "अपने मंडी खाते में लॉगिन करें",
+        loginSubheading: "अपना 10-अंकों का मोबाइल नंबर और पासवर्ड दर्ज करें",
+        signupHeading: "नया मंडी खाता बनाएं",
+        signupSubheading: "अपनी एपीएमसी दुकान और मोबाइल विवरण पंजीकृत करें",
+        mobileLabel: "मोबाइल नंबर (10 अंक)",
+        mobilePlaceholder: "10 अंकों का मोबाइल नंबर",
+        passwordLabel: "पासवर्ड",
+        passwordPlaceholder: "पासवर्ड दर्ज करें",
+        passwordMinLengthPlaceholder: "कम से कम 6 अक्षर",
+        confirmPasswordLabel: "पासवर्ड की पुष्टि करें",
+        confirmPasswordPlaceholder: "पासवर्ड दोबारा दर्ज करें",
+        fullNameLabel: "पूरा नाम",
+        fullNamePlaceholder: "उदा: रमेश पटेल",
+        shopNameLabel: "दुकान / फर्म का नाम",
+        shopNamePlaceholder: "उदा: पटेल मंडी ट्रेडर्स",
+        loginBtn: "लॉगिन करें",
+        loggingIn: "लॉगिन हो रहा है...",
+        signupBtn: "खाता बनाएं",
+        signingUp: "खाता बन रहा है...",
+        forgotPasswordLink: "पासवर्ड भूल गए?",
+        noAccountText: "खाता नहीं है?",
+        signupLinkText: "यहाँ रजिस्टर करें",
+        hasAccountText: "पहले से खाता है?",
+        loginLinkText: "यहाँ लॉगिन करें",
+        exploreDemoLoginBtn: "सीडेड डेमो देखें (रमेश 80 क्रेट)",
+        logout: "लॉग आउट",
+        logoutConfirm: "क्या आप वाकई अपने खाते से लॉग आउट करना चाहते हैं?",
+        errMobileInvalid: "कृपया 10 अंकों का वैध मोबाइल नंबर दर्ज करें।",
+        errPasswordTooShort: "पासवर्ड कम से कम 6 अक्षरों का होना चाहिए।",
+        errPasswordMismatch: "पासवर्ड मेल नहीं खाते।",
+        errNameRequired: "कृपया अपना पूरा नाम दर्ज करें।",
+        errShopRequired: "कृपया अपनी दुकान या फर्म का नाम दर्ज करें।"
       }
     };
 
@@ -1846,14 +2553,37 @@
       { id: "mango", nameEn: "Mangoes", nameKn: "ಮಾವಿನಹಣ್ಣು", nameHi: "आम", icon: "🥭", defaultWeight: 20, unit: "Box" }
     ];
 
-    // Seed Demo Data as specified in Section 7
+// Empty initial state for new authenticated accounts (STEP 3: Item 8)
+    function getEmptyUserState(lang = 'en') {
+      return {
+        lang: lang,
+        isOnline: true,
+        todayArrivalCount: 0,
+        todaySaleCount: 0,
+        activeLotsCount: 0,
+        lots: [],
+        sales: [],
+        payments: [],
+        advances: [],
+        parties: {
+          farmers: [],
+          buyers: []
+        },
+        cratesLedger: [],
+        nextLotNum: 1001,
+        nextBillNum: 101,
+        nextReceiptNum: 201
+      };
+    }
+
+    // Seed Demo Data as specified in Section 7 (Updated for Step 1 money logic: patti from actual sales)
     function getInitialDemoState() {
       return {
         language: "en",
         isOnline: true,
         parties: {
           farmers: [
-            { id: "f-1", name: "Ramesh Gowda", phone: "9876543210", village: "Ramanagara", outstandingPaise: 9709400 },
+            { id: "f-1", name: "Ramesh Gowda", phone: "9876543210", village: "Ramanagara", outstandingPaise: 2844600 },
             { id: "f-2", name: "Siddaraju", phone: "9845012345", village: "Channapatna", outstandingPaise: 0 },
             { id: "f-3", name: "Manjunath", phone: "9900112233", village: "Kolar", outstandingPaise: 0 }
           ],
@@ -1879,19 +2609,19 @@
             estimatedWeightKg: 1440,
             actualWeightKg: 1395,
             remainingWeightKg: 1035, // 1395 - 360
-            pricingMethod: "kg", // 'kg' or 'crate'
+            pricingMethod: "kg",
             rateRupees: 75,
-            grossPaise: 10462500, // 1395 kg * 75 = 1,04,625
-            totalChargesPaise: 753100, // Commission + Hamali + Cess + Weighing = 7,531
-            netPayablePaise: 9709400, // 1,04,625 - 7,531 = 97,094
-            settlementStatus: "pending", // 'pending' or 'paid'
+            grossPaise: 3060000, // built from actual sale: 360 kg * 85 = 30,600
+            totalChargesPaise: 215400, // Commission (1530) + Hamali (300) + Cess (306) + Weighing (18) = 2,154
+            netPayablePaise: 2844600, // 30,600 - 2,154 = 28,446
+            settlementStatus: "pending",
             paidAmountPaise: 0,
-            remainingPayablePaise: 9709400,
+            remainingPayablePaise: 2844600,
             breakdown: {
-              commissionPaise: 523125, // 5% of 1,04,625
-              hamaliPaise: 120000,     // 80 crates * 15
-              mandiCessPaise: 104625,  // 1% of 1,04,625
-              tulaiWeighingPaise: 5350 // Weighing
+              commissionPaise: 153000, // 5% of 30,600
+              hamaliPaise: 30000,     // 20 crates sold * 15
+              mandiCessPaise: 30600,  // 1% of 30,600
+              tulaiWeighingPaise: 1800 // 360 kg / 100 * 5 = 18
             }
           }
         ],
@@ -1901,6 +2631,7 @@
             billNo: "BILL-2026-101",
             date: "Today, 08:45 AM",
             lotId: "LOT-2026-089",
+            commodityName: "Apples (Grade A Shimla)",
             buyerId: "b-1",
             buyerName: "ABC Traders",
             cratesSold: 20,
@@ -1908,7 +2639,7 @@
             rateRupees: 85,
             pricingUnit: "kg",
             grossAmountPaise: 3060000, // 360 kg * 85 = 30,600
-            paymentStatus: "Credit (Udhaar)",
+            paymentStatus: "Credit",
             amountReceivedPaise: 0,
             dueAmountPaise: 3060000
           }
@@ -1916,6 +2647,7 @@
         payments: [
           // Sample historical or ledger payments
         ],
+        advances: [],
         cratesLedger: [
           { date: "Today", partyName: "Ramesh Gowda", type: "Return", qty: 80, balance: 0 },
           { date: "Today", partyName: "ABC Traders", type: "Issue", qty: 20, balance: 20 }
@@ -1924,19 +2656,191 @@
     }
 
     // Main Application Engine
+/**
+     * Firebase Authentication Adapter (STEP 1, 2, 3)
+     * Transparently delegates to Firebase v10 Web SDK when configured with real credentials,
+     * or to a simulated local client-side provider when apiKey is a placeholder or offline.
+     * Passwords are NEVER stored in plaintext.
+     */
+    class FirebaseAuthService {
+      constructor(config) {
+        this.config = config || {};
+        this.isPlaceholder = !this.config.apiKey || 
+          this.config.apiKey === "YOUR_API_KEY" || 
+          this.config.apiKey.includes("YOUR_");
+        
+        this.listeners = [];
+        this.currentUser = null;
+
+        if (!this.isPlaceholder) {
+          try {
+            this.app = initializeApp(this.config);
+            this.auth = getAuth(this.app);
+            onAuthStateChanged(this.auth, (user) => {
+              this.currentUser = user;
+              this.notifyListeners(user);
+            });
+          } catch (e) {
+            console.warn("Firebase Auth live init fallback:", e);
+            this.isPlaceholder = true;
+            this.initMockAuth();
+          }
+        } else {
+          this.initMockAuth();
+        }
+      }
+
+      initMockAuth() {
+        try {
+          const sess = localStorage.getItem('cal_mandi_mock_auth_session');
+          this.currentUser = sess ? JSON.parse(sess) : null;
+        } catch(e) {
+          this.currentUser = null;
+        }
+      }
+
+      onAuthStateChanged(callback) {
+        this.listeners.push(callback);
+        setTimeout(() => callback(this.currentUser), 0);
+        return () => {
+          this.listeners = this.listeners.filter(l => l !== callback);
+        };
+      }
+
+      notifyListeners(user) {
+        this.currentUser = user;
+        this.listeners.forEach(cb => {
+          try { cb(user); } catch(e) { console.error(e); }
+        });
+      }
+
+      async createUser(email, password, displayName) {
+        if (!this.isPlaceholder && this.auth) {
+          const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+          if (displayName && userCredential.user) {
+            await updateProfile(userCredential.user, { displayName });
+          }
+          return userCredential.user;
+        }
+
+        // Mock Auth simulation (passwords are NEVER stored in plaintext)
+        const users = JSON.parse(localStorage.getItem('cal_mandi_mock_auth_users') || '[]');
+        if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+          const err = new Error("The mobile number is already in use by another account.");
+          err.code = "auth/email-already-in-use";
+          throw err;
+        }
+
+        const passHash = this.hashPassword(password);
+        const uid = "usr_" + Date.now().toString(36) + Math.random().toString(36).substring(2, 7);
+        const newUser = {
+          uid,
+          email,
+          displayName: displayName || "",
+          passHash
+        };
+
+        users.push(newUser);
+        localStorage.setItem('cal_mandi_mock_auth_users', JSON.stringify(users));
+
+        const sessionUser = { uid, email, displayName: displayName || "" };
+        localStorage.setItem('cal_mandi_mock_auth_session', JSON.stringify(sessionUser));
+
+        this.notifyListeners(sessionUser);
+        return sessionUser;
+      }
+
+      async signIn(email, password) {
+        if (!this.isPlaceholder && this.auth) {
+          const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+          return userCredential.user;
+        }
+
+        const users = JSON.parse(localStorage.getItem('cal_mandi_mock_auth_users') || '[]');
+        const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+        if (!user) {
+          const err = new Error("No account found with this mobile number.");
+          err.code = "auth/user-not-found";
+          throw err;
+        }
+
+        if (user.passHash !== this.hashPassword(password)) {
+          const err = new Error("Incorrect password.");
+          err.code = "auth/wrong-password";
+          throw err;
+        }
+
+        const sessionUser = { uid: user.uid, email: user.email, displayName: user.displayName || "" };
+        localStorage.setItem('cal_mandi_mock_auth_session', JSON.stringify(sessionUser));
+
+        this.notifyListeners(sessionUser);
+        return sessionUser;
+      }
+
+      async signOut() {
+        if (!this.isPlaceholder && this.auth) {
+          await signOut(this.auth);
+          return;
+        }
+
+        localStorage.removeItem('cal_mandi_mock_auth_session');
+        this.notifyListeners(null);
+      }
+
+      async updateProfile(user, profile) {
+        if (!this.isPlaceholder && this.auth && this.auth.currentUser) {
+          await updateProfile(this.auth.currentUser, profile);
+          return;
+        }
+
+        if (this.currentUser) {
+          this.currentUser.displayName = profile.displayName || this.currentUser.displayName;
+          localStorage.setItem('cal_mandi_mock_auth_session', JSON.stringify(this.currentUser));
+          
+          const users = JSON.parse(localStorage.getItem('cal_mandi_mock_auth_users') || '[]');
+          const idx = users.findIndex(u => u.uid === this.currentUser.uid);
+          if (idx !== -1) {
+            users[idx].displayName = profile.displayName || users[idx].displayName;
+            localStorage.setItem('cal_mandi_mock_auth_users', JSON.stringify(users));
+          }
+        }
+      }
+
+      // One-way integer hash for mock authentication - NEVER stores passwords in plaintext
+      hashPassword(str) {
+        let hash = 5381;
+        for (let i = 0; i < str.length; i++) {
+          hash = ((hash << 5) + hash) + str.charCodeAt(i);
+          hash = hash & hash;
+        }
+        return "pw_hash_" + Math.abs(hash).toString(16);
+      }
+    }
+
     class CalMandiOps {
       constructor() {
-        this.loadState();
-        this.currentScreen = "screen-welcome";
+        this.authService = new FirebaseAuthService(firebaseConfig);
+        this.currentUser = null;
+        this.currentUserProfile = null;
+        this.isDemoMode = false;
+        this.state = getEmptyUserState('en');
+        this.currentScreen = "screen-login";
         this.activeWizardStep = 1;
         this.wizardData = {};
         this.selectedPaymentMode = "Cash";
         this.paymentDirection = "receive";
         this.currentReceiptData = null;
+        this.farmerSearchQuery = "";
+        this.selectedSalePaymentMode = "Credit";
+        this.weighingKeypadVal = "0";
+        this.selectedWeighingLotId = null;
+        this.selectedAdvanceMode = "Cash";
 
         this.initAudio();
         this.initSpeech();
-        this.renderAll();
+
+        // Setup Firebase Auth State Listener (STEP 2: Item 5)
+        this.authService.onAuthStateChanged((user) => this.handleAuthStateChanged(user));
       }
 
       // Audio feedback using Web Audio API
@@ -1968,25 +2872,470 @@
         } catch(e) {}
       }
 
-      // State Persistence
-      loadState() {
+      // User Profile Management (STEP 2: Item 7)
+      loadUserProfile(uid) {
         try {
-          const saved = localStorage.getItem("cal_mandi_ops_state");
+          const raw = localStorage.getItem(`cal_mandi_user_profile_${uid}`);
+          this.currentUserProfile = raw ? JSON.parse(raw) : {
+            uid,
+            fullName: this.currentUser?.displayName || "Commission Agent",
+            shopName: "Mandi Trading Co."
+          };
+        } catch (e) {
+          this.currentUserProfile = { uid, fullName: "Commission Agent", shopName: "Mandi Trading Co." };
+        }
+      }
+
+      // Per-User State Persistence (STEP 3: Item 8)
+      loadUserState(uid) {
+        const storageKey = `cal_mandi_ops_state_v2_${uid}`;
+        try {
+          const saved = localStorage.getItem(storageKey);
           if (saved) {
             this.state = JSON.parse(saved);
+            this.state.advances = this.state.advances || [];
           } else {
-            this.state = getInitialDemoState();
+            // New users start with EMPTY data
+            this.state = getEmptyUserState(this.state?.lang || 'en');
           }
         } catch (e) {
-          this.state = getInitialDemoState();
+          this.state = getEmptyUserState(this.state?.lang || 'en');
         }
       }
 
       saveState() {
-        try {
-          localStorage.setItem("cal_mandi_ops_state", JSON.stringify(this.state));
-        } catch (e) {}
+        const key = this.currentUser 
+          ? `cal_mandi_ops_state_v2_${this.currentUser.uid}` 
+          : (this.isDemoMode ? 'cal_mandi_ops_state_v2_demo' : null);
+        if (key) {
+          try {
+            localStorage.setItem(key, JSON.stringify(this.state));
+          } catch (e) {}
+        }
         this.updateHeaderStats();
+      }
+
+      getUserFullName() {
+        return this.currentUserProfile?.fullName || 
+          this.currentUser?.displayName || 
+          (this.isDemoMode ? "Ramesh Adatiya" : "Trader");
+      }
+
+      getUserShopName() {
+        return this.currentUserProfile?.shopName || 
+          (this.isDemoMode ? "Coherent Mandi Enterprises" : "Mandi Trading Co.");
+      }
+
+      // Session Gate (STEP 2: Item 5, 6)
+      handleAuthStateChanged(user) {
+        if (user) {
+          this.currentUser = user;
+          this.isDemoMode = false;
+          this.loadUserProfile(user.uid);
+          this.loadUserState(user.uid);
+          this.updateAuthSessionUI(true);
+          this.renderAll();
+          this.showScreen('screen-home');
+        } else if (this.isDemoMode) {
+          this.updateAuthSessionUI(true);
+          this.renderAll();
+          this.showScreen('screen-home');
+        } else {
+          this.currentUser = null;
+          this.currentUserProfile = null;
+          this.state = getEmptyUserState(this.state?.lang || 'en');
+          this.updateAuthSessionUI(false);
+          if (this.currentScreen !== 'screen-signup') {
+            this.showScreen('screen-login');
+          }
+        }
+      }
+
+      updateAuthSessionUI(isLoggedIn) {
+        const bottomNav = document.querySelector('.bottom-nav');
+        if (bottomNav) bottomNav.style.display = isLoggedIn ? 'flex' : 'none';
+
+        const voiceFab = document.querySelector('.voice-fab');
+        if (voiceFab) voiceFab.style.display = isLoggedIn ? 'flex' : 'none';
+
+        const logoutBtn = document.getElementById('btn-header-logout');
+        if (logoutBtn) logoutBtn.style.display = isLoggedIn ? 'inline-flex' : 'none';
+
+        const resetDemoBtn = document.getElementById('btn-header-reset-demo');
+        if (resetDemoBtn) resetDemoBtn.style.display = isLoggedIn ? 'inline-flex' : 'none';
+      }
+
+      // Auth Helpers & Validations (STEP 1 & STEP 3)
+      mobileToEmail(mobile) {
+        const clean = String(mobile || '').replace(/\D/g, '');
+        return `${clean}@calmandi.app`;
+      }
+
+      togglePasswordVisibility(inputId, btnEl) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        const isPw = input.type === 'password';
+        input.type = isPw ? 'text' : 'password';
+        if (btnEl) btnEl.innerText = isPw ? '🙈' : '👁️';
+      }
+
+      clearAuthError(fieldId) {
+        const input = document.getElementById(fieldId);
+        if (input) input.classList.remove('input-error');
+        const errEl = document.getElementById(`${fieldId}-err`);
+        if (errEl) {
+          errEl.innerText = '';
+          errEl.style.display = 'none';
+        }
+        const loginBanner = document.getElementById('login-alert-banner');
+        if (loginBanner) loginBanner.style.display = 'none';
+        const signupBanner = document.getElementById('signup-alert-banner');
+        if (signupBanner) signupBanner.style.display = 'none';
+      }
+
+      showAuthError(fieldId, msg) {
+        const input = document.getElementById(fieldId);
+        if (input) input.classList.add('input-error');
+        const errEl = document.getElementById(`${fieldId}-err`);
+        if (errEl) {
+          errEl.innerText = msg;
+          errEl.style.display = 'block';
+        }
+      }
+
+      setAuthButtonLoading(btnId, textElId, isLoading, defaultKey, loadingKey) {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+        btn.disabled = isLoading;
+        const dict = I18N[this.state?.lang || 'en'];
+        if (isLoading) {
+          btn.innerHTML = `<span class="spinner-sm"></span> <span>${dict[loadingKey] || 'Please wait...'}</span>`;
+        } else {
+          btn.innerHTML = `<span id="${textElId}">${dict[defaultKey] || 'Submit'}</span>`;
+        }
+      }
+
+      mapAuthError(errCode, lang = 'en') {
+        const code = String(errCode || '');
+        if (code.includes('invalid-credential') || code.includes('wrong-password') || code.includes('user-not-found')) {
+          const msgs = {
+            en: "Invalid mobile number or password. Please verify and try again.",
+            kn: "ತಪ್ಪು ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್. ದಯವಿಟ್ಟು ಪರಿಶೀಲಿಸಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+            hi: "गलत मोबाइल नंबर या पासवर्ड। कृपया जाँच कर पुनः प्रयास करें।"
+          };
+          return msgs[lang] || msgs.en;
+        }
+        if (code.includes('email-already-in-use') || code.includes('account-exists')) {
+          const msgs = {
+            en: "An account with this mobile number already exists. Please login.",
+            kn: "ಈ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯಲ್ಲಿ ಈಗಾಗಲೇ ಖಾತೆ ಇದೆ. ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಮಾಡಿ.",
+            hi: "इस मोबाइल नंबर पर पहले से खाता मौजूद है। कृपया लॉगिन करें।"
+          };
+          return msgs[lang] || msgs.en;
+        }
+        if (code.includes('weak-password')) {
+          const msgs = {
+            en: "Password is too weak. Please use at least 6 characters.",
+            kn: "ಪಾಸ್‌ವರ್ಡ್ ತುಂಬಾ ಸರಳವಾಗಿದೆ. ಕನಿಷ್ಠ 6 ಅಕ್ಷರಗಳನ್ನು ಬಳಸಿ.",
+            hi: "पासवर्ड बहुत कमज़ोर है। कृपया कम से कम 6 अक्षर दर्ज करें।"
+          };
+          return msgs[lang] || msgs.en;
+        }
+        if (code.includes('network')) {
+          const msgs = {
+            en: "Network error. Please check your internet connection.",
+            kn: "ನೆಟ್‌ವರ್ಕ್ ದೋಷ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ.",
+            hi: "नेटवर्क त्रुटि। कृपया अपना इंटरनेट कनेक्शन जाँचें।"
+          };
+          return msgs[lang] || msgs.en;
+        }
+        if (code.includes('too-many-requests')) {
+          const msgs = {
+            en: "Too many failed attempts. Please wait a few moments and try again.",
+            kn: "ಹೆಚ್ಚು ವಿಫಲ ಪ್ರಯತ್ನಗಳು. ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯ ಕಾಯಿರಿ.",
+            hi: "अत्यधिक असफल प्रयास। कृपया कुछ समय बाद पुनः प्रयास करें।"
+          };
+          return msgs[lang] || msgs.en;
+        }
+        const defaultMsgs = {
+          en: "Authentication failed. Please verify your details and try again.",
+          kn: "ದೃಢೀಕರಣ ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+          hi: "प्रमाणीकरण विफल रहा। कृपया विवरण जाँच कर पुनः प्रयास करें।"
+        };
+        return defaultMsgs[lang] || defaultMsgs.en;
+      }
+
+      async handleLoginSubmit() {
+        const dict = I18N[this.state?.lang || 'en'];
+        const mobileInput = document.getElementById('login-mobile');
+        const pwInput = document.getElementById('login-password');
+        const banner = document.getElementById('login-alert-banner');
+        if (banner) banner.style.display = 'none';
+
+        const mobile = mobileInput ? mobileInput.value.trim() : '';
+        const password = pwInput ? pwInput.value : '';
+
+        let hasError = false;
+        if (!/^\d{10}$/.test(mobile)) {
+          this.showAuthError('login-mobile', dict.errMobileInvalid || "Please enter a valid 10-digit mobile number.");
+          hasError = true;
+        }
+        if (!password || password.length < 6) {
+          this.showAuthError('login-password', dict.errPasswordTooShort || "Password must be at least 6 characters.");
+          hasError = true;
+        }
+        if (hasError) return;
+
+        this.setAuthButtonLoading('btn-login-submit', 'btn-login-text', true, 'loginBtn', 'loggingIn');
+        const email = this.mobileToEmail(mobile);
+
+        try {
+          await this.authService.signIn(email, password);
+          if (pwInput) pwInput.value = '';
+          this.showToast("Logged in successfully!", "success");
+        } catch (err) {
+          if (pwInput) pwInput.value = '';
+          const friendlyMsg = this.mapAuthError(err.code || err.message, this.state?.lang || 'en');
+          if (banner) {
+            banner.innerText = friendlyMsg;
+            banner.style.display = 'block';
+          } else {
+            this.showToast(friendlyMsg, "error");
+          }
+        } finally {
+          this.setAuthButtonLoading('btn-login-submit', 'btn-login-text', false, 'loginBtn', 'loggingIn');
+        }
+      }
+
+      async handleSignupSubmit() {
+        const dict = I18N[this.state?.lang || 'en'];
+        const nameInput = document.getElementById('signup-fullname');
+        const shopInput = document.getElementById('signup-shopname');
+        const mobileInput = document.getElementById('signup-mobile');
+        const pwInput = document.getElementById('signup-password');
+        const confirmPwInput = document.getElementById('signup-confirm-password');
+        const banner = document.getElementById('signup-alert-banner');
+        if (banner) banner.style.display = 'none';
+
+        const fullName = nameInput ? nameInput.value.trim() : '';
+        const shopName = shopInput ? shopInput.value.trim() : '';
+        const mobile = mobileInput ? mobileInput.value.trim() : '';
+        const password = pwInput ? pwInput.value : '';
+        const confirmPw = confirmPwInput ? confirmPwInput.value : '';
+
+        let hasError = false;
+        if (!fullName) {
+          this.showAuthError('signup-fullname', dict.errNameRequired || "Please enter your full name.");
+          hasError = true;
+        }
+        if (!shopName) {
+          this.showAuthError('signup-shopname', dict.errShopRequired || "Please enter your shop or firm name.");
+          hasError = true;
+        }
+        if (!/^\d{10}$/.test(mobile)) {
+          this.showAuthError('signup-mobile', dict.errMobileInvalid || "Please enter a valid 10-digit mobile number.");
+          hasError = true;
+        }
+        if (!password || password.length < 6) {
+          this.showAuthError('signup-password', dict.errPasswordTooShort || "Password must be at least 6 characters.");
+          hasError = true;
+        }
+        if (password !== confirmPw) {
+          this.showAuthError('signup-confirm-password', dict.errPasswordMismatch || "Passwords do not match.");
+          hasError = true;
+        }
+        if (hasError) return;
+
+        this.setAuthButtonLoading('btn-signup-submit', 'btn-signup-text', true, 'signupBtn', 'signingUp');
+        const email = this.mobileToEmail(mobile);
+
+        try {
+          const user = await this.authService.createUser(email, password, fullName);
+          if (pwInput) pwInput.value = '';
+          if (confirmPwInput) confirmPwInput.value = '';
+
+          const profile = { uid: user.uid, fullName, shopName, mobile };
+          localStorage.setItem(`cal_mandi_user_profile_${user.uid}`, JSON.stringify(profile));
+          this.currentUserProfile = profile;
+
+          this.showToast(`Welcome ${fullName}! Your Mandi account is ready.`, "success");
+        } catch (err) {
+          if (pwInput) pwInput.value = '';
+          if (confirmPwInput) confirmPwInput.value = '';
+          const friendlyMsg = this.mapAuthError(err.code || err.message, this.state?.lang || 'en');
+          if (banner) {
+            banner.innerText = friendlyMsg;
+            banner.style.display = 'block';
+          } else {
+            this.showToast(friendlyMsg, "error");
+          }
+        } finally {
+          this.setAuthButtonLoading('btn-signup-submit', 'btn-signup-text', false, 'signupBtn', 'signingUp');
+        }
+      }
+
+      confirmLogout() {
+        const dict = I18N[this.state?.lang || 'en'];
+        const msg = dict.logoutConfirm || "Are you sure you want to log out of your account?";
+        if (confirm(msg)) {
+          this.signOutUser();
+        }
+      }
+
+      async signOutUser() {
+        this.isDemoMode = false;
+        await this.authService.signOut();
+        this.showToast("Logged out successfully", "success");
+      }
+
+      showForgotPasswordInfo() {
+        this.openModal('modal-forgot-password');
+      }
+
+      enterDemoMode() {
+        this.isDemoMode = true;
+        this.currentUser = { uid: "demo_guest", displayName: "Ramesh Adatiya", email: "9876543210@calmandi.app" };
+        this.currentUserProfile = { uid: "demo_guest", fullName: "Ramesh Adatiya", shopName: "Coherent Mandi Enterprises" };
+        this.state = getInitialDemoState();
+        this.saveState();
+        this.updateAuthSessionUI(true);
+        this.renderAll();
+        this.showScreen('screen-home');
+        this.showToast("Demo Mode Active: Seeded Scenario Loaded", "success");
+      }
+
+      // Money Logic Helpers (STEP 1: Items 1, 3, 4)
+      calculateLotPatti(lotId) {
+        const lot = this.state.lots.find(l => l.lotId === lotId);
+        if (!lot) return null;
+
+        const lotSales = this.state.sales.filter(s => s.lotId === lotId);
+        const cratesSold = lotSales.reduce((sum, s) => sum + (s.cratesSold || 0), 0);
+        const weightSoldKg = lotSales.reduce((sum, s) => sum + (s.weightSoldKg || 0), 0);
+        const grossPaise = lotSales.reduce((sum, s) => sum + (s.grossAmountPaise || 0), 0);
+
+        let commissionPaise = 0;
+        let mandiCessPaise = 0;
+        let hamaliPaise = 0;
+        let weighingPaise = 0;
+
+        if (grossPaise > 0) {
+          commissionPaise = Math.round(grossPaise * 0.05); // Commission 5%
+          mandiCessPaise = Math.round(grossPaise * 0.01);   // Cess 1%
+          hamaliPaise = cratesSold * 15 * 100;             // Hamali Rs 15 per crate sold
+          weighingPaise = Math.round(weightSoldKg * 5);     // Weighing Rs 5 per 100 kg sold (5 paise/kg)
+        }
+
+        const totalChargesPaise = commissionPaise + mandiCessPaise + hamaliPaise + weighingPaise;
+        const netPayablePaise = Math.max(0, grossPaise - totalChargesPaise);
+
+        lot.soldCrates = cratesSold;
+        lot.remainingCrates = Math.max(0, lot.originalCrates - cratesSold);
+        lot.remainingWeightKg = Math.max(0, lot.actualWeightKg - weightSoldKg);
+        lot.grossPaise = grossPaise;
+        lot.totalChargesPaise = totalChargesPaise;
+        lot.netPayablePaise = netPayablePaise;
+        lot.breakdown = {
+          commissionPaise,
+          hamaliPaise,
+          mandiCessPaise,
+          tulaiWeighingPaise: weighingPaise
+        };
+
+        lot.remainingPayablePaise = Math.max(0, netPayablePaise - (lot.paidAmountPaise || 0));
+        if (lot.remainingPayablePaise === 0 && grossPaise > 0) {
+          lot.settlementStatus = "paid";
+        } else if ((lot.paidAmountPaise || 0) > 0 && lot.remainingPayablePaise > 0) {
+          lot.settlementStatus = "partial";
+        } else {
+          lot.settlementStatus = "pending";
+        }
+
+        return lot;
+      }
+
+      updateFarmerBalance(farmerId) {
+        const farmer = this.state.parties.farmers.find(f => f.id === farmerId);
+        if (!farmer) return;
+        const totalNetPayable = this.state.lots
+          .filter(l => l.farmerId === farmerId)
+          .reduce((sum, l) => sum + (l.netPayablePaise || 0), 0);
+        const totalPaymentsMade = (this.state.payments || [])
+          .filter(p => p.partyId === farmerId && p.direction === 'pay' && p.type !== 'advance')
+          .reduce((sum, p) => sum + (p.amountPaise || 0), 0);
+        const totalAdvances = (this.state.advances || [])
+          .filter(a => a.farmerId === farmerId)
+          .reduce((sum, a) => sum + (a.amountPaise || 0), 0);
+
+        farmer.outstandingPaise = Math.max(0, totalNetPayable - totalPaymentsMade - totalAdvances);
+      }
+
+      applyBuyerPayment(buyerId, amountPaise) {
+        let rem = amountPaise;
+        // Apply payments to the oldest bill first
+        const unpaidSales = this.state.sales
+          .filter(s => s.buyerId === buyerId && s.dueAmountPaise > 0)
+          .slice()
+          .sort((a, b) => a.billNo.localeCompare(b.billNo, undefined, { numeric: true }));
+
+        for (const s of unpaidSales) {
+          if (rem <= 0) break;
+          const pay = Math.min(s.dueAmountPaise, rem);
+          s.dueAmountPaise -= pay;
+          s.amountReceivedPaise = (s.amountReceivedPaise || 0) + pay;
+          rem -= pay;
+
+          if (s.dueAmountPaise === 0) {
+            s.paymentStatus = "Paid";
+          } else if (s.amountReceivedPaise > 0) {
+            s.paymentStatus = "Partial";
+          } else {
+            s.paymentStatus = "Credit";
+          }
+        }
+
+        const buyer = this.state.parties.buyers.find(b => b.id === buyerId);
+        if (buyer) {
+          buyer.balancePaise = this.state.sales
+            .filter(s => s.buyerId === buyerId)
+            .reduce((sum, s) => sum + s.dueAmountPaise, 0);
+        }
+      }
+
+      applyFarmerPayment(farmerId, amountPaise) {
+        let rem = amountPaise;
+        const payableLots = this.state.lots
+          .filter(l => l.farmerId === farmerId && l.remainingPayablePaise > 0)
+          .slice()
+          .sort((a, b) => a.lotId.localeCompare(b.lotId, undefined, { numeric: true }));
+
+        for (const lot of payableLots) {
+          if (rem <= 0) break;
+          const pay = Math.min(lot.remainingPayablePaise, rem);
+          lot.paidAmountPaise = (lot.paidAmountPaise || 0) + pay;
+          lot.remainingPayablePaise -= pay;
+          rem -= pay;
+
+          if (lot.remainingPayablePaise === 0) {
+            lot.settlementStatus = "paid";
+          } else {
+            lot.settlementStatus = "partial";
+          }
+        }
+
+        this.updateFarmerBalance(farmerId);
+      }
+
+      getNextLotId() {
+        let maxNum = 1025;
+        this.state.lots.forEach(l => {
+          const m = l.lotId.match(/LOT-(\d+)$/);
+          if (m) {
+            const num = parseInt(m[1], 10);
+            if (num > maxNum) maxNum = num;
+          }
+        });
+        return `LOT-${maxNum + 1}`;
       }
 
       confirmResetDemo() {
@@ -2040,8 +3389,17 @@
         if (screenId === 'screen-patti-list') this.renderPattiList();
         if (screenId === 'screen-buyer-bills') this.renderBuyerBills();
         if (screenId === 'screen-khata') {
-          if (params.tab) this.switchKhataTab(params.tab);
-          else this.renderKhataTransactions();
+          if (params.tab) this.switchKhataTab(params.tab, params.partyId);
+          else {
+            if (params.partyId) {
+              const select = document.getElementById('khata-party-select');
+              if (select) {
+                const prefix = document.getElementById('tab-buyer-khata')?.classList.contains('active') ? 'buyer:' : 'farmer:';
+                select.value = params.partyId.includes(':') ? params.partyId : `${prefix}${params.partyId}`;
+              }
+            }
+            this.renderKhataTransactions();
+          }
         }
         if (screenId === 'screen-crates') this.renderCratesLedger();
       }
@@ -2139,6 +3497,40 @@
         document.getElementById('nav-txt-home').innerText = dict.home;
         document.getElementById('nav-txt-arrival').innerText = dict.aavak;
         document.getElementById('nav-txt-sale').innerText = dict.bikri;
+
+        // Update Auth language switcher button styles
+        const curLang = this.state?.language || this.state?.lang || 'en';
+        ['en', 'kn', 'hi'].forEach(l => {
+          document.getElementById(`btn-login-lang-${l}`)?.classList.toggle('active', l === curLang);
+          document.getElementById(`btn-signup-lang-${l}`)?.classList.toggle('active', l === curLang);
+        });
+
+        // Update Auth headings and labels
+        const lblLoginHead = document.getElementById('lbl-login-heading');
+        if (lblLoginHead) lblLoginHead.innerText = dict.loginHeading || "Login to Your Mandi Account";
+        const lblLoginSub = document.getElementById('lbl-login-subheading');
+        if (lblLoginSub) lblLoginSub.innerText = dict.loginSubheading || "Enter your 10-digit mobile number and password";
+        const lblSignupHead = document.getElementById('lbl-signup-heading');
+        if (lblSignupHead) lblSignupHead.innerText = dict.signupHeading || "Create Mandi Account";
+        const lblSignupSub = document.getElementById('lbl-signup-subheading');
+        if (lblSignupSub) lblSignupSub.innerText = dict.signupSubheading || "Register your APMC shop and mobile credentials";
+
+        const btnLoginText = document.getElementById('btn-login-text');
+        if (btnLoginText) btnLoginText.innerText = dict.loginBtn || "Login";
+        const btnSignupText = document.getElementById('btn-signup-text');
+        if (btnSignupText) btnSignupText.innerText = dict.signupBtn || "Create Account";
+
+        const lblNoAcc = document.getElementById('lbl-no-account-text');
+        if (lblNoAcc) lblNoAcc.innerText = dict.noAccountText || "Don't have an account?";
+        const lblSignupLink = document.getElementById('lbl-signup-link');
+        if (lblSignupLink) lblSignupLink.innerText = dict.signupLinkText || "Sign up here";
+        const lblHasAcc = document.getElementById('lbl-has-account-text');
+        if (lblHasAcc) lblHasAcc.innerText = dict.hasAccountText || "Already have an account?";
+        const lblLoginLink = document.getElementById('lbl-login-link');
+        if (lblLoginLink) lblLoginLink.innerText = dict.loginLinkText || "Login here";
+
+        const btnDemoText = document.getElementById('btn-login-demo-text');
+        if (btnDemoText) btnDemoText.innerText = dict.exploreDemoLoginBtn || "Explore Seeded Demo (Ramesh 80 Crates)";
       }
 
       finishOnboarding() {
@@ -2167,35 +3559,224 @@
         let totalRemainingKg = 0;
         let totalPayablePaise = 0;
 
-        this.state.lots.forEach(lot => {
+        (this.state.parties.farmers || []).forEach(f => {
+          totalPayablePaise += (f.outstandingPaise || 0);
+        });
+
+        (this.state.lots || []).forEach(lot => {
           totalArrivalCrates += lot.originalCrates;
           totalArrivalKg += lot.actualWeightKg;
           totalRemainingCrates += lot.remainingCrates;
           totalRemainingKg += lot.remainingWeightKg;
-          totalPayablePaise += lot.remainingPayablePaise;
         });
 
         let totalSaleCrates = 0;
         let totalSaleGrossPaise = 0;
         let totalReceivablePaise = 0;
 
-        this.state.sales.forEach(s => {
-          totalSaleCrates += s.cratesSold;
-          totalSaleGrossPaise += s.grossAmountPaise;
-          totalReceivablePaise += s.dueAmountPaise;
+        (this.state.parties.buyers || []).forEach(b => {
+          totalReceivablePaise += (b.balancePaise || 0);
         });
 
-        document.getElementById('metric-arrivals').innerText = `${totalArrivalCrates} Crates`;
-        document.getElementById('metric-arrivals-sub').innerText = `${this.formatNum(totalArrivalKg)} kg total`;
-        document.getElementById('metric-sales').innerText = `${totalSaleCrates} Crates`;
-        document.getElementById('metric-sales-sub').innerText = `${this.formatINR(totalSaleGrossPaise)} billed`;
-        document.getElementById('metric-stock-left').innerText = `${totalRemainingCrates} Crt`;
-        document.getElementById('metric-to-receive').innerText = this.formatINR(totalReceivablePaise);
-        document.getElementById('metric-to-pay').innerText = this.formatINR(totalPayablePaise);
+        (this.state.sales || []).forEach(s => {
+          totalSaleCrates += s.cratesSold;
+          totalSaleGrossPaise += s.grossAmountPaise;
+        });
+
+        // Pending pattis (STEP 3: Item 9)
+        const pendingPattiLots = (this.state.lots || []).filter(l => l.grossPaise > 0 && (l.remainingPayablePaise || 0) > 0);
+        const pendingPattisCount = pendingPattiLots.length;
+        const pendingPattisTotalPaise = pendingPattiLots.reduce((sum, l) => sum + (l.remainingPayablePaise || 0), 0);
+
+        const elArrivals = document.getElementById('metric-arrivals');
+        if (elArrivals) elArrivals.innerText = `${totalArrivalCrates} Crates`;
+        const elArrivalsSub = document.getElementById('metric-arrivals-sub');
+        if (elArrivalsSub) elArrivalsSub.innerText = `${this.formatNum(totalArrivalKg)} kg total`;
+
+        const elSales = document.getElementById('metric-sales');
+        if (elSales) elSales.innerText = `${totalSaleCrates} Crates`;
+        const elSalesSub = document.getElementById('metric-sales-sub');
+        if (elSalesSub) elSalesSub.innerText = `${this.formatINR(totalSaleGrossPaise)} billed`;
+
+        const elStock = document.getElementById('metric-stock-left');
+        if (elStock) elStock.innerText = `${totalRemainingCrates} Crt`;
+        const elStockSub = document.getElementById('metric-stock-left-sub');
+        if (elStockSub) elStockSub.innerText = `${this.formatNum(Math.round(totalRemainingKg))} kg`;
+
+        const elPendingCount = document.getElementById('metric-pending-pattis-count');
+        if (elPendingCount) elPendingCount.innerText = `${pendingPattisCount} Pending`;
+        const elPendingTotal = document.getElementById('metric-pending-pattis-total');
+        if (elPendingTotal) elPendingTotal.innerText = this.formatINR(pendingPattisTotalPaise);
+
+        const elReceive = document.getElementById('metric-to-receive');
+        if (elReceive) elReceive.innerText = this.formatINR(totalReceivablePaise);
+
+        const elPay = document.getElementById('metric-to-pay');
+        if (elPay) elPay.innerText = this.formatINR(totalPayablePaise);
       }
 
       renderHome() {
         this.updateHeaderStats();
+        this.renderRecentActivity();
+        const greetingEl = document.getElementById('txt-greeting');
+        if (greetingEl) {
+          const prefix = this.state?.lang === 'kn' ? 'ನಮಸ್ಕಾರ' : (this.state?.lang === 'hi' ? 'नमस्ते' : 'Namaste');
+          greetingEl.innerText = `${prefix}, ${this.getUserFullName()}`;
+        }
+        const locEl = document.getElementById('txt-mandi-location');
+        if (locEl) {
+          locEl.innerText = `${this.getUserShopName()} • Bengaluru APMC Yard`;
+        }
+      }
+
+      // Recent Activity Feed (STEP 3: Item 8)
+      renderRecentActivity() {
+        const container = document.getElementById('recent-activity-container');
+        if (!container) return;
+
+        const events = [];
+
+        // 1. Sales
+        (this.state.sales || []).forEach(s => {
+          const lot = this.state.lots.find(l => l.lotId === s.lotId);
+          const comm = (lot && lot.commodityName) || s.commodityName || "Produce";
+          events.push({
+            type: 'sale',
+            title: `${comm} - ${s.lotId} - Sale recorded - ${this.formatINR(s.grossAmountPaise)}`,
+            sub: `${s.cratesSold} crt (${s.weightSoldKg} kg) to ${s.buyerName} • ${s.billNo}`,
+            icon: '🛒',
+            action: `app.showBuyerBillDetails('${s.billNo}')`
+          });
+        });
+
+        // 2. Unsold lots
+        (this.state.lots || []).forEach(l => {
+          if ((l.soldCrates || 0) === 0) {
+            events.push({
+              type: 'lot',
+              title: `${l.commodityName} - ${l.lotId} - Awaiting sale`,
+              sub: `Farmer: ${l.farmerName} • Arrived: ${l.originalCrates} crt (${l.actualWeightKg} kg)`,
+              icon: '🌾',
+              action: `app.showPattiDetails('${l.lotId}')`
+            });
+          }
+        });
+
+        // 3. Payments and advances
+        (this.state.payments || []).forEach(p => {
+          let partyName = "Party";
+          if (p.direction === 'receive') {
+            const b = this.state.parties.buyers.find(x => x.id === p.partyId);
+            if (b) partyName = b.name;
+          } else {
+            const f = this.state.parties.farmers.find(x => x.id === p.partyId);
+            if (f) partyName = f.name;
+          }
+          const isAdv = p.type === 'advance';
+          const actTitle = isAdv ? 'Advance given' : (p.direction === 'receive' ? 'Payment received' : 'Payment made');
+          events.push({
+            type: 'payment',
+            title: `${partyName} - ${actTitle} - ${this.formatINR(p.amountPaise)}`,
+            sub: `Mode: ${p.mode} • Ref: ${p.receiptNo}`,
+            icon: isAdv ? '🤝' : (p.direction === 'receive' ? '📥' : '📤'),
+            action: p.direction === 'receive'
+              ? `app.showScreen('screen-khata', {tab:'buyer', partyId:'${p.partyId}'})`
+              : `app.showScreen('screen-khata', {tab:'farmer', partyId:'${p.partyId}'})`
+          });
+        });
+
+        if (events.length === 0) {
+          container.innerHTML = `<div style="font-size:12px; color:var(--text-tertiary); text-align:center; padding:12px;">No activity recorded yet.</div>`;
+          return;
+        }
+
+        // Take last 6 events
+        const recent = events.slice(0, 6);
+        container.innerHTML = recent.map(ev => `
+          <div class="activity-row" onclick="${ev.action}">
+            <div style="display:flex; align-items:center; gap:10px; overflow:hidden;">
+              <span style="font-size:20px;">${ev.icon}</span>
+              <div style="overflow:hidden;">
+                <div style="font-size:13px; font-weight:700; color:var(--text-primary); white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">
+                  ${ev.title}
+                </div>
+                <div style="font-size:11px; color:var(--text-tertiary); white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">
+                  ${ev.sub}
+                </div>
+              </div>
+            </div>
+            <span style="font-size:14px; color:var(--text-tertiary); margin-left:8px;">›</span>
+          </div>
+        `).join('');
+      }
+
+      // Weighing Modal Functions (STEP 3: Item 10)
+      openWeighingModal(lotId = null) {
+        const select = document.getElementById('weighing-lot-select');
+        if (!select) return;
+        select.innerHTML = this.state.lots.map(l => `
+          <option value="${l.lotId}" ${lotId === l.lotId ? 'selected' : ''}>
+            ${l.lotId} — ${l.commodityName} (${l.farmerName}) • Cur: ${l.actualWeightKg} kg
+          </option>
+        `).join('');
+
+        this.selectedWeighingLotId = lotId || (this.state.lots[0] ? this.state.lots[0].lotId : null);
+        this.onWeighingLotChanged();
+        this.openModal('modal-weighing');
+      }
+
+      onWeighingLotChanged() {
+        const lotId = document.getElementById('weighing-lot-select').value;
+        this.selectedWeighingLotId = lotId;
+        const lot = this.state.lots.find(l => l.lotId === lotId);
+        if (lot) {
+          document.getElementById('weighing-lot-info').innerHTML = `
+            <strong>${lot.icon} ${lot.commodityName}</strong> • Farmer: <strong>${lot.farmerName}</strong><br>
+            Total Crates: <strong>${lot.originalCrates}</strong> • Expected: <strong>${lot.estimatedWeightKg || (lot.originalCrates * 18)} kg</strong><br>
+            Current Recorded Actual: <strong style="color:var(--primary-800);">${lot.actualWeightKg} kg</strong> (Sold: ${lot.soldCrates} crt)
+          `;
+          this.weighingKeypadVal = String(lot.actualWeightKg);
+          document.getElementById('disp-weighing-val').innerText = this.weighingKeypadVal;
+        }
+      }
+
+      weighingKeypad(val) {
+        this.beep(750, 0.04);
+        let curr = String(this.weighingKeypadVal || "0");
+        if (val === 'clear') {
+          curr = "0";
+        } else if (val === 'back') {
+          curr = curr.length > 1 ? curr.slice(0, -1) : "0";
+        } else {
+          if (curr === "0") curr = val;
+          else curr += val;
+        }
+        this.weighingKeypadVal = curr;
+        document.getElementById('disp-weighing-val').innerText = curr;
+      }
+
+      saveCorrectedWeight() {
+        const lot = this.state.lots.find(l => l.lotId === this.selectedWeighingLotId);
+        if (!lot) return;
+        const newWeight = parseFloat(this.weighingKeypadVal) || 0;
+        if (newWeight <= 0) {
+          this.showToast("Please enter a valid actual weight", "error");
+          return;
+        }
+        this.beep(900, 0.1);
+        const weightSold = (lot.soldCrates > 0) ? (lot.actualWeightKg - lot.remainingWeightKg) : 0;
+        lot.actualWeightKg = newWeight;
+        lot.remainingWeightKg = Math.max(0, newWeight - weightSold);
+
+        // Recalculate patti if sold
+        if (lot.soldCrates > 0) {
+          this.calculateLotPatti(lot.lotId);
+        }
+
+        this.saveState();
+        this.closeModal('modal-weighing');
+        this.showToast(`Actual weight for ${lot.lotId} updated to ${newWeight} kg!`, "success");
+        this.renderAll();
       }
 
       // ========================================================
@@ -2232,16 +3813,26 @@
         const container = document.getElementById('wizard-step-content');
         if (!container) return;
 
-        // Step 1: Select Farmer
+        // Step 1: Select Farmer (STEP 4: Item 11 search box)
         if (this.activeWizardStep === 1) {
+          const q = (this.farmerSearchQuery || '').toLowerCase().trim();
+          const filteredFarmers = this.state.parties.farmers.filter(f => {
+            if (!q) return true;
+            return f.name.toLowerCase().includes(q) || (f.phone && f.phone.includes(q)) || (f.village && f.village.toLowerCase().includes(q));
+          });
+
           container.innerHTML = `
             <div class="card">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <h3 style="font-size:15px; font-weight:700;">Step 1: Select Farmer (ರೈತರ ಆಯ್ಕೆ)</h3>
                 <button class="btn btn-sm btn-secondary" onclick="app.showAddPartyModal('farmer')">+ New Farmer</button>
               </div>
-              <div style="display:flex; flex-direction:column; gap:8px;">
-                ${this.state.parties.farmers.map(f => `
+
+              <!-- Search Box (STEP 4: Item 11) -->
+              <input type="text" id="arrival-farmer-search" placeholder="🔍 Search farmer by name, village, phone..." oninput="app.onFarmerSearchInput(this.value)" value="${this.farmerSearchQuery || ''}" style="width:100%; height:40px; border:2px solid var(--border-subtle); border-radius:8px; padding:0 10px; font-size:13px; font-weight:600; margin-bottom:10px;">
+
+              <div style="display:flex; flex-direction:column; gap:8px; max-height:260px; overflow-y:auto;">
+                ${filteredFarmers.length === 0 ? `<div style="text-align:center; padding:12px; color:var(--text-tertiary); font-size:12px;">No matching farmers found. Tap "+ New Farmer" above.</div>` : filteredFarmers.map(f => `
                   <div class="touch-input-display ${this.wizardData.farmerId === f.id ? 'active' : ''}" onclick="app.wizardSelectFarmer('${f.id}', '${f.name}')">
                     <div>
                       <div style="font-size:15px; font-weight:700;">🌾 ${f.name}</div>
@@ -2303,11 +3894,13 @@
           `;
         }
 
-        // Step 4: Expected vs Actual Weight
+        // Step 4: Expected vs Actual Weight (STEP 4: Item 13 warning if > 5%)
         else if (this.activeWizardStep === 4) {
           const estimatedWeight = (this.wizardData.cratesCount || 0) * (this.wizardData.expectedWeightPerPkg || 18);
           const actualWeight = this.wizardData.actualTotalWeightKg || estimatedWeight;
           const diffKg = actualWeight - estimatedWeight;
+          const diffPct = estimatedWeight > 0 ? (Math.abs(diffKg) / estimatedWeight * 100) : 0;
+          const isWarning = diffPct > 5;
 
           container.innerHTML = `
             <div class="card">
@@ -2328,42 +3921,41 @@
 
               <div style="margin-bottom:12px;">
                 <span style="font-size:11px; font-weight:700; color:var(--primary-800);">Actual Weighbridge Total Weight (kg):</span>
-                <input type="number" value="${this.wizardData.actualTotalWeightKg || estimatedWeight}" oninput="app.updateActualWeight(this.value)" style="width:100%; height:50px; border:2px solid var(--primary-700); border-radius:10px; padding:0 12px; font-size:22px; font-weight:800; font-family:var(--font-mono);">
+                <input type="number" value="${actualWeight}" oninput="app.updateActualWeight(this.value)" style="width:100%; height:50px; border:2px solid var(--primary-700); border-radius:10px; padding:0 12px; font-size:22px; font-weight:800; font-family:var(--font-mono);">
               </div>
 
               <!-- Variance Tag -->
               <div style="padding:10px; border-radius:10px; font-size:12px; font-weight:700; display:flex; justify-content:space-between; align-items:center; background:${diffKg < 0 ? 'var(--status-red-light)' : 'var(--status-green-light)'}; color:${diffKg < 0 ? 'var(--status-red)' : 'var(--status-green)'};">
                 <span>Weight Variance (Difference):</span>
-                <span>${diffKg >= 0 ? '+' : ''}${diffKg} kg (${((diffKg / (estimatedWeight || 1)) * 100).toFixed(1)}%)</span>
+                <span>${diffKg >= 0 ? '+' : ''}${diffKg} kg (${diffPct.toFixed(1)}%)</span>
               </div>
+
+              <!-- 5% Variance Warning (STEP 4: Item 13) -->
+              ${isWarning ? `
+                <div style="padding:10px 12px; border-radius:10px; margin-top:8px; font-size:12px; font-weight:700; background:#FFF3E0; border:1px solid #FFE082; color:#B78103; display:flex; align-items:center; gap:8px;">
+                  <span>⚠️</span>
+                  <span>Weight Warning: Actual weight differs by ${diffPct.toFixed(1)}% (> 5% threshold) from expected weight! Please re-verify scale reading.</span>
+                </div>
+              ` : ''}
             </div>
 
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
               <button class="btn btn-secondary" onclick="app.wizardPrevStep()">← Back</button>
-              <button class="btn btn-primary" onclick="app.wizardNextStep()">Next: Pricing Method →</button>
+              <button class="btn btn-primary" onclick="app.wizardNextStep()">Next: Expected Rate & Confirm →</button>
             </div>
           `;
         }
 
-        // Step 5: Pricing Method & Rate Confirmation
+        // Step 5: Review & Confirm Inward Arrival
         else if (this.activeWizardStep === 5) {
-          const billableKg = this.wizardData.actualTotalWeightKg || 1395;
+          const crates = this.wizardData.cratesCount || 80;
+          const billableKg = this.wizardData.actualTotalWeightKg || (crates * (this.wizardData.expectedWeightPerPkg || 18));
           const rate = this.wizardData.ratePerUnit || 75;
           const isKgPricing = this.wizardData.pricingMethod !== 'crate';
-          const grossAmount = isKgPricing ? (billableKg * rate) : ((this.wizardData.cratesCount || 80) * rate);
-          
-          // Seed demo standard charges for 80 crates Shimla Apples:
-          // Commission 5% = 5,231.25, Hamali = 1,200 (₹15/crt), Mandi Cess 1% = 1,046.25, Tulai = 53.50 => Total = ₹7,531
-          const commission = Math.round(grossAmount * 0.05 * 100) / 100;
-          const hamali = (this.wizardData.cratesCount || 80) * 15;
-          const mandiCess = Math.round(grossAmount * 0.01 * 100) / 100;
-          const tulai = 53.50;
-          const totalCharges = commission + hamali + mandiCess + tulai;
-          const netSettlement = grossAmount - totalCharges;
 
           container.innerHTML = `
             <div class="card">
-              <h3 style="font-size:15px; font-weight:700; margin-bottom:12px;">Step 5: Pricing & Review Settlement</h3>
+              <h3 style="font-size:15px; font-weight:700; margin-bottom:12px;">Step 5: Expected Rate & Confirm Arrival</h3>
               
               <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
                 <button class="btn btn-sm ${isKgPricing ? 'btn-primary' : 'btn-secondary'}" onclick="app.wizardSetPricing('kg')">
@@ -2375,31 +3967,30 @@
               </div>
 
               <div style="margin-bottom:14px;">
-                <span style="font-size:11px; font-weight:700; color:var(--text-secondary);">Agreed Rate (₹):</span>
+                <span style="font-size:11px; font-weight:700; color:var(--text-secondary);">Reserve / Expected Rate (₹):</span>
                 <input type="number" value="${rate}" oninput="app.updateArrivalRate(this.value)" style="width:100%; height:48px; border:2px solid var(--border-subtle); border-radius:10px; padding:0 12px; font-size:20px; font-weight:800; font-family:var(--font-mono);">
               </div>
 
-              <!-- Itemized Settlement Preview -->
+              <!-- Arrival Inward Summary -->
               <div class="receipt-sheet" style="border:1px solid #CCC; margin-bottom:0;">
                 <div class="receipt-header">
                   <h2>${this.wizardData.farmerName}</h2>
-                  <p>${this.wizardData.commodityName} • ${this.wizardData.cratesCount} Crates</p>
+                  <p>${this.wizardData.commodityName} • Inward Arrival Lot</p>
                 </div>
                 <div class="receipt-row">
-                  <span>Billable Weight:</span>
+                  <span>Total Inward Packages:</span>
+                  <span style="font-weight:700;">${crates} Crates</span>
+                </div>
+                <div class="receipt-row">
+                  <span>Actual Scale Weight:</span>
                   <span style="font-weight:700;">${billableKg} kg</span>
                 </div>
                 <div class="receipt-row">
-                  <span>Gross Valuation:</span>
-                  <span style="font-weight:700;">${this.formatINR(grossAmount * 100)}</span>
+                  <span>Average Weight / Crate:</span>
+                  <span>${(billableKg / crates).toFixed(1)} kg</span>
                 </div>
-                <div class="receipt-row" style="color:var(--status-red); font-size:12px;">
-                  <span>Mandi Charges Total (Hamali, Commission, Cess):</span>
-                  <span>- ${this.formatINR(totalCharges * 100)}</span>
-                </div>
-                <div class="receipt-row bold grand-total">
-                  <span>Net Farmer Settlement:</span>
-                  <span>${this.formatINR(netSettlement * 100)}</span>
+                <div style="margin-top:10px; padding:8px 10px; background:var(--primary-50); border-radius:6px; font-size:11px; color:var(--primary-900);">
+                  ℹ️ <strong>Mandi Commission Rule:</strong> Farmer settlement patti will be built from actual sales when the lot is auctioned/sold to buyers.
                 </div>
               </div>
             </div>
@@ -2476,23 +4067,19 @@
         this.renderWizardStep();
       }
 
+      onFarmerSearchInput(val) {
+        this.farmerSearchQuery = val;
+        this.renderWizardStep();
+      }
+
       saveArrivalLot() {
         this.beep(900, 0.12);
-        const lotNumber = `LOT-2026-0${Math.floor(100 + Math.random() * 899)}`;
-        const billableKg = this.wizardData.actualTotalWeightKg || 1395;
-        const rate = this.wizardData.ratePerUnit || 75;
+        const lotNumber = this.getNextLotId(); // STEP 4: Item 12 sequential lot numbers (LOT-1026, ...)
         const crates = this.wizardData.cratesCount || 80;
-        const isKg = this.wizardData.pricingMethod !== 'crate';
-        const grossAmount = isKg ? (billableKg * rate) : (crates * rate);
+        const billableKg = this.wizardData.actualTotalWeightKg || (crates * (this.wizardData.expectedWeightPerPkg || 18));
+        const rate = this.wizardData.ratePerUnit || 75;
 
-        // Deductions calculation
-        const commission = Math.round(grossAmount * 0.05 * 100) / 100;
-        const hamali = crates * 15;
-        const cess = Math.round(grossAmount * 0.01 * 100) / 100;
-        const tulai = 53.50;
-        const totalCharges = commission + hamali + cess + tulai;
-        const netSettlement = grossAmount - totalCharges;
-
+        // Arrival lot starts with 0 sales (STEP 1: Item 1, farmer patti built from actual sales)
         const newLot = {
           lotId: lotNumber,
           farmerId: this.wizardData.farmerId,
@@ -2510,28 +4097,22 @@
           remainingWeightKg: billableKg,
           pricingMethod: this.wizardData.pricingMethod || "kg",
           rateRupees: rate,
-          grossPaise: Math.round(grossAmount * 100),
-          totalChargesPaise: Math.round(totalCharges * 100),
-          netPayablePaise: Math.round(netSettlement * 100),
+          grossPaise: 0,
+          totalChargesPaise: 0,
+          netPayablePaise: 0,
           settlementStatus: "pending",
           paidAmountPaise: 0,
-          remainingPayablePaise: Math.round(netSettlement * 100),
+          remainingPayablePaise: 0,
           breakdown: {
-            commissionPaise: Math.round(commission * 100),
-            hamaliPaise: Math.round(hamali * 100),
-            mandiCessPaise: Math.round(cess * 100),
-            tulaiWeighingPaise: Math.round(tulai * 100)
+            commissionPaise: 0,
+            hamaliPaise: 0,
+            mandiCessPaise: 0,
+            tulaiWeighingPaise: 0
           }
         };
 
         // Prepend new lot
         this.state.lots.unshift(newLot);
-
-        // Update farmer outstanding balance
-        const farmer = this.state.parties.farmers.find(f => f.id === newLot.farmerId);
-        if (farmer) {
-          farmer.outstandingPaise = (farmer.outstandingPaise || 0) + newLot.remainingPayablePaise;
-        }
 
         this.saveState();
         this.showToast(`Lot ${lotNumber} saved successfully!`, "success");
@@ -2542,7 +4123,6 @@
       // WORKFLOW 2: NEW SALE (BIKRI)
       // ========================================================
       startSaleWizard() {
-        // Populate Lot Dropdown
         const lotSelect = document.getElementById('sale-lot-select');
         const availableLots = this.state.lots.filter(l => l.remainingCrates > 0);
         
@@ -2552,23 +4132,41 @@
         }
 
         lotSelect.innerHTML = availableLots.map(l => `
-          <option value="${l.lotId}">${l.lotId} — ${l.commodityName} (${l.farmerName}) • Bal: ${l.remainingCrates} Crt / ${l.remainingWeightKg} kg</option>
+          <option value="${l.lotId}">${l.lotId} — ${l.commodityName} (${l.farmerName}) • Bal: ${l.remainingCrates} Crt / ${Math.round(l.remainingWeightKg)} kg</option>
         `).join('');
 
-        // Populate Buyer Dropdown
         const buyerSelect = document.getElementById('sale-buyer-select');
         buyerSelect.innerHTML = this.state.parties.buyers.map(b => `
           <option value="${b.id}">${b.name} (${b.market})</option>
         `).join('');
 
-        // Set defaults from Seed Scenario: 20 crates, 360 kg, ₹85/kg
+        // Seed Scenario default: 20 crates, 360 kg, ₹85/kg
         document.getElementById('sale-crates-input').value = 20;
         document.getElementById('sale-weight-input').value = 360;
         document.getElementById('sale-rate-input').value = 85;
         document.getElementById('sale-rate-unit').value = 'kg';
 
+        this.setSalePaymentMode('Credit');
         this.onSaleLotChanged();
         this.showScreen('screen-sale');
+      }
+
+      setSalePaymentMode(mode) {
+        this.selectedSalePaymentMode = mode;
+        ['credit', 'cash', 'upi'].forEach(m => {
+          document.getElementById(`sale-paymode-${m}`)?.classList.toggle('active', m === mode.toLowerCase());
+        });
+
+        const grossPaise = this.currentPreviewGrossPaise || 0;
+        const grossRupees = Math.round(grossPaise / 100);
+        const input = document.getElementById('sale-amount-received-input');
+
+        if (mode === 'Credit') {
+          input.value = 0;
+        } else if (parseFloat(input.value) === 0 || !input.value) {
+          input.value = grossRupees;
+        }
+        this.calcSalePreview();
       }
 
       onSaleLotChanged() {
@@ -2577,12 +4175,30 @@
         if (lot) {
           document.getElementById('sale-lot-preview').innerHTML = `
             <strong>${lot.icon} ${lot.commodityName}</strong> • Farmer: <strong>${lot.farmerName}</strong><br>
-            Available Stock: <span style="font-weight:700; color:var(--primary-800);">${lot.remainingCrates} Crates (${lot.remainingWeightKg} kg)</span>
+            Available Stock: <span style="font-weight:700; color:var(--primary-800);">${lot.remainingCrates} Crates (${Math.round(lot.remainingWeightKg)} kg)</span>
           `;
+          // Auto-fill weight from crates using average kg per crate
+          this.onSaleCratesInput();
+        } else {
+          this.calcSalePreview();
+        }
+      }
+
+      // Auto-fill weight from crates using lot's average kg per crate (STEP 2: Item 7)
+      onSaleCratesInput() {
+        const lotId = document.getElementById('sale-lot-select').value;
+        const lot = this.state.lots.find(l => l.lotId === lotId);
+        const cratesSold = parseFloat(document.getElementById('sale-crates-input').value) || 0;
+
+        if (lot && cratesSold > 0) {
+          const avgKg = lot.originalCrates > 0 ? (lot.actualWeightKg / lot.originalCrates) : (lot.expectedWeightPerPkgKg || 18);
+          const autoWeight = Math.round(cratesSold * avgKg * 10) / 10;
+          document.getElementById('sale-weight-input').value = autoWeight;
         }
         this.calcSalePreview();
       }
 
+      // Calculation preview with itemized deductions and farmer payable (STEP 2: Item 5, 6, 7)
       calcSalePreview() {
         const cratesSold = parseFloat(document.getElementById('sale-crates-input').value) || 0;
         const weightSold = parseFloat(document.getElementById('sale-weight-input').value) || 0;
@@ -2592,20 +4208,62 @@
         const lotId = document.getElementById('sale-lot-select').value;
         const lot = this.state.lots.find(l => l.lotId === lotId);
 
-        let gross = 0;
+        let grossAmount = 0;
         if (unit === 'kg') {
-          gross = weightSold * rate;
+          grossAmount = weightSold * rate;
         } else {
-          gross = cratesSold * rate;
+          grossAmount = cratesSold * rate;
         }
 
-        document.getElementById('sale-preview-gross').innerText = this.formatINR(gross * 100);
+        const grossPaise = Math.round(grossAmount * 100);
+        this.currentPreviewGrossPaise = grossPaise;
 
-        // Check stock availability
+        // Mandi deductions: Commission 5%, Cess 1%, Hamali Rs 15/crt sold, Weighing Rs 5/100kg sold
+        let commPaise = 0;
+        let cessPaise = 0;
+        let hamaliPaise = 0;
+        let weighingPaise = 0;
+
+        if (grossPaise > 0) {
+          commPaise = Math.round(grossPaise * 0.05);
+          cessPaise = Math.round(grossPaise * 0.01);
+          hamaliPaise = cratesSold * 15 * 100;
+          weighingPaise = Math.round(weightSold * 5); // 5 paise per kg = Rs 5 per 100 kg
+        }
+
+        const totalChargesPaise = commPaise + cessPaise + hamaliPaise + weighingPaise;
+        const farmerPayablePaise = Math.max(0, grossPaise - totalChargesPaise);
+
+        // Update calculation preview display
+        document.getElementById('sale-preview-gross').innerText = this.formatINR(grossPaise);
+        document.getElementById('sale-preview-comm').innerText = '- ' + this.formatINR(commPaise);
+        document.getElementById('sale-preview-hamali').innerText = '- ' + this.formatINR(hamaliPaise);
+        document.getElementById('sale-preview-cess').innerText = '- ' + this.formatINR(cessPaise);
+        document.getElementById('sale-preview-weighing').innerText = '- ' + this.formatINR(weighingPaise);
+        document.getElementById('sale-preview-farmer-payable').innerText = this.formatINR(farmerPayablePaise);
+
+        // Amount received & Due calculations
+        let amtReceivedRupees = parseFloat(document.getElementById('sale-amount-received-input').value) || 0;
+        if (this.selectedSalePaymentMode === 'Credit') {
+          amtReceivedRupees = 0;
+        }
+        const amtReceivedPaise = Math.round(amtReceivedRupees * 100);
+        const dueAmountPaise = Math.max(0, grossPaise - amtReceivedPaise);
+        document.getElementById('sale-preview-due').innerText = this.formatINR(dueAmountPaise);
+
+        // Block selling more than remaining stock (STEP 2: Item 7)
         const warningEl = document.getElementById('sale-stock-warning');
         const confirmBtn = document.getElementById('btn-confirm-sale');
-        if (lot && (cratesSold > lot.remainingCrates || weightSold > lot.remainingWeightKg)) {
+        const exceedsStock = lot && (cratesSold > lot.remainingCrates || weightSold > lot.remainingWeightKg);
+        const invalidInput = cratesSold <= 0 || weightSold <= 0 || rate <= 0;
+
+        if (exceedsStock || invalidInput) {
           warningEl.style.display = 'block';
+          if (exceedsStock && lot) {
+            warningEl.innerText = `⚠️ Cannot sell more than available stock (${lot.remainingCrates} Crt, ${Math.round(lot.remainingWeightKg)} kg remaining)!`;
+          } else {
+            warningEl.innerText = `⚠️ Please enter valid quantities and rate.`;
+          }
           confirmBtn.disabled = true;
           confirmBtn.style.opacity = '0.5';
         } else {
@@ -2631,42 +4289,74 @@
         const lot = this.state.lots.find(l => l.lotId === lotId);
         const buyer = this.state.parties.buyers.find(b => b.id === buyerId);
 
-        if (!lot || cratesSold > lot.remainingCrates) {
+        if (!lot || cratesSold > lot.remainingCrates || weightSold > lot.remainingWeightKg) {
           this.showToast("Cannot sell more stock than remaining in lot!", "error");
           return;
         }
 
         this.beep(850, 0.1);
         const grossAmount = (unit === 'kg') ? (weightSold * rate) : (cratesSold * rate);
+        const grossAmountPaise = Math.round(grossAmount * 100);
+
+        let amountReceivedRupees = parseFloat(document.getElementById('sale-amount-received-input').value) || 0;
+        if (this.selectedSalePaymentMode === 'Credit') {
+          amountReceivedRupees = 0;
+        }
+        const amountReceivedPaise = Math.min(grossAmountPaise, Math.round(amountReceivedRupees * 100));
+        const dueAmountPaise = Math.max(0, grossAmountPaise - amountReceivedPaise);
+
+        let paymentStatus = "Credit";
+        if (dueAmountPaise === 0) {
+          paymentStatus = "Paid";
+        } else if (amountReceivedPaise > 0) {
+          paymentStatus = "Partial";
+        }
+
         const billNo = `BILL-2026-10${this.state.sales.length + 1}`;
 
-        // Deduct from lot inventory
-        lot.soldCrates += cratesSold;
-        lot.remainingCrates -= cratesSold;
-        lot.remainingWeightKg -= weightSold;
-
-        // Create Sale Record
+        // Create Sale Record with real commodityName
         const newSale = {
           saleId: `SALE-${Date.now().toString().slice(-4)}`,
           billNo: billNo,
           date: "Today, Just now",
           lotId: lot.lotId,
+          commodityName: lot.commodityName,
           buyerId: buyer.id,
           buyerName: buyer.name,
           cratesSold: cratesSold,
           weightSoldKg: weightSold,
           rateRupees: rate,
           pricingUnit: unit,
-          grossAmountPaise: Math.round(grossAmount * 100),
-          paymentStatus: "Credit (Udhaar)",
-          amountReceivedPaise: 0,
-          dueAmountPaise: Math.round(grossAmount * 100)
+          grossAmountPaise: grossAmountPaise,
+          paymentStatus: paymentStatus,
+          amountReceivedPaise: amountReceivedPaise,
+          dueAmountPaise: dueAmountPaise
         };
 
         this.state.sales.unshift(newSale);
 
+        // Deduct from lot inventory & recalculate patti from actual sales (STEP 1: Item 1)
+        this.calculateLotPatti(lot.lotId);
+
+        // If payment received now, record payment transaction
+        if (amountReceivedPaise > 0) {
+          this.state.payments.push({
+            receiptNo: `REC-${Date.now().toString().slice(-4)}`,
+            partyId: buyer.id,
+            direction: 'receive',
+            amountPaise: amountReceivedPaise,
+            mode: this.selectedSalePaymentMode || 'Cash',
+            date: "Today, Just now"
+          });
+        }
+
         // Update buyer ledger balance
-        buyer.balancePaise = (buyer.balancePaise || 0) + newSale.dueAmountPaise;
+        buyer.balancePaise = this.state.sales
+          .filter(s => s.buyerId === buyer.id)
+          .reduce((sum, s) => sum + s.dueAmountPaise, 0);
+
+        // Update farmer balance from all lots
+        this.updateFarmerBalance(lot.farmerId);
 
         // Record Crate Movement to Buyer
         this.state.cratesLedger.unshift({
@@ -2720,17 +4410,28 @@
       }
 
       showPattiDetails(lotId) {
-        const lot = this.state.lots.find(l => l.lotId === lotId);
+        let lot = this.state.lots.find(l => l.lotId === lotId);
         if (!lot) return;
 
-        this.currentReceiptData = { type: 'patti', data: lot };
+        // Recalculate patti from actual sales
+        this.calculateLotPatti(lotId);
+        lot = this.state.lots.find(l => l.lotId === lotId);
+
+        // Total farmer advances (STEP 5: Item 14)
+        const farmerAdvances = (this.state.advances || [])
+          .filter(a => a.farmerId === lot.farmerId)
+          .reduce((sum, a) => sum + a.amountPaise, 0);
+
+        const netAfterAdvances = Math.max(0, lot.netPayablePaise - farmerAdvances);
+
+        this.currentReceiptData = { type: 'patti', data: lot, farmerAdvances: farmerAdvances };
         const content = document.getElementById('receipt-modal-content');
         
         content.innerHTML = `
           <div class="receipt-sheet" id="printable-area">
             <div class="receipt-header">
-              <h2>COHERENT MANDI ENTERPRISES</h2>
-              <p>Licensed Adatiya & Commission Agent • Yard Shop #42</p>
+              <h2>${this.getUserShopName().toUpperCase()}</h2>
+              <p>Licensed Adatiya: ${this.getUserFullName()} • Yard Shop #42</p>
               <p>APMC Yard, Yeshwanthpur, Bengaluru - 560022</p>
               <div style="margin-top:6px; font-size:12px; font-weight:800; color:var(--primary-900);">
                 FARMER SETTLEMENT PATTI (ರೈತರ ಲೆಕ್ಕ ಪಟ್ಟಿ)
@@ -2742,48 +4443,48 @@
               <span><strong>Date:</strong> ${lot.date}</span>
             </div>
             <div style="font-size:12px; margin-bottom:12px;">
-              <strong>Farmer:</strong> ${lot.farmerName} (Ramanagara)<br>
+              <strong>Farmer:</strong> ${lot.farmerName}<br>
               <strong>Produce:</strong> ${lot.commodityName}
             </div>
 
-            <!-- Inward Weighment Specs -->
+            <!-- Inward & Sale Weighment Specs -->
             <div style="border-top:1px dashed #CCC; border-bottom:1px dashed #CCC; padding:6px 0; margin-bottom:8px;">
               <div class="receipt-row">
-                <span>Total Packages:</span>
-                <span style="font-weight:700;">${lot.originalCrates} Crates</span>
+                <span>Inward Packages:</span>
+                <span style="font-weight:700;">${lot.originalCrates} Crates (${lot.actualWeightKg} kg)</span>
               </div>
               <div class="receipt-row">
-                <span>Gross Weight:</span>
-                <span>${lot.actualWeightKg} kg</span>
+                <span>Packages Sold:</span>
+                <span style="font-weight:700;">${lot.soldCrates} Crates (${Math.round(lot.actualWeightKg - lot.remainingWeightKg)} kg)</span>
               </div>
               <div class="receipt-row">
-                <span>Agreed Rate:</span>
-                <span style="font-weight:700;">₹${lot.rateRupees} per ${lot.pricingMethod}</span>
+                <span>Remaining in Mandi:</span>
+                <span>${lot.remainingCrates} Crates (${Math.round(lot.remainingWeightKg)} kg)</span>
               </div>
             </div>
 
-            <!-- Financial Calculation -->
+            <!-- Financial Calculation from Actual Sales -->
             <div class="receipt-row bold">
-              <span>Gross Valuation:</span>
+              <span>Gross Sale Value:</span>
               <span style="font-family:var(--font-mono);">${this.formatINR(lot.grossPaise)}</span>
             </div>
 
             <div style="margin:8px 0; padding-left:8px; border-left:2px solid #CCC; font-size:11px; color:#555;">
               <div class="receipt-row">
                 <span>- Mandi Commission (5%):</span>
-                <span>${this.formatINR(lot.breakdown.commissionPaise)}</span>
+                <span>${this.formatINR(lot.breakdown ? lot.breakdown.commissionPaise : 0)}</span>
               </div>
               <div class="receipt-row">
-                <span>- Hamali Loading / Handling (₹15/crt):</span>
-                <span>${this.formatINR(lot.breakdown.hamaliPaise)}</span>
+                <span>- Hamali Loading / Handling (₹15/crt sold):</span>
+                <span>${this.formatINR(lot.breakdown ? lot.breakdown.hamaliPaise : 0)}</span>
               </div>
               <div class="receipt-row">
                 <span>- APMC Market Cess (1%):</span>
-                <span>${this.formatINR(lot.breakdown.mandiCessPaise)}</span>
+                <span>${this.formatINR(lot.breakdown ? lot.breakdown.mandiCessPaise : 0)}</span>
               </div>
               <div class="receipt-row">
-                <span>- Tulai / Scale Weighment:</span>
-                <span>${this.formatINR(lot.breakdown.tulaiWeighingPaise)}</span>
+                <span>- Tulai / Scale Weighment (₹5/100kg sold):</span>
+                <span>${this.formatINR(lot.breakdown ? lot.breakdown.tulaiWeighingPaise : 0)}</span>
               </div>
             </div>
 
@@ -2792,13 +4493,25 @@
               <span>- ${this.formatINR(lot.totalChargesPaise)}</span>
             </div>
 
-            <div class="receipt-row bold grand-total">
-              <span>NET PAYABLE TO FARMER:</span>
+            <div class="receipt-row bold" style="margin-top:6px; font-size:12px;">
+              <span>Net Produce Valuation:</span>
               <span>${this.formatINR(lot.netPayablePaise)}</span>
             </div>
 
+            ${farmerAdvances > 0 ? `
+              <div class="receipt-row" style="color:var(--status-red); font-size:12px; margin-top:4px;">
+                <span>- Farmer Advance Deducted:</span>
+                <span>- ${this.formatINR(farmerAdvances)}</span>
+              </div>
+            ` : ''}
+
+            <div class="receipt-row bold grand-total">
+              <span>FINAL NET PAYABLE TO FARMER:</span>
+              <span>${this.formatINR(farmerAdvances > 0 ? netAfterAdvances : lot.netPayablePaise)}</span>
+            </div>
+
             <div style="text-align:center; margin-top:14px; font-size:10px; color:#888;">
-              Thank you for trusting CAL Mandi Ops. Computer generated settlement voucher.
+              Settlement built from actual auction sales. Computer generated settlement voucher.
             </div>
           </div>
         `;
@@ -2844,14 +4557,17 @@
         const sale = this.state.sales.find(s => s.billNo === billNo);
         if (!sale) return;
 
+        const lot = this.state.lots.find(l => l.lotId === sale.lotId);
+        const commodityName = (lot && lot.commodityName) || sale.commodityName || "Produce"; // STEP 1: Item 2 real commodity name
+
         this.currentReceiptData = { type: 'bill', data: sale };
         const content = document.getElementById('receipt-modal-content');
 
         content.innerHTML = `
           <div class="receipt-sheet" id="printable-area">
             <div class="receipt-header">
-              <h2>COHERENT MANDI ENTERPRISES</h2>
-              <p>Wholesale Fruit & Vegetable Commission Agent</p>
+              <h2>${this.getUserShopName().toUpperCase()}</h2>
+              <p>Wholesale Fruit & Vegetable Commission Agent • Proprietor: ${this.getUserFullName()}</p>
               <p>APMC Yard, Yeshwanthpur, Bengaluru - 560022</p>
               <div style="margin-top:6px; font-size:12px; font-weight:800; color:var(--accent-blue);">
                 WHOLESALE BUYER INVOICE (ಖರೀದಿದಾರ ಬಿಲ್)
@@ -2878,7 +4594,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td style="padding:6px 0;">Apples (Grade A Shimla)<br><span style="font-size:10px; color:#666;">Ref: ${sale.lotId}</span></td>
+                  <td style="padding:6px 0;">${commodityName}<br><span style="font-size:10px; color:#666;">Ref: ${sale.lotId}</span></td>
                   <td style="padding:6px 0; text-align:center;">${sale.cratesSold} Crt<br><span style="font-size:10px; color:#666;">${sale.weightSoldKg} kg</span></td>
                   <td style="padding:6px 0; text-align:right;">₹${sale.rateRupees}/${sale.pricingUnit}</td>
                   <td style="padding:6px 0; text-align:right; font-weight:700;">${this.formatINR(sale.grossAmountPaise)}</td>
@@ -2942,9 +4658,12 @@
       // ========================================================
       // WORKFLOW 4: KHATA / ACCOUNTS LEDGER
       // ========================================================
-      switchKhataTab(type) {
+      switchKhataTab(type, targetPartyId) {
         document.getElementById('tab-farmer-khata').classList.toggle('active', type === 'farmer');
         document.getElementById('tab-buyer-khata').classList.toggle('active', type === 'buyer');
+
+        const advBar = document.getElementById('farmer-advance-action-bar');
+        if (advBar) advBar.style.display = type === 'farmer' ? 'block' : 'none';
 
         const select = document.getElementById('khata-party-select');
         if (type === 'farmer') {
@@ -2956,66 +4675,150 @@
             <option value="buyer:${b.id}">${b.name} (${b.market})</option>
           `).join('');
         }
+        if (targetPartyId) {
+          select.value = targetPartyId.includes(':') ? targetPartyId : `${type}:${targetPartyId}`;
+        }
         this.renderKhataTransactions();
       }
 
+      // Farmer Advance Modal Methods (STEP 5: Item 14)
+      openGiveAdvanceModal() {
+        const select = document.getElementById('advance-farmer-select');
+        if (!select) return;
+        select.innerHTML = this.state.parties.farmers.map(f => `
+          <option value="${f.id}">${f.name} (${f.village}) • Current Payable: ${this.formatINR(f.outstandingPaise || 0)}</option>
+        `).join('');
+        document.getElementById('advance-amount-input').value = '';
+        this.setAdvancePaymentMode('Cash');
+        this.openModal('modal-advance');
+      }
+
+      setAdvancePaymentMode(mode) {
+        this.selectedAdvanceMode = mode;
+        ['cash', 'upi', 'bank'].forEach(m => {
+          document.getElementById(`advmode-${m}`)?.classList.toggle('active', m === mode.toLowerCase());
+        });
+      }
+
+      submitAdvance() {
+        const farmerId = document.getElementById('advance-farmer-select').value;
+        const amountRupees = parseFloat(document.getElementById('advance-amount-input').value) || 0;
+
+        if (amountRupees <= 0) {
+          this.showToast("Please enter a valid advance amount", "error");
+          return;
+        }
+
+        const amountPaise = Math.round(amountRupees * 100);
+        const advId = `ADV-${Date.now().toString().slice(-4)}`;
+
+        this.state.advances = this.state.advances || [];
+        this.state.advances.push({
+          id: advId,
+          farmerId: farmerId,
+          amountPaise: amountPaise,
+          mode: this.selectedAdvanceMode || 'Cash',
+          date: "Today, Just now",
+          note: "Farmer Advance"
+        });
+
+        // Also record in payment ledger
+        this.state.payments.push({
+          receiptNo: advId,
+          partyId: farmerId,
+          direction: 'pay',
+          amountPaise: amountPaise,
+          mode: this.selectedAdvanceMode || 'Cash',
+          date: "Today, Just now",
+          type: 'advance'
+        });
+
+        // Automatically deduct from farmer's balance (STEP 5: Item 14)
+        this.updateFarmerBalance(farmerId);
+
+        this.beep(850, 0.1);
+        this.saveState();
+        this.closeModal('modal-advance');
+        this.showToast(`Advance of ${this.formatINR(amountPaise)} recorded!`, "success");
+        this.renderKhataTransactions();
+      }
+
+      // Khata Journal with Running Balance Column (STEP 5: Item 15)
       renderKhataTransactions() {
         const val = document.getElementById('khata-party-select').value;
         if (!val) return;
         const [type, id] = val.split(':');
         const container = document.getElementById('khata-transactions-list');
 
-        let balance = 0;
         let rows = [];
 
         if (type === 'farmer') {
+          this.updateFarmerBalance(id);
           const farmer = this.state.parties.farmers.find(f => f.id === id);
-          const farmerLots = this.state.lots.filter(l => l.farmerId === id);
-          
+
+          // 1. Lots with actual sales
+          const farmerLots = this.state.lots.filter(l => l.farmerId === id && l.grossPaise > 0);
           farmerLots.forEach(l => {
             rows.push({
               date: l.date,
               ref: l.lotId,
-              desc: `Settlement Patti: ${l.commodityName} (${l.originalCrates} crt)`,
+              desc: `Settlement Patti: ${l.commodityName} (${l.soldCrates} crt sold)`,
               creditPaise: l.netPayablePaise,
               debitPaise: 0
             });
-            balance += l.netPayablePaise;
           });
 
-          // Paid transactions
-          const payments = this.state.payments.filter(p => p.partyId === id && p.direction === 'pay');
+          // 2. Advances given
+          const advances = (this.state.advances || []).filter(a => a.farmerId === id);
+          advances.forEach(a => {
+            rows.push({
+              date: a.date,
+              ref: a.id,
+              desc: `Advance given via ${a.mode}`,
+              creditPaise: 0,
+              debitPaise: a.amountPaise
+            });
+          });
+
+          // 3. Payments made
+          const payments = (this.state.payments || []).filter(p => p.partyId === id && p.direction === 'pay' && p.type !== 'advance');
           payments.forEach(p => {
             rows.push({
               date: p.date,
               ref: p.receiptNo,
-              desc: `Payment via ${p.mode}`,
+              desc: `Payment paid via ${p.mode}`,
               creditPaise: 0,
               debitPaise: p.amountPaise
             });
-            balance -= p.amountPaise;
           });
 
-          document.getElementById('khata-balance-display').innerText = this.formatINR(balance);
+          // Calculate running balance: credit increases payable to farmer, debit reduces it
+          let runningBal = 0;
+          rows.forEach(r => {
+            runningBal += (r.creditPaise - r.debitPaise);
+            r.runningBalPaise = runningBal;
+          });
+
+          document.getElementById('khata-balance-display').innerText = this.formatINR(farmer ? (farmer.outstandingPaise || 0) : runningBal);
           document.getElementById('khata-balance-tag').innerText = "To Pay to Farmer (ಬಾಕಿ)";
           document.getElementById('khata-balance-tag').style.color = "var(--status-red)";
         } else {
           const buyer = this.state.parties.buyers.find(b => b.id === id);
-          const buyerSales = this.state.sales.filter(s => s.buyerId === id);
 
+          // 1. Invoices
+          const buyerSales = this.state.sales.filter(s => s.buyerId === id);
           buyerSales.forEach(s => {
             rows.push({
               date: s.date,
               ref: s.billNo,
-              desc: `Invoice: ${s.cratesSold} crt sold`,
+              desc: `Invoice: ${s.cratesSold} crt (${s.weightSoldKg} kg @ ₹${s.rateRupees})`,
               debitPaise: s.grossAmountPaise,
               creditPaise: 0
             });
-            balance += s.grossAmountPaise;
           });
 
-          // Collections received
-          const collections = this.state.payments.filter(p => p.partyId === id && p.direction === 'receive');
+          // 2. Collections received
+          const collections = (this.state.payments || []).filter(p => p.partyId === id && p.direction === 'receive');
           collections.forEach(p => {
             rows.push({
               date: p.date,
@@ -3024,10 +4827,16 @@
               debitPaise: 0,
               creditPaise: p.amountPaise
             });
-            balance -= p.amountPaise;
           });
 
-          document.getElementById('khata-balance-display').innerText = this.formatINR(balance);
+          // Calculate running balance: debit increases buyer's debt, credit reduces it
+          let runningBal = 0;
+          rows.forEach(r => {
+            runningBal += (r.debitPaise - r.creditPaise);
+            r.runningBalPaise = runningBal;
+          });
+
+          document.getElementById('khata-balance-display').innerText = this.formatINR(buyer ? (buyer.balancePaise || 0) : runningBal);
           document.getElementById('khata-balance-tag').innerText = "To Receive from Buyer (ಉದ್ದರಿ)";
           document.getElementById('khata-balance-tag').style.color = "var(--accent-amber)";
         }
@@ -3037,16 +4846,23 @@
           return;
         }
 
+        // Render with Running Balance column (STEP 5: Item 15)
         container.innerHTML = rows.map(r => `
-          <div class="card" style="padding:12px; margin-bottom:8px;">
+          <div class="khata-row-item">
             <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-tertiary);">
               <span>${r.date}</span>
               <span style="font-family:var(--font-mono); font-weight:700;">${r.ref}</span>
             </div>
             <div style="font-size:13px; font-weight:700; margin:4px 0;">${r.desc}</div>
-            <div style="display:flex; justify-content:space-between; font-size:14px; font-family:var(--font-mono); margin-top:6px;">
-              <span style="color:var(--status-green);">${r.creditPaise > 0 ? '+ ' + this.formatINR(r.creditPaise) : ''}</span>
-              <span style="color:var(--status-red);">${r.debitPaise > 0 ? '- ' + this.formatINR(r.debitPaise) : ''}</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px; font-family:var(--font-mono);">
+              <div>
+                ${r.creditPaise > 0 ? `<span style="color:var(--status-green); font-size:13px; font-weight:700;">+ ${this.formatINR(r.creditPaise)}</span>` : ''}
+                ${r.debitPaise > 0 ? `<span style="color:var(--status-red); font-size:13px; font-weight:700;">- ${this.formatINR(r.debitPaise)}</span>` : ''}
+              </div>
+              <div style="text-align:right;">
+                <span style="font-size:10px; color:var(--text-tertiary); display:block;">Running Balance</span>
+                <span style="font-size:13px; font-weight:800; color:var(--primary-900);">${this.formatINR(r.runningBalPaise)}</span>
+              </div>
             </div>
           </div>
         `).join('');
@@ -3091,6 +4907,7 @@
             input.value = Math.round((buyer.balancePaise || 0) / 100);
           }
         } else {
+          this.updateFarmerBalance(id);
           const farmer = this.state.parties.farmers.find(f => f.id === id);
           if (farmer) {
             preview.innerText = `Current Pending Payable: ${this.formatINR(farmer.outstandingPaise || 0)}`;
@@ -3106,6 +4923,7 @@
         });
       }
 
+      // STEP 1: Items 3 & 4 (Buyer payments update bills oldest first; Farmer payments reduce farmer total balance)
       submitPayment() {
         const id = document.getElementById('payment-party-select').value;
         const amountRupees = parseFloat(document.getElementById('payment-amount-input').value) || 0;
@@ -3121,22 +4939,11 @@
         this.beep(850, 0.1);
 
         if (this.paymentDirection === 'receive') {
-          const buyer = this.state.parties.buyers.find(b => b.id === id);
-          if (buyer) {
-            buyer.balancePaise = Math.max(0, (buyer.balancePaise || 0) - amountPaise);
-          }
+          // Apply to oldest bills first (STEP 1: Item 3)
+          this.applyBuyerPayment(id, amountPaise);
         } else {
-          const farmer = this.state.parties.farmers.find(f => f.id === id);
-          if (farmer) {
-            farmer.outstandingPaise = Math.max(0, (farmer.outstandingPaise || 0) - amountPaise);
-            // Update lot settlement
-            const lot = this.state.lots.find(l => l.farmerId === id && l.remainingPayablePaise > 0);
-            if (lot) {
-              lot.paidAmountPaise += amountPaise;
-              lot.remainingPayablePaise = Math.max(0, lot.remainingPayablePaise - amountPaise);
-              if (lot.remainingPayablePaise === 0) lot.settlementStatus = "paid";
-            }
-          }
+          // Reduce farmer's total balance and lot settlements (STEP 1: Item 4)
+          this.applyFarmerPayment(id, amountPaise);
         }
 
         this.state.payments.push({
@@ -3391,6 +5198,9 @@
     let app;
     window.addEventListener('DOMContentLoaded', () => {
       app = new CalMandiOps();
+      window.app = app;
+      window.CalMandiOps = CalMandiOps;
+      window.FirebaseAuthService = FirebaseAuthService;
 
       // Live status bar clock update
       function updateClock() {
